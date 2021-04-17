@@ -2,6 +2,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <conio.h>
+    #include <string.h>
 	
 	float auxFloat;
 	int auxInt;
@@ -22,7 +23,7 @@ LETRA_MIN 		[a-z]
 LETRA 			{LETRA_MAY}|{LETRA_MIN}
 
 CONST_ENTE 		{DIGITO}+
-CONST_FLOAT 	{DIGITO}+{PUNTO}{DIGITO}+
+CONST_FLOAT 		{DIGITO}+{PUNTO}{DIGITO}+
 CONS_CAD		["].*["]
 
 PUNTO 			"."
@@ -30,9 +31,9 @@ COMA 			","
 OP_ASIG 		":"
 
 COMENTARIO 		[/][*].*[*][/]
-ID 				({LETRA}({LETRA}|{DIGITO}|[_])*({LETRA}|{DIGITO}))|{LETRA} 
+ID 			({LETRA}({LETRA}|{DIGITO}|[_])*({LETRA}|{DIGITO}))|{LETRA} 
 
-IF 				"if"
+IF 			"if"
 ELSE 			"else"
 WHILE 			"while"
 DECVAR 			"DECVAR"
@@ -46,8 +47,8 @@ RES 			"-"
 DIV 			"/"
 MULT 			"*"
 
-OP_MENOR_IG 	"<="
-OP_MAYOR_IG 	">="
+OP_MENOR_IG 		"<="
+OP_MAYOR_IG 		">="
 OP_MAYOR 		">"
 OP_MENOR 		"<"
 OP_DIST 		"!="
@@ -60,11 +61,11 @@ LLAVE_A 		"{"
 LLAVE_C 		"}"
 
 %%
-{CONST_FLOAT} 	{printf("%s -> CONST_FLOAT\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+38 || auxFloat < -3.4E+38){ printf("El numero real supera los limites.\n"); yyerror();}
-{CONST_ENTE} 	{printf("%s -> CONST_ENTE\n", yytext); auxInt = atoi(yytext); if(auxInt > 32767 || auxInt < -32768){ printf("El numero entero supera los limites.\n"); yyerror();}
+{CONST_FLOAT} 		{printf("%s -> CONST_FLOAT\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+38 || auxFloat < -3.4E+38){ printf("El numero real supera los limites.\n"); yyerror();}}
+{CONST_ENTE} 		{printf("%s -> CONST_ENTE\n", yytext); auxInt = atoi(yytext); if(auxInt > 32767 || auxInt < -32768){ printf("El numero entero supera los limites.\n"); yyerror();}}
 {CONS_CAD} 		{printf("%s -> CONS_CAD\n", yytext); strcpy(auxCad, yytext);if(strlen(auxCad) > 32){ printf("La cadena supera el limite.\n"); yyerror();}}
 {COMA} 			{printf("%s -> COMA\n", yytext);}
-{COMENTARIO} 	{printf("%s -> COMENTARIO\n", yytext);}
+{COMENTARIO} 		{printf("%s -> COMENTARIO\n", yytext);}
 {IF} 			{printf("%s -> IF\n", yytext);}
 {ELSE} 			{printf("%s -> ELSE\n", yytext);}
 {WHILE} 		{printf("%s -> WHILE\n", yytext);}
@@ -77,8 +78,8 @@ LLAVE_C 		"}"
 {RES} 			{printf("%s -> RES\n", yytext);}
 {DIV} 			{printf("%s -> DIV\n", yytext);}
 {MULT} 			{printf("%s -> MULT\n", yytext);}
-{OP_MENOR_IG} 	{printf("%s -> OP_MENOR_IG\n", yytext);}
-{OP_MAYOR_IG} 	{printf("%s -> OP_MAYOR_IG\n", yytext);}
+{OP_MENOR_IG} 		{printf("%s -> OP_MENOR_IG\n", yytext);}
+{OP_MAYOR_IG} 		{printf("%s -> OP_MAYOR_IG\n", yytext);}
 {OP_MAYOR} 		{printf("%s -> OP_MAYOR\n", yytext);}
 {OP_MENOR} 		{printf("%s -> OP_MENOR\n", yytext);}
 {OP_ASIG} 		{printf("%s -> OP_ASIG\n", yytext);}
@@ -89,7 +90,7 @@ LLAVE_C 		"}"
 {PAR_C} 		{printf("%s -> PAR_C\n", yytext);}
 {LLAVE_A} 		{printf("%s -> LLAVE_A\n", yytext);}
 {LLAVE_C} 		{printf("%s -> LLAVE_C\n", yytext);}
-{ID} 			{printf("%s -> ID\n", yytext); strcpy(auxId, yytext);if(strlen(auxId) > 16){ printf("La variable %s es demasiado larga.\n", yytext); yyerror();}
+{ID} 			{printf("%s -> ID\n", yytext); strcpy(auxId, yytext);if(strlen(auxId) > 16){ printf("La variable %s es demasiado larga.\n", yytext); yyerror();}}
 
 "\t"
 "\n"
