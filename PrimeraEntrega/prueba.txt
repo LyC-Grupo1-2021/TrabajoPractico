@@ -1,15 +1,20 @@
 DECVAR
+    texto: String;
+
     contador: Integer;
 
     promedio: Float;
 
-    actual, suma: Float;
+    actual, suma: Float; 
 
-    ENDDEC
+ENDDEC
     
     write "Hola mundo!";
     contador: 0;
     actual: 999;
+    f1: 99.;
+    f2: .99;
+    f3: 999.999;
     suma: 02;
     contador: contador+1;
     while(contador <= 92) {
@@ -19,10 +24,23 @@ DECVAR
     }
     write "La suma es: ";
     write suma;
-if (actual > 2){
+if (actual > 2 and actual >= 2){
     write "2 > 3";
+	read actual;
 }
-if (actual < 3){
+
+-/ donde base es una variable /-
+
+-/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /-/-
+
+-/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- aaaaaaa /-
+
+-/-/ Comentario /- Así son los comentarios en el 2°Cuat de LyC /-
+
+if ( not actual){
+	write "if con not";
+}
+if (actual < 3 or actual > 3){
         if(actual >= 3){
             write "soy true";
         }
