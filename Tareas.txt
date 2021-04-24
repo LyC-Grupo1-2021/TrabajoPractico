@@ -1,0 +1,16 @@
+Bloque declarativo:
+    [] Leer varias lineas
+    [X] Linea declarativa con varias variables
+Impresion:
+    [X] Imprime cadenas
+    [X] Imprime expresion
+Asignacion:
+    [] Asignacion multiple -> Creo que funciona bien 
+Expresion:
+    [X] expresion con suma
+    [X] expresion con resta
+    [X] expresion de solo un termino
+Termino:
+    [X] es factor
+    [] Multiplicacion y division
+    [] ¿Expresion con parentesis?

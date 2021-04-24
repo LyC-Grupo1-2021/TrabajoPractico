@@ -1,5 +1,9 @@
 flex ./Lexico.l
-gcc lex.yy.c -o programa
-./programa prueba.txt
+bison -dyv ./Sintactico.y
+gcc lex.yy.c y.tab.c -o trabajoPractico
+./trabajoPractico.exe ./prueba.txt
 rm lex.yy.c
-rm programa
+rm y.tab.c
+rm y.output
+rm y.tab.h
+rm trabajoPractico.exe
