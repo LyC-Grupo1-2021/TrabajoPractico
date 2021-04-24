@@ -1,5 +1,5 @@
 Bloque declarativo:
-    [] Leer varias lineas
+    [] Leer varias lineas -> Esta hecho pero no convence
     [X] Linea declarativa con varias variables
 Impresion:
     [X] Imprime cadenas
