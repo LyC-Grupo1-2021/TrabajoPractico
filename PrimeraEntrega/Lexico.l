@@ -72,6 +72,8 @@ PAR_A 			"("
 PAR_C 			")"
 LLAVE_A 		"{"
 LLAVE_C 		"}"
+COR_A           "["
+COR_C           "]"
 
 %%
 {CONST_FLOAT} 	{printf("%s -> CONST_FLOAT\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+30 || auxFloat < -3.4E+38){ printf("El numero real supera los limites.\n"); yyerror();} return CONST_FLOAT;}
@@ -108,6 +110,8 @@ LLAVE_C 		"}"
 {PYC} 			{printf("%s -> PYC\n", yytext); return PYC;}
 {PAR_A} 		{printf("%s -> PAR_A\n", yytext); return PAR_A;}
 {PAR_C} 		{printf("%s -> PAR_C\n", yytext); return PAR_C;}
+{COR_A}         {printf("%s -> COR_A\n", yytext); return COR_A;}
+{COR_C}         {printf("%s -> COR_C\n", yytext); return COR_C;}
 {LLAVE_A} 		{printf("%s -> LLAVE_A\n", yytext); return LLAVE_A;}
 {LLAVE_C} 		{printf("%s -> LLAVE_C\n", yytext); return LLAVE_C;}
 {ID} 			{printf("%s -> ID\n", yytext); strcpy(auxId, yytext);if(strlen(auxId) > MAXLENID){ printf("La variable %s no debe superar los %d caracteres.\n", yytext, MAXLENID); yyerror();} return ID;}

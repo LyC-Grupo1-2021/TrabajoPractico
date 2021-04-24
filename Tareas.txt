@@ -14,3 +14,8 @@ Termino:
     [X] es factor
     [] Multiplicacion y division
     [] ¿Expresion con parentesis?
+en_lista
+    [X] funciona con expresiones de suma y resta
+    [] falta expresiones mul, div y con parentesis
+
+TIRA "conflictos: desplazamientos/reducciones"

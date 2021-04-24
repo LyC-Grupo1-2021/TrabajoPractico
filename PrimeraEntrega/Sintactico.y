@@ -53,6 +53,8 @@
 %token PAR_C
 %token LLAVE_A
 %token LLAVE_C
+%token COR_A
+%token COR_C
 
 %start programaPrima
 
@@ -67,7 +69,15 @@
     impresion {printf("\t{sentencia impresion} es sentencia\n");}|
     lectura {printf("\t{lectura} es sentencia\n");}|
     bloque_declarativo {printf("\t{bloque_declarativo} es sentencia\n");}|
-    asignacion {printf("\t{asignacion} es sentencia\n");}
+    asignacion {printf("\t{asignacion} es sentencia\n");}|
+    en_lista {printf("\t{en_lista} es sentencia\n");}
+  ;
+  en_lista:
+    INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC {printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");}
+  ;
+  lista_expresiones:
+    expresion {printf("\t{expresion} es lista_expresiones\n");}|
+    lista_expresiones PYC expresion {printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");}
   ;
   bloque_declarativo:
     DECVAR multiple_declaraciones ENDDEC {printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");} 

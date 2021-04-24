@@ -4,6 +4,7 @@ DECVAR
     promedio: Float;
     actual, suma: Float; 
 ENDDEC
+
     actual:333.3333;
     a1:a2:a3:a4: 3 + 8 + 9 + 5;
     write "Hola mundo!";
@@ -15,3 +16,5 @@ ENDDEC
     suma: 02;
     contador: contador+1;
     read actual;
+
+    INLIST (a; [2 + b + 7; 12; a + b + 34 + d; 48]);
