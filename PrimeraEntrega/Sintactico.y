@@ -65,11 +65,19 @@
   ;
   sentencia:
     impresion {printf("\t{sentencia impresion} es sentencia\n");}|
+    lectura {printf("\t{lectura} es sentencia\n");}|
     bloque_declarativo {printf("\t{bloque_declarativo} es sentencia\n");}|
     asignacion {printf("\t{asignacion} es sentencia\n");}
   ;
   bloque_declarativo:
-    DECVAR lista_variables OP_ASIG tipo_dato PYC ENDDEC {printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");} 
+    DECVAR multiple_declaraciones ENDDEC {printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");} 
+  ;
+  multiple_declaraciones:
+    sentencia_declarativa {printf("\t{sentencia_declarativa} es multiple_declaraciones\n");}|
+    multiple_declaraciones sentencia_declarativa {printf("\t{multiple_declaraciones sentencia_declarativa} es multiple_declaraciones\n");}
+  ;
+  sentencia_declarativa:
+    lista_variables OP_ASIG tipo_dato PYC {printf("\t{lista_variables} es sentencia_declarativa\n");} |
   ;
   lista_variables:
     termino {printf("\t{ID} es lista_variables\n");}|
@@ -87,6 +95,10 @@
     ID {printf("\t{ID} es lista_asignacion\n");}|
     lista_asignacion OP_ASIG ID {printf("\t {lista_asignacion OP_ASIG ID} es lista_asignacion\n");}
   ;
+  lectura:
+    READ CONST_STRING PYC {printf("\t{READ CONST_STRING PYC} es lectura\n");}|
+    READ expresion PYC {printf("\t{READ expresion PYC} es lectura\n");}
+  ;
   impresion:
     WRITE CONST_STRING PYC {printf("\t{WRITE CONST_STRING PYC} es impresion\n");}|
     WRITE expresion PYC {printf("\t{WRITE expresion PYC} es impresion\n");}
@@ -101,7 +113,8 @@
   ;
   factor:
     ID {printf("\t{ID} es factor\n");}|
-    CONST_INTEGER {printf("\t{CONST_INTEGER} es factor\n");}
+    CONST_INTEGER {printf("\t{CONST_INTEGER} es factor\n");}|
+    CONST_FLOAT {printf("\t{CONST_FLOAT} es factor\n");}
   ;
 %%
 
