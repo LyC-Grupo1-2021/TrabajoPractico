@@ -7,8 +7,7 @@
     #include <string.h> 
     #include "y.tab.h"
 	
-	#define MAXLENID 16
-	#define MAXLENSTR 32
+	#include "constantes_propias.h"
 	
 	float auxFloat;
 	int auxInt;
@@ -79,7 +78,7 @@ COR_C           "]"
 
 %%
 {CONST_FLOAT} 	{printf("%s -> CONST_FLOAT\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+30 || auxFloat < -3.4E+38){ printf("El numero real supera los limites.\n"); yyerror();} return CONST_FLOAT;}
-{CONST_INTEGER} {printf("%s -> CONST_INTEGER\n", yytext); auxInt = atoi(yytext); if(auxInt > 32767 || auxInt < -32768){ printf("El numero entero no debe ser superior a 32767 ni inferior a -32768.\n"); yyerror();} return CONST_INTEGER;}
+{CONST_INTEGER} {printf("%s -> CONST_INTEGER\n", yytext); auxInt = atoi(yytext); if(auxInt > LIM_INT_POS || auxInt < LIM_INT_NEG){ printf("El numero entero no debe ser superior a 32767 ni inferior a -32768.\n"); yyerror();} return CONST_INTEGER;}
 {CONST_STRING} 	{printf("%s -> CONST_STRING\n", yytext); strcpy(auxCad, yytext);if(strlen(auxCad) > MAXLENSTR){ printf("El largo maximo de la cadena es %d\n", MAXLENSTR); yyerror();} return CONST_STRING;}
 {COMA} 			{printf("%s -> COMA\n", yytext); return COMA;}
 {COMENTARIO2} 	{printf("%s -> COMENTARIO2\n", yytext); return COMENTARIO2;}
