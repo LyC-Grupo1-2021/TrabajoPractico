@@ -9,6 +9,7 @@
 
     int yyerror();
     int yylex();
+    
 %}
 
 %token DIGITO
@@ -60,18 +61,56 @@
 
 %%
   programaPrima:
-    programa {printf("\n----------------\nCompilacion OK\n----------------\n");}
+    main {printf("\n----------------\nCompilacion OK\n----------------\n");}
+  ;
+  main:
+    bloque_declarativo programa {printf("\t{bloque_declarativo programa} es sentencia\n");}
   ;
   programa:
-    sentencia {printf("\t{sentencia} es programa\n");}|
+    sentencia  {printf("\t{sentencia} es programa\n");}|
     programa sentencia {printf("\t{programa sentencia} es programa\n");}
   ;
   sentencia:
     impresion {printf("\t{sentencia impresion} es sentencia\n");}|
     lectura {printf("\t{lectura} es sentencia\n");}|
-    bloque_declarativo {printf("\t{bloque_declarativo} es sentencia\n");}|
     lista_asignacion {printf("\t{lista_asignacion} es sentencia\n");}|
-    en_lista {printf("\t{en_lista} es sentencia\n");}
+    en_lista {printf("\t{en_lista} es sentencia\n");}|
+    while {printf("\t{while} es sentencia\n");}|
+    if  {printf("\t{if} es sentencia\n");}
+  ;
+  if:
+    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
+    IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
+    IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
+    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
+    IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
+    IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}
+  ;
+  while:
+    WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");}|
+    WHILE PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C {printf("\t{WHILE PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C}, es while\n");}|
+    WHILE PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C {printf("\t{WHILE PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C}, es while\n");}
+  ;
+  condicion:
+    factor operador_comp factor {printf("\t {factor operador_comp factor} es condicion\n");}
+  ;
+  condicion_not:
+    NOT PAR_A condicion PAR_C {printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");}
+  ;
+  condicion_multiple:
+    condicion operador_log condicion {printf("\t {condicion operador_log condicion} es condicion\n");}
+  ;
+  operador_log:
+    AND {printf("\t {AND} operador_log");}|
+    OR {printf("\t {OR} es operador_log\n");}
+  ;
+  operador_comp:
+    OP_MENOR {printf("\t {OP_MENOR} es operador\n");}|
+    OP_MAYOR {printf("\t {OP_MAYOR} es operador\n");}|
+    OP_MENOR_IG {printf("\t {OP_MENOR_IG} es operador\n");}|
+    OP_MAYOR_IG {printf("\t {OP_MAYOR_IG} es operador\n");}|
+    OP_DIST {printf("\t {OP_DIST} es operador\n");}|
+    OP_IGUAL {printf("\t {OP_IGUAL} es operador\n");}
   ;
   en_lista:
     INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC {printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");}
@@ -143,13 +182,13 @@ int main(int argc, char *argv[])
   }else{
     yyparse();
   }
-
+  
   fclose(yyin);
   return 0;
 }
 
-int yyerror()
+int yyerror(void)
 {
-  printf("Error sintactico\n");
+  printf("Error de sintaxis\n");
   exit(1);
 }   
