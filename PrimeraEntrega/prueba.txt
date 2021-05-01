@@ -6,7 +6,7 @@ DECVAR
 ENDDEC
 
     actual:333.3333;
-    a1:a2:a3:a4: 3 + 8 + 9 + 5;
+    a1:a2:a3:a4: ((3 + 8) * 9) + 5;
     write "Hola mundo!";
     contador: 0;
     actual: 999;

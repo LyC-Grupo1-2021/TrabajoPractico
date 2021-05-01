@@ -63,13 +63,14 @@
     programa {printf("\n----------------\nCompilacion OK\n----------------\n");}
   ;
   programa:
-    programa sentencia {printf("\t{programa sentencia} es programa\n");}|
+    sentencia {printf("\t{sentencia} es programa\n");}|
+    programa sentencia {printf("\t{programa sentencia} es programa\n");}
   ;
   sentencia:
     impresion {printf("\t{sentencia impresion} es sentencia\n");}|
     lectura {printf("\t{lectura} es sentencia\n");}|
     bloque_declarativo {printf("\t{bloque_declarativo} es sentencia\n");}|
-    asignacion {printf("\t{asignacion} es sentencia\n");}|
+    lista_asignacion {printf("\t{lista_asignacion} es sentencia\n");}|
     en_lista {printf("\t{en_lista} es sentencia\n");}
   ;
   en_lista:
@@ -87,24 +88,25 @@
     multiple_declaraciones sentencia_declarativa {printf("\t{multiple_declaraciones sentencia_declarativa} es multiple_declaraciones\n");}
   ;
   sentencia_declarativa:
-    lista_variables OP_ASIG tipo_dato PYC {printf("\t{lista_variables} es sentencia_declarativa\n");} |
+    lista_variables OP_ASIG tipo_dato PYC {printf("\t{lista_variables} es sentencia_declarativa\n");}
   ;
   lista_variables:
-    termino {printf("\t{ID} es lista_variables\n");}|
-    lista_variables COMA termino {printf("\t{lista_variables} COMA ID es lista_variables\n");}
+    ID {printf("\t lista_variables es {ID}\n");}|
+    lista_variables COMA ID {printf("\t{lista_variables COMA ID} es lista_variables\n");}
   ;
   tipo_dato:
     STRING  {printf("\t{STRING} es tipo_dato\n");}|  
     FLOAT   {printf("\t{FLOAT} es tipo_dato\n");}|
     INTEGER {printf("\t{INTEGER} es tipo_dato\n");}  
   ;
-  asignacion:
-    lista_asignacion OP_ASIG expresion PYC {printf("\t{lista_asignacion OP_ASIG expresion PYC} es asignacion\n");};
-  ;
   lista_asignacion:
-    ID {printf("\t{ID} es lista_asignacion\n");}|
-    lista_asignacion OP_ASIG ID {printf("\t {lista_asignacion OP_ASIG ID} es lista_asignacion\n");}
+    asignacion OP_ASIG expresion PYC {printf("\t{asignacion OP_ASIG expresion PYC} es lista_asignacion\n");};
   ;
+  asignacion:
+    asignacion OP_ASIG ID {printf("\t {asignacion OP_ASIG ID} es asignacion\n");}|
+    ID {printf("\t{ID} es asignacion\n");}
+  ;
+
   lectura:
     READ CONST_STRING PYC {printf("\t{READ CONST_STRING PYC} es lectura\n");}|
     READ expresion PYC {printf("\t{READ expresion PYC} es lectura\n");}
@@ -114,14 +116,17 @@
     WRITE expresion PYC {printf("\t{WRITE expresion PYC} es impresion\n");}
   ;
   expresion:
-    termino {printf("\t{termino} es expresion\n");}|
     expresion SUM termino {printf("\t{expresion SUM termino} es expresion\n");} |
-    expresion RES termino {printf("\t{expresion RES termino} es expresion\n");}
+    expresion RES termino {printf("\t{expresion RES termino} es expresion\n");}|
+    termino  {printf("\t{termino} es expresion\n");}
     ;
   termino:
+    termino MULT factor {printf("\t{termino MULT factor} es termino\n");}|
+    termino DIV factor {printf("\t{termino DIV factor} es termino\n");}|
     factor {printf("\t{factor} es termino\n");}
   ;
   factor:
+    PAR_A expresion PAR_C {printf("\t{PAR_A expresion PAR_C} es factor\n");}|
     ID {printf("\t{ID} es factor\n");}|
     CONST_INTEGER {printf("\t{CONST_INTEGER} es factor\n");}|
     CONST_FLOAT {printf("\t{CONST_FLOAT} es factor\n");}
