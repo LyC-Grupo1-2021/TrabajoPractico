@@ -68,5 +68,5 @@ ENDDEC
             contador: contador + 1;
             actual: (contador/0.342) + (contador*contador);
             suma: suma + actual;
-            }
+        }
     }

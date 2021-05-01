@@ -1,7 +1,9 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
-    #include <conio.h>
+    //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
+    //#include <conio.h>
+    #include <curses.h>
     #include <string.h> 
     #include "y.tab.h"
 	
@@ -121,5 +123,6 @@ COR_C           "]"
 "\n\t"
 "\r\n"
 " "
-.  yyerror();
+
+. yyerror("Error de léxico");
 %%

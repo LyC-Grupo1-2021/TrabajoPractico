@@ -1,15 +1,17 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
-    #include <conio.h>
+    //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
+    //#include <conio.h>
+    #include <curses.h>
     #include "y.tab.h"
 
     int yystopparser=0;
+    int yylineno;    
     FILE  *yyin;
 
-    int yyerror();
+    int yyerror(const char *);
     int yylex();
-    
 %}
 
 %token DIGITO
@@ -187,8 +189,9 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-int yyerror(void)
+int yyerror(const char *s)
 {
-  printf("Error de sintaxis\n");
+  printf("Error de sintáxis\n");
+  printf("Nro. de linea: %d \t %s\n", yylineno, s);
   exit(1);
 }   
