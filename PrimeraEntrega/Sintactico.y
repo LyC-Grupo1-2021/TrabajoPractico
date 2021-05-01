@@ -64,7 +64,7 @@
     main {printf("\n----------------\nCompilacion OK\n----------------\n");}
   ;
   main:
-    bloque_declarativo programa {printf("\t{bloque_declarativo programa} es sentencia\n");}
+    bloque_declarativo programa {printf("\t{bloque_declarativo programa} es main\n");}
   ;
   programa:
     sentencia  {printf("\t{sentencia} es programa\n");}|
