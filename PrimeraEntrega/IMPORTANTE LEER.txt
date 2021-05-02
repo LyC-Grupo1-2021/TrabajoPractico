@@ -1,0 +1,1 @@
+Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"

@@ -12,9 +12,15 @@ ENDDEC
     write "Hola mundo!";
     contador: 0;
     actual: 999;
+    a: -3213;
+    b: -21321;
+    c: -3432;
     f1: 99.;
     f2: .99;
     f3: 999.999;
+    c1: -99.;
+    c2: -.99;
+    c3: -999.999;
     suma: 02;
     contador: contador+1;
     read actual;
@@ -74,3 +80,5 @@ ENDDEC
     }
 
 write "Hola mundo!"; -/ "comentarios" /-
+-/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
+
