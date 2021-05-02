@@ -6,7 +6,6 @@ DECVAR
 ENDDEC
 
 -/ donde base es una variable /-
--/ Así son los "comentarios" en el 2°Cuat de LyC -/ Comentario /- /-
 
     actual:333.3333;
     a1:a2:a3:a4: ((3 + 8) * 9) + 5;
@@ -73,3 +72,5 @@ ENDDEC
             suma: suma + actual;
             }
     }
+
+write "Hola mundo!"; -/ "comentarios" -/
