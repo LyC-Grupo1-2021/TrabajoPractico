@@ -1,9 +1,13 @@
 flex Lexico.l
 pause
-gcc lex.yy.c tabla_simbolos.c -o Primera
+bison -dyv ./Sintactico.y
+pause
+gcc lex.yy.c y.tab.c tabla_simbolos.c -o primera.exe
 pause
 pause
-Primera prueba.txt
+primera.exe prueba.txt
 del lex.yy.c
-del Primera.exe
+del y.tab.c
+del y.output
+del y.tab.h
 pause
