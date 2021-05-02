@@ -6,6 +6,9 @@
     #include <curses.h>
     #include "y.tab.h"
 
+    #include "tabla_simbolos.h"
+	  #include "constantes_propias.h"
+
     int yystopparser=0;
     int yylineno;    
     FILE  *yyin;
@@ -63,7 +66,10 @@
 
 %%
   programaPrima:
-    main {printf("\n----------------\nCompilacion OK\n----------------\n");}
+    main {
+      printf("\n----------------\nCompilacion OK\n----------------\n");
+      crearArchivo();
+    }
   ;
   main:
     bloque_declarativo programa {printf("\t{bloque_declarativo programa} es main\n");}

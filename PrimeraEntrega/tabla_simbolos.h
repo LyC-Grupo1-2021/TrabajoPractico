@@ -4,23 +4,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "tabla_simbolos.h"
 #include "constantes_propias.h"
 
-// Tabla de simbolos
-struct struct_tablaSimbolos {
-    char nombre[100];
-    int tipo;
-    char valor[100];
-    char longitud[100];
+struct struct_tabla_simbolos {
+    int tipo_token;
+    char lexema[150];
+    char valor[150];
+    char longitud[150];
 };
 
-struct struct_tablaSimbolos tablaSimbolos[1000];
+struct struct_tabla_simbolos tablaSimb[2500];
 
-void tsInsertarToken(int, char *, int, char *);
-int tsCrearArchivo();
-void tsActualizarTipos(char *, int);
-int tsObtenerTipo(char *);
-char * obtenerNombreTipo(int);
+void grabarToken(int, char *, char *, int);
+int crearArchivo();
+char * mapNombreTipoToken(int);
 
 #endif

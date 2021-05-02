@@ -7,16 +7,18 @@
     #include <string.h> 
     #include "y.tab.h"
 	
+    #include "tabla_simbolos.h"
 	#include "constantes_propias.h"
-	
-	float auxFloat;
-	int auxInt;
-	char auxCad[100];
-	char auxId[100];
-	
+
     FILE *yyin;
-    int yylvan;
+    int yylval;
     int yyerror();
+
+    void procesarFloat();
+    void procesarInt();
+    void procesarString();
+    void procesarId();
+
 %}
 
 %option noyywrap
@@ -77,9 +79,9 @@ COR_A           "["
 COR_C           "]"
 
 %%
-{CONST_FLOAT} 	{printf("%s -> CONST_FLOAT\n", yytext); auxFloat = atof(yytext);if(auxFloat > +3.4E+30 || auxFloat < -3.4E+38){ printf("El numero real supera los limites.\n"); yyerror();} return CONST_FLOAT;}
-{CONST_INTEGER} {printf("%s -> CONST_INTEGER\n", yytext); auxInt = atoi(yytext); if(auxInt > LIM_INT_POS || auxInt < LIM_INT_NEG){ printf("El numero entero no debe ser superior a 32767 ni inferior a -32768.\n"); yyerror();} return CONST_INTEGER;}
-{CONST_STRING} 	{printf("%s -> CONST_STRING\n", yytext); strcpy(auxCad, yytext);if(strlen(auxCad) > MAXLENSTR){ printf("El largo maximo de la cadena es %d\n", MAXLENSTR); yyerror();} return CONST_STRING;}
+{CONST_FLOAT} 	{procesarFloat(); return CONST_FLOAT;}
+{CONST_INTEGER} {procesarInt(); return CONST_INTEGER;}
+{CONST_STRING} 	{procesarString(); return CONST_STRING;}
 {COMA} 			{printf("%s -> COMA\n", yytext); return COMA;}
 {COMENTARIO2} 	{printf("%s -> COMENTARIO2\n", yytext); return COMENTARIO2;}
 {COMENTARIO} 	{printf("%s -> COMENTARIO\n", yytext); return COMENTARIO;}
@@ -115,7 +117,7 @@ COR_C           "]"
 {COR_C}         {printf("%s -> COR_C\n", yytext); return COR_C;}
 {LLAVE_A} 		{printf("%s -> LLAVE_A\n", yytext); return LLAVE_A;}
 {LLAVE_C} 		{printf("%s -> LLAVE_C\n", yytext); return LLAVE_C;}
-{ID} 			{printf("%s -> ID\n", yytext); strcpy(auxId, yytext);if(strlen(auxId) > MAXLENID){ printf("La variable %s no debe superar los %d caracteres.\n", yytext, MAXLENID); yyerror();} return ID;}
+{ID} 			{procesarId(); return ID;}
 
 "\t"
 "\n"
@@ -125,3 +127,53 @@ COR_C           "]"
 
 . yyerror("Error de léxico");
 %%
+
+
+void procesarFloat() {
+    float num  = atof(yytext);
+
+    if(num > +3.4E+30 || num < -3.4E+38){
+        printf("El numero real supera los limites.\n");
+        exit(-1);
+    }
+
+    printf("%s -> CONST_FLOAT\n", yytext);
+    grabarToken(TOKEN_CTE_FLOAT, strdup(yytext), yytext, 0);
+}
+
+void procesarInt() {
+    int num = atoi(yytext);
+
+	if (num > LIM_INT_POS || num < LIM_INT_NEG) {
+		printf("El numero entero no debe ser superior a %d ni inferior a -%d.\n", LIM_INT_POS, LIM_INT_NEG);
+		exit(-1);
+	}
+
+    printf("%s -> CONST_INTEGER\n", yytext);
+	grabarToken(TOKEN_CTE_INTEGER, strdup(yytext), yytext, 0);
+}
+
+void procesarString(){
+    char auxCad[100];
+	strcpy(auxCad, yytext);
+
+    if(strlen(auxCad) > MAXLENSTR) {
+        printf("El largo maximo de la cadena es: %d caracteres\n", MAXLENSTR);
+        exit(-1);
+    }
+	printf("%s -> CONST_STRING\n", yytext);
+
+	grabarToken(TOKEN_CTE_STRING, strdup(auxCad), auxCad, strlen(auxCad));
+}
+
+void procesarId() {
+	char auxId[100];
+    strcpy(auxId, yytext);
+
+    if(strlen(auxId) > MAXLENID) { 
+        printf("La variable %s no debe superar los %d caracteres.\n", yytext, MAXLENID);
+        exit(-1);
+    }
+    printf("%s -> ID\n", yytext);
+	grabarToken(TOKEN_ID, strdup(yytext), "", strlen(yytext));
+}

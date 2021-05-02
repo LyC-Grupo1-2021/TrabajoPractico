@@ -8,16 +8,13 @@
 #define LIM_INT_NEG -32767
 
 // Errores
-#define TODO_OK 0
-#define ERROR 1
+#define ARCHIVO_OK 5
+#define ERROR -1
 
 //Numero arbitrarios para tipos de datos
-#define TIPO_INTEGER 40
-#define TIPO_FLOAT 45
-#define TIPO_STRING 50
-#define CTE_INTEGER 55
-#define CTE_FLOAT 60
-#define CTE_STRING 65
-#define TIPO_ID 70
+#define TOKEN_CTE_INTEGER 20
+#define TOKEN_CTE_FLOAT 30
+#define TOKEN_CTE_STRING 40
+#define TOKEN_ID 50
 
 #endif
