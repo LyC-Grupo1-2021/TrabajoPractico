@@ -2,8 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    //#include <conio.h>
-    #include <curses.h>
+    #include <conio.h>
+    //#include <curses.h>
     #include <string.h> 
     #include "y.tab.h"
 	
@@ -83,8 +83,8 @@ COR_C           "]"
 {CONST_INTEGER} {procesarInt(); return CONST_INTEGER;}
 {CONST_STRING} 	{procesarString(); return CONST_STRING;}
 {COMA} 			{printf("%s -> COMA\n", yytext); return COMA;}
-{COMENTARIO2} 	{printf("%s -> COMENTARIO2\n", yytext); return COMENTARIO2;}
-{COMENTARIO} 	{printf("%s -> COMENTARIO\n", yytext); return COMENTARIO;}
+{COMENTARIO2} 	{printf("%s -> COMENTARIO2\n", yytext);}
+{COMENTARIO} 	{printf("%s -> COMENTARIO\n", yytext);}
 {IF} 			{printf("%s -> IF\n", yytext); return IF;}
 {ELSE} 			{printf("%s -> ELSE\n", yytext); return ELSE;}
 {WHILE} 		{printf("%s -> WHILE\n", yytext); return WHILE;}

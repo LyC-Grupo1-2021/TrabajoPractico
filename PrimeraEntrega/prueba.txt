@@ -5,8 +5,11 @@ DECVAR
     actual, suma: Float; 
 ENDDEC
 
-    a1:a2:a3:a4: ((3 + 8) * 9) + 5;
+-/ donde base es una variable /-
+-/ Así son los "comentarios" en el 2°Cuat de LyC -/ Comentario /- /-
+
     actual:333.3333;
+    a1:a2:a3:a4: ((3 + 8) * 9) + 5;
     write "Hola mundo!";
     contador: 0;
     actual: 999;
@@ -68,5 +71,5 @@ ENDDEC
             contador: contador + 1;
             actual: (contador/0.342) + (contador*contador);
             suma: suma + actual;
-        }
+            }
     }
