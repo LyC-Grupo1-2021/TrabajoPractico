@@ -73,4 +73,4 @@ ENDDEC
             }
     }
 
-write "Hola mundo!"; -/ "comentarios" -/
+write "Hola mundo!"; -/ "comentarios" /-

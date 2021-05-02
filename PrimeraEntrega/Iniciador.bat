@@ -1,6 +1,6 @@
 flex Lexico.l
 pause
-gcc lex.yy.c -o Primera
+gcc lex.yy.c tabla_simbolos.c -o Primera
 pause
 pause
 Primera prueba.txt

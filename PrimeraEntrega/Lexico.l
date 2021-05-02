@@ -2,8 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    #include <conio.h>
-    //#include <curses.h>
+    //#include <conio.h>
+    #include <curses.h>
     #include <string.h> 
     #include "y.tab.h"
 	
@@ -28,10 +28,11 @@ DIGITO 			[0-9]
 LETRA_MAY 		[A-Z]
 LETRA_MIN 		[a-z]
 LETRA 			{LETRA_MAY}|{LETRA_MIN}
+CARACTER        [a-z,A-Z,0-9,=,>,<,!,:,+,".",\-,*,/,?,_,","]
 
 CONST_INTEGER 	{DIGITO}+
 CONST_FLOAT 	{DIGITO}+{PUNTO}{DIGITO}+|{DIGITO}+{PUNTO}|{PUNTO}{DIGITO}+
-CONST_STRING	["].*["]
+CONST_STRING	["]({CARACTER}|" ")*["]
 
 PUNTO 			"."
 COMA 			","
@@ -79,12 +80,12 @@ COR_A           "["
 COR_C           "]"
 
 %%
+{COMENTARIO2} 	{printf("%s -> COMENTARIO2\n", yytext);}
+{COMENTARIO} 	{printf("%s -> COMENTARIO\n", yytext);}
 {CONST_FLOAT} 	{procesarFloat(); return CONST_FLOAT;}
 {CONST_INTEGER} {procesarInt(); return CONST_INTEGER;}
 {CONST_STRING} 	{procesarString(); return CONST_STRING;}
 {COMA} 			{printf("%s -> COMA\n", yytext); return COMA;}
-{COMENTARIO2} 	{printf("%s -> COMENTARIO2\n", yytext);}
-{COMENTARIO} 	{printf("%s -> COMENTARIO\n", yytext);}
 {IF} 			{printf("%s -> IF\n", yytext); return IF;}
 {ELSE} 			{printf("%s -> ELSE\n", yytext); return ELSE;}
 {WHILE} 		{printf("%s -> WHILE\n", yytext); return WHILE;}
