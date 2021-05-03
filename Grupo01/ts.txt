@@ -1,0 +1,46 @@
+Token                                   Valor                                   Longitud                 Lexema                                  
+IDENTIFICADOR                                                                   5                        texto                                   
+IDENTIFICADOR                                                                   8                        contador                                
+IDENTIFICADOR                                                                   8                        promedio                                
+IDENTIFICADOR                                                                   6                        actual                                  
+IDENTIFICADOR                                                                   4                        suma                                    
+CTE_FLOAT                               333.3333                                
+IDENTIFICADOR                                                                   2                        a1                                      
+IDENTIFICADOR                                                                   2                        a2                                      
+IDENTIFICADOR                                                                   2                        a3                                      
+IDENTIFICADOR                                                                   2                        a4                                      
+CTE_INTEGER                             3                                       
+CTE_INTEGER                             8                                       
+CTE_INTEGER                             9                                       
+CTE_INTEGER                             5                                       
+CTE_STRING                              "Hola mundo!"                           13                       -
+CTE_INTEGER                             0                                       
+CTE_INTEGER                             999                                     
+IDENTIFICADOR                                                                   1                        a                                       
+CTE_INTEGER                             -3213                                   
+IDENTIFICADOR                                                                   1                        b                                       
+CTE_INTEGER                             -21321                                  
+IDENTIFICADOR                                                                   1                        c                                       
+CTE_INTEGER                             -3432                                   
+IDENTIFICADOR                                                                   2                        f1                                      
+CTE_FLOAT                               99.                                     
+IDENTIFICADOR                                                                   2                        f2                                      
+CTE_FLOAT                               .99                                     
+IDENTIFICADOR                                                                   2                        f3                                      
+CTE_FLOAT                               999.999                                 
+IDENTIFICADOR                                                                   2                        c1                                      
+CTE_FLOAT                               -99.                                    
+IDENTIFICADOR                                                                   2                        c2                                      
+CTE_FLOAT                               -.99                                    
+IDENTIFICADOR                                                                   2                        c3                                      
+CTE_FLOAT                               -999.999                                
+CTE_INTEGER                             02                                      
+CTE_INTEGER                             1                                       
+CTE_INTEGER                             2                                       
+CTE_INTEGER                             7                                       
+CTE_INTEGER                             12                                      
+CTE_INTEGER                             34                                      
+IDENTIFICADOR                                                                   1                        d                                       
+CTE_INTEGER                             48                                      
+CTE_INTEGER                             92                                      
+CTE_FLOAT                               0.342                                   
