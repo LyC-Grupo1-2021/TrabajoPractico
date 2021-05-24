@@ -8,7 +8,8 @@
 
 struct struct_tabla_simbolos {
     int tipo_token;
-    char lexema[150];
+    char nombre[150];
+    char tipo[8];
     char valor[150];
     char longitud[150];
 };

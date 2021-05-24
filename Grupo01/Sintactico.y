@@ -88,26 +88,16 @@
   ;
   if:
     IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
-    IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
-    IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
-    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
-    IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
-    IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}
+    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}
   ;
   while:
-    WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");}|
-    WHILE PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C {printf("\t{WHILE PAR_A condicion_not PAR_C LLAVE_A programa LLAVE_C}, es while\n");}|
-    WHILE PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C {printf("\t{WHILE PAR_A condicion_multiple PAR_C LLAVE_A programa LLAVE_C}, es while\n");}
+    WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");}
   ;
   condicion:
-    factor operador_comp factor {printf("\t {factor operador_comp factor} es condicion\n");}
-  ;
-  condicion_not:
-    NOT PAR_A condicion PAR_C {printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");}
-  ;
-  condicion_multiple:
+    factor operador_comp factor {printf("\t {factor operador_comp factor} es condicion\n");}|
+    NOT PAR_A condicion PAR_C {printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");}|
     condicion operador_log condicion {printf("\t {condicion operador_log condicion} es condicion\n");}
-  ;
+  ;  
   operador_log:
     AND {printf("\t {AND} operador_log");}|
     OR {printf("\t {OR} es operador_log\n");}

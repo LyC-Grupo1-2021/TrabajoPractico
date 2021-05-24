@@ -2,16 +2,16 @@
 
 int pos = 0;
 
-void grabarToken(int token, char *lexema, char *valor, int longitud) {
+void grabarToken(int token, char *nombre, char *valor, int longitud) {
     int i;
 
     for(i = 0; i < pos; i++){
         //Evitar duplicados
-        if(strcmp(tablaSimb[i].lexema, lexema) == 0) return;
+        if(strcmp(tablaSimb[i].nombre, nombre) == 0) return;
     }
 
     tablaSimb[pos].tipo_token = token;
-    strcpy(tablaSimb[pos].lexema, lexema);
+    strcpy(tablaSimb[pos].nombre, nombre);
     strcpy(tablaSimb[pos].valor, valor);
 
     char parseLong[10];
@@ -34,17 +34,17 @@ int crearArchivo() {
     if(!txt) return ERROR;
 
     //Imprimimos encabezados
-    fprintf(txt, "%-40s%-40s%-25s%-40s\n", "Token", "Valor", "Longitud", "Lexema");
+    fprintf(txt, "%-40s%-40s%-25s%-40s%-25s\n", "Token", "Valor", "Longitud", "Nombre", "Tipo");
 
     for (i = 0; i < pos; i++) {
         if ((tablaSimb[i].tipo_token == TOKEN_CTE_INTEGER) 
             || (tablaSimb[i].tipo_token == TOKEN_CTE_FLOAT)) {
-                fprintf(txt, "%-40s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), tablaSimb[i].valor);
+                fprintf(txt, "%-40s%-40s%-25s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), tablaSimb[i].valor, "", tablaSimb[i].nombre);
         }else if(tablaSimb[i].tipo_token == TOKEN_CTE_STRING){
-            fprintf(txt, "%-40s%-40s%-25s-\n", mapNombreTipoToken(tablaSimb[i].tipo_token), tablaSimb[i].valor, tablaSimb[i].longitud);
+            fprintf(txt, "%-40s%-40s%-25s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), tablaSimb[i].valor, tablaSimb[i].longitud, tablaSimb[i].nombre);
         }else{
             //id
-            fprintf(txt, "%-40s%-40s%-25s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), "", tablaSimb[i].longitud, tablaSimb[i].lexema);
+            fprintf(txt, "%-40s%-40s%-25s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), "", tablaSimb[i].longitud, tablaSimb[i].nombre);
         }
     }
 
