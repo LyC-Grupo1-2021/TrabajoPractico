@@ -44,20 +44,26 @@
     nodo* factorPtr = NULL;
 %}
 
+%union {
+    int intval;
+    float val;
+    char *str_val;
+}
+
 %token DIGITO
 %token LETRA_MAY
 %token LETRA_MIN
 %token LETRA
-%token CONST_INTEGER
-%token CONST_FLOAT
-%token CONST_STRING
+%token <str_val> CONST_INTEGER
+%token <str_val> CONST_FLOAT
+%token <str_val> CONST_STRING
 %token PUNTO
 %token COMA
 %token PYC
 %token OP_ASIG
 %token COMENTARIO
 %token COMENTARIO2
-%token ID
+%token <str_val> ID
 %token IF
 %token ELSE
 %token WHILE
@@ -101,6 +107,28 @@
   main:
     bloque_declarativo programa {printf("\t{bloque_declarativo programa} es main\n");}
   ;
+  
+  bloque_declarativo:
+    DECVAR multiple_declaraciones ENDDEC {
+      printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");
+    } 
+  ;
+  multiple_declaraciones:
+    sentencia_declarativa {printf("\t{sentencia_declarativa} es multiple_declaraciones\n");}|
+    multiple_declaraciones sentencia_declarativa {printf("\t{multiple_declaraciones sentencia_declarativa} es multiple_declaraciones\n");}
+  ;
+  sentencia_declarativa:
+    lista_variables OP_ASIG tipo_dato PYC {printf("\t{lista_variables} es sentencia_declarativa\n");}
+  ;
+  lista_variables:
+    ID {printf("\t lista_variables es {ID}\n");}|
+    lista_variables COMA ID {printf("\t{lista_variables COMA ID} es lista_variables\n");}
+  ;
+  tipo_dato:
+    STRING  {printf("\t{STRING} es tipo_dato\n");}|  
+    FLOAT   {printf("\t{FLOAT} es tipo_dato\n");}|
+    INTEGER {printf("\t{INTEGER} es tipo_dato\n");}  
+  ;
   programa:
     sentencia  {printf("\t{sentencia} es programa\n");}|
     programa sentencia {printf("\t{programa sentencia} es programa\n");}
@@ -133,12 +161,30 @@
     OR {printf("\t {OR} es operador_log\n");}
   ;
   operador_comp:
-    OP_MENOR {printf("\t {OP_MENOR} es operador\n");}|
-    OP_MAYOR {printf("\t {OP_MAYOR} es operador\n");}|
-    OP_MENOR_IG {printf("\t {OP_MENOR_IG} es operador\n");}|
-    OP_MAYOR_IG {printf("\t {OP_MAYOR_IG} es operador\n");}|
-    OP_DIST {printf("\t {OP_DIST} es operador\n");}|
-    OP_IGUAL {printf("\t {OP_IGUAL} es operador\n");}
+    OP_MENOR {
+      printf("\t {OP_MENOR} es operador\n");
+      operador_compPtr = crearHoja("<");
+    }|
+    OP_MAYOR {
+      printf("\t {OP_MAYOR} es operador\n");
+      operador_compPtr = crearHoja(">");
+    }|
+    OP_MENOR_IG {
+      printf("\t {OP_MENOR_IG} es operador\n");
+      operador_compPtr = crearHoja("<=");
+    }|
+    OP_MAYOR_IG {
+      printf("\t {OP_MAYOR_IG} es operador\n");
+      operador_compPtr = crearHoja(">=");
+    }|
+    OP_DIST {
+      printf("\t {OP_DIST} es operador\n");
+      operador_compPtr = crearHoja("!=");
+    }|
+    OP_IGUAL {
+      printf("\t {OP_IGUAL} es operador\n");
+      operador_compPtr = crearHoja("==");
+    }
   ;
   en_lista:
     INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC {printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");}
@@ -146,29 +192,7 @@
   lista_expresiones:
     expresion {printf("\t{expresion} es lista_expresiones\n");}|
     lista_expresiones PYC expresion {printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");}
-  ;
-  bloque_declarativo:
-    DECVAR multiple_declaraciones ENDDEC {
-      printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");
-
-    } 
-  ;
-  multiple_declaraciones:
-    sentencia_declarativa {printf("\t{sentencia_declarativa} es multiple_declaraciones\n");}|
-    multiple_declaraciones sentencia_declarativa {printf("\t{multiple_declaraciones sentencia_declarativa} es multiple_declaraciones\n");}
-  ;
-  sentencia_declarativa:
-    lista_variables OP_ASIG tipo_dato PYC {printf("\t{lista_variables} es sentencia_declarativa\n");}
-  ;
-  lista_variables:
-    ID {printf("\t lista_variables es {ID}\n");}|
-    lista_variables COMA ID {printf("\t{lista_variables COMA ID} es lista_variables\n");}
-  ;
-  tipo_dato:
-    STRING  {printf("\t{STRING} es tipo_dato\n");}|  
-    FLOAT   {printf("\t{FLOAT} es tipo_dato\n");}|
-    INTEGER {printf("\t{INTEGER} es tipo_dato\n");}  
-  ;
+  ; 
   lista_asignacion:
     asignacion OP_ASIG expresion PYC {
       printf("\t{asignacion OP_ASIG expresion PYC} es lista_asignacion\n");
@@ -179,7 +203,7 @@
   asignacion:
     asignacion OP_ASIG ID {
       printf("\t {asignacion OP_ASIG ID} es asignacion\n");
-      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja("nico"));
+      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja(yytext));
     }|
     ID {printf("\t{ID} es asignacion\n");}
   ;

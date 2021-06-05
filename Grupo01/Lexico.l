@@ -12,7 +12,6 @@
     #include "arbol_sintactico/arbol_sintactico.h"
 
     FILE *yyin;
-    int yylval;
     int yyerror();
 
     void procesarFloat();

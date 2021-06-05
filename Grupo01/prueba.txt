@@ -1,5 +1,10 @@
 DECVAR
-    actual: Integer; 
+    texto: String;
+    contador: Integer;
+    promedio: Float;
+    actual, suma: Float; 
 ENDDEC
 
-actual: 5 / 2;
+d : 3 / 5;
+
+    
