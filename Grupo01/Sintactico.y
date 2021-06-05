@@ -93,11 +93,14 @@
   while:
     WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");}
   ;
+  condicion_simple:
+    factor operador_comp factor {printf("\t {factor operador_comp factor} es condicion\n");}
+  ;
   condicion:
-    factor operador_comp factor {printf("\t {factor operador_comp factor} es condicion\n");}|
-    NOT PAR_A condicion PAR_C {printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");}|
-    condicion operador_log condicion {printf("\t {condicion operador_log condicion} es condicion\n");}
-  ;  
+    condicion_simple {printf("\t {condicion_simple} es condicion\n");}|
+    NOT PAR_A condicion_simple PAR_C {printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");}|
+    condicion_simple operador_log condicion_simple {printf("\t {condicion operador_log condicion} es condicion\n");}
+  ;
   operador_log:
     AND {printf("\t {AND} operador_log");}|
     OR {printf("\t {OR} es operador_log\n");}
