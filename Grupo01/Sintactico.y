@@ -2,12 +2,13 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    #include <conio.h>
-    //#include <curses.h>
+    //#include <conio.h>
+    #include <curses.h>
     #include "y.tab.h"
 
     #include "tabla_simbolos.h"
 	  #include "constantes_propias.h"
+    #include "arbol_sintactico.h"
 
     int yystopparser=0;
     int yylineno;    
@@ -15,6 +16,31 @@
 
     int yyerror(const char *);
     int yylex();
+
+    //Declaración de punteros árbol sintáctico
+    nodo* mainPtr = NULL;
+    nodo* programaPtr = NULL;
+    nodo* sentenciaPtr = NULL;
+    nodo* ifPtr = NULL;
+    nodo* whilePtr = NULL;
+    nodo* condicion_simplePtr = NULL;
+    nodo* condicionPtr = NULL;
+    nodo* operador_logPtr = NULL;
+    nodo* operador_compPtr = NULL;
+    nodo* en_listaPtr = NULL;
+    nodo* lista_expresionesPtr = NULL;
+    nodo* bloque_declarativoPtr = NULL;
+    nodo* multiple_declaracionesPtr = NULL;
+    nodo* sentencia_declarativaPtr = NULL;
+    nodo* lista_variablesPtr = NULL;
+    nodo* tipo_datoPtr = NULL;
+    nodo* lista_asignacionPtr = NULL;
+    nodo* asignacionPtr = NULL;
+    nodo* lecturaPtr = NULL;
+    nodo* impresionPtr = NULL;
+    nodo* expresionPtr = NULL;
+    nodo* terminoPtr = NULL;
+    nodo* factorPtr = NULL;
 %}
 
 %token DIGITO
@@ -156,20 +182,49 @@
     WRITE expresion PYC {printf("\t{WRITE expresion PYC} es impresion\n");}
   ;
   expresion:
-    expresion SUM termino {printf("\t{expresion SUM termino} es expresion\n");} |
-    expresion RES termino {printf("\t{expresion RES termino} es expresion\n");}|
-    termino  {printf("\t{termino} es expresion\n");}
-    ;
+    expresion SUM termino {
+      printf("\t{expresion SUM termino} es expresion\n");
+      expresionPtr = crearNodo("+", expresionPtr, terminoPtr);
+    }|
+    expresion RES termino {
+      printf("\t{expresion RES termino} es expresion\n");
+      expresionPtr = crearNodo("-", expresionPtr, terminoPtr);
+    }|
+    termino {
+      printf("\t{termino} es expresion\n");
+      expresionPtr = terminoPtr;
+    };
   termino:
-    termino MULT factor {printf("\t{termino MULT factor} es termino\n");}|
-    termino DIV factor {printf("\t{termino DIV factor} es termino\n");}|
-    factor {printf("\t{factor} es termino\n");}
+    termino MULT factor {
+      printf("\t{termino MULT factor} es termino\n");
+      terminoPtr = crearNodo("*", terminoPtr, factorPtr);
+    }|
+    termino DIV factor {
+      printf("\t{termino DIV factor} es termino\n");
+      terminoPtr = crearNodo("/", terminoPtr, factorPtr);
+    }|
+    factor {
+      printf("\t{factor} es termino\n");
+      terminoPtr = factorPtr;
+    }
   ;
   factor:
-    PAR_A expresion PAR_C {printf("\t{PAR_A expresion PAR_C} es factor\n");}|
-    ID {printf("\t{ID} es factor\n");}|
-    CONST_INTEGER {printf("\t{CONST_INTEGER} es factor\n");}|
-    CONST_FLOAT {printf("\t{CONST_FLOAT} es factor\n");}
+    PAR_A expresion PAR_C {
+      printf("\t{PAR_A expresion PAR_C} es factor\n");
+      //factorPtr = expresionPtr;
+    }|
+    ID {
+      printf("\t{ID} es factor\n");
+      //factorPtr = crearHoja($1);
+    }|
+    CONST_INTEGER {
+      printf("\t{CONST_INTEGER} es factor\n");
+      //factorPtr = crearHoja($1);
+    }|
+    CONST_FLOAT { 
+      printf("\t{CONST_FLOAT} es factor\n");
+      //factorPtr = crearHoja($1);
+    }
   ;
 %%
 

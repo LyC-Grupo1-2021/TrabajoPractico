@@ -1,60 +1,83 @@
 DECVAR
     texto: String;
-
     contador: Integer;
-
     promedio: Float;
-
     actual, suma: Float; 
-
 ENDDEC
 
 -/ donde base es una variable /-
-    a1:a2:a3:a4: 3 + 8 + 9 + 5;
+
+    actual:333.3333;
+    a1:a2:a3:a4: ((3 + 8) * 9) + 5;
     write "Hola mundo!";
     contador: 0;
     actual: 999;
+    a: -3213;
+    b: -21321;
+    c: -3432;
     f1: 99.;
     f2: .99;
     f3: 999.999;
+    c1: -99.;
+    c2: -.99;
+    c3: -999.999;
     suma: 02;
     contador: contador+1;
-    -/ donde base es una variable /-
+    read actual;
+
+    INLIST (a; [2 / b + 7; 12; a * b + 34 + d; 48]);
+
     while(contador <= 92) {
+        while(not(contador <= 92)) {
+            contador: contador + 1;
+            actual: (contador/0.342) + (contador*contador);
+            suma: suma + actual;
+            while(not(contador <= 92)) {
+                contador: contador + 1;
+                actual: (contador/0.342) + (contador*contador);
+                suma: suma + actual;
+            }
+        }
         contador: contador + 1;
         actual: (contador/0.342) + (contador*contador);
         suma: suma + actual;
     }
-    write "La suma es: ";
-    write suma;
-if (actual > 2 and actual >= 2){
-    write "2 > 3";
-	read actual;
-}
 
--/ donde base es una variable /-
+    while(not(contador <= 92)) {
+        contador: contador + 1;
+        actual: (contador/0.342) + (contador*contador);
+        suma: suma + actual;
+    }
 
--/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /-/-
+     while(92 >= contador and a == b ) {
+        contador: contador + 1;
+        actual: (contador/0.342) + (contador*contador);
+        suma: suma + actual;
+    }
 
--/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- aaaaaaa /-
+    if(not(contador <= 92)) {
+        actual: (contador/0.342) + (contador*contador);
+    }
 
--/-/ Comentario /- Así son los comentarios en el 2°Cuat de LyC /-
-
-if ( not actual){
-	write "if con not";
-}
-if (actual < 3 or actual > 3){
-        if(actual >= 3){
-            write "soy true";
+    if ( 92 >= contador and a == b ) {
+        contador: contador + 1;
+        actual: (contador/0.342) + (contador*contador);
+        suma: suma + actual;
+        if(not(contador <= 92)) {
+            actual: (contador/0.342) + (contador*contador);
         }
-        if(actual <= 3){    
-            write "soy true";
-        }
-        if(actual != 3){
-            write "soy true";
-        }
-        if(actual == 3){
-            write "soy true";}
-}else{
-    actual:333.3333;
-}
+    }else {
+        contador: contador + 1;
+        actual: (contador/0.342) + (contador*contador);
+        suma: suma + actual;
+        if(not(contador <= 92)) {
+        actual: (contador/0.342) + (contador*contador);
+        }else {
+            contador: contador + 1;
+            actual: (contador/0.342) + (contador*contador);
+            suma: suma + actual;
+            }
+    }
+
+write "Hola mundo!"; -/ "comentarios" /-
+-/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
