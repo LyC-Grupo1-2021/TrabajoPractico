@@ -9,7 +9,7 @@
 	
     #include "tabla_simbolos.h"
 	#include "constantes_propias.h"
-    #include "arbol_sintactico.h"
+    #include "arbol_sintactico/arbol_sintactico.h"
 
     FILE *yyin;
     int yylval;

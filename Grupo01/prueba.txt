@@ -1,1 +1,5 @@
-READ (3+a)
+DECVAR
+    actual: Integer; 
+ENDDEC
+
+actual: 5 / 2;

@@ -8,11 +8,12 @@
 
     #include "tabla_simbolos.h"
 	  #include "constantes_propias.h"
-    #include "arbol_sintactico.h"
+    #include "arbol_sintactico/arbol_sintactico.h"
 
     int yystopparser=0;
     int yylineno;    
     FILE  *yyin;
+    char * yytext;
 
     int yyerror(const char *);
     int yylex();
@@ -147,7 +148,10 @@
     lista_expresiones PYC expresion {printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");}
   ;
   bloque_declarativo:
-    DECVAR multiple_declaraciones ENDDEC {printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");} 
+    DECVAR multiple_declaraciones ENDDEC {
+      printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");
+
+    } 
   ;
   multiple_declaraciones:
     sentencia_declarativa {printf("\t{sentencia_declarativa} es multiple_declaraciones\n");}|
@@ -166,10 +170,17 @@
     INTEGER {printf("\t{INTEGER} es tipo_dato\n");}  
   ;
   lista_asignacion:
-    asignacion OP_ASIG expresion PYC {printf("\t{asignacion OP_ASIG expresion PYC} es lista_asignacion\n");};
+    asignacion OP_ASIG expresion PYC {
+      printf("\t{asignacion OP_ASIG expresion PYC} es lista_asignacion\n");
+      lista_asignacionPtr = crearNodo(":", asignacionPtr, expresionPtr);
+      escribirGragh(lista_asignacionPtr);
+    };
   ;
   asignacion:
-    asignacion OP_ASIG ID {printf("\t {asignacion OP_ASIG ID} es asignacion\n");}|
+    asignacion OP_ASIG ID {
+      printf("\t {asignacion OP_ASIG ID} es asignacion\n");
+      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja("nico"));
+    }|
     ID {printf("\t{ID} es asignacion\n");}
   ;
 
@@ -211,19 +222,19 @@
   factor:
     PAR_A expresion PAR_C {
       printf("\t{PAR_A expresion PAR_C} es factor\n");
-      //factorPtr = expresionPtr;
+      factorPtr = expresionPtr;
     }|
     ID {
       printf("\t{ID} es factor\n");
-      //factorPtr = crearHoja($1);
+      factorPtr = crearHoja(yytext);
     }|
     CONST_INTEGER {
       printf("\t{CONST_INTEGER} es factor\n");
-      //factorPtr = crearHoja($1);
+      factorPtr = crearHoja(yytext);
     }|
     CONST_FLOAT { 
-      printf("\t{CONST_FLOAT} es factor\n");
-      //factorPtr = crearHoja($1);
+      printf("\t{CONST_FLOAT} es factor\n");      
+      factorPtr = crearHoja(yytext);
     }
   ;
 %%

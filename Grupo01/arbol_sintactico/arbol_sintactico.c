@@ -27,50 +27,50 @@ nodo* crearHoja(const char *d) {
     return nuevoNodo;
 }
 
-// void liberarMemoria(nodo* padre) {
-//     if(padre == NULL) {
-//         return;
-//     }
-//     liberarMemoria(padre->hijoDer);
-//     liberarMemoria(padre->hijoIzq);
-//     free(padre);
-//     return;
-// }
+void liberarMemoria(nodo* padre) {
+    if(padre == NULL) {
+        return;
+    }
+    liberarMemoria(padre->hijoDer);
+    liberarMemoria(padre->hijoIzq);
+    free(padre);
+    return;
+}
 
-// void llenarGragh(nodo* padre, FILE *arch, int numNodo) {
-//     if(padre == NULL) {
-//         return;
-//     }
-//     int numHI = numNodo*2+1;
-//     int numHD = numNodo*2+2;
+void llenarGragh(nodo* padre, FILE *arch, int numNodo) {
+    if(padre == NULL) {
+        return;
+    }
+    int numHI = numNodo*2+1;
+    int numHD = numNodo*2+2;
     
-//     if(padre->hijoIzq) {
-//         fprintf(arch, "\t\"%s@%d\" -> \"%s@%d\"\n", padre->dato, numNodo, padre->hijoIzq->dato, numHI);
-//     }
-//     if(padre->hijoDer) {
-//         fprintf(arch, "\t\"%s@%d\" -> \"%s@%d\"\n", padre->dato, numNodo, padre->hijoDer->dato, numHD);
-//     }
-//     llenarGragh(padre->hijoIzq, arch, numHI);
-//     llenarGragh(padre->hijoDer, arch, numHD);
-//     return;
-// }
+    if(padre->hijoIzq) {
+        fprintf(arch, "\t\"%s -->%d\" -> \"%s -->%d\"\n", padre->dato, numNodo, padre->hijoIzq->dato, numHI);
+    }
+    if(padre->hijoDer) {
+        fprintf(arch, "\t\"%s -->%d\" -> \"%s -->%d\"\n", padre->dato, numNodo, padre->hijoDer->dato, numHD);
+    }
+    llenarGragh(padre->hijoIzq, arch, numHI);
+    llenarGragh(padre->hijoDer, arch, numHD);
+    return;
+}
 
-// void escribirGragh(nodo* padre) {
-//     FILE *archivo;
+void escribirGragh(nodo* padre) {
+    FILE *archivo;
 
-// 	archivo = fopen("gragh.dot", "w");
-// 	if (archivo == NULL) {
-// 		return;
-// 	}
-//     //escribir la plantilla para dibujar el grafo
-//     fprintf(archivo, "%s\n", "digraph G {");
-//     llenarGragh(padre, archivo, 0);
-//     fprintf(archivo, "%s", "}");
+	archivo = fopen("gragh.dot", "w");
+	if (archivo == NULL) {
+		return;
+	}
+    //escribir la plantilla para dibujar el grafo
+    fprintf(archivo, "%s\n", "digraph G {");
+    llenarGragh(padre, archivo, 0);
+    fprintf(archivo, "%s", "}");
     
-//     fclose(archivo);
-//     liberarMemoria(padre);
-//     return;
-// }
+    fclose(archivo);
+    liberarMemoria(padre);
+    return;
+}
 
 // void escribirArbol(nodo *padre) {
 //     FILE *archivo = fopen(ARCHIVO_INSTRUCCIONES, "w");

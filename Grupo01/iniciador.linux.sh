@@ -1,7 +1,8 @@
 flex ./Lexico.l
 bison -dyv ./Sintactico.y
-gcc lex.yy.c y.tab.c tabla_simbolos.c -o primera.o
+gcc lex.yy.c y.tab.c tabla_simbolos.c arbol_sintactico/arbol_sintactico.c -o primera.o
 ./primera.o ./prueba.txt
+dot -Tpng gragh.dot -o gragh.png
 rm lex.yy.c
 rm y.tab.c
 rm y.output

@@ -1,11 +1,11 @@
 #ifndef ARBOL_SINTACTICO_H
 #define ARBOL_SINTACTICO_H
 
-#include "constantes_propias.h"
-#include "tabla_simbolos.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../tabla_simbolos.h"
+#include "../constantes_propias.h"
 
 // Estructura para el arbol sintactico
 typedef struct nodo{
