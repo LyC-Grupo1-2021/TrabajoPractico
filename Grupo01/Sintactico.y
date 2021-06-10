@@ -2,8 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    //#include <conio.h>
-    #include <curses.h>
+    #include <conio.h>
+    //#include <curses.h>
     #include "y.tab.h"
 
     #include "tabla_simbolos.h"
@@ -50,20 +50,21 @@
     char *str_val;
 }
 
+%token <str_val> ID
+%token <str_val> CONST_INTEGER
+%token <str_val> CONST_FLOAT
+%token <str_val> CONST_STRING
+
 %token DIGITO
 %token LETRA_MAY
 %token LETRA_MIN
 %token LETRA
-%token <str_val> CONST_INTEGER
-%token <str_val> CONST_FLOAT
-%token <str_val> CONST_STRING
 %token PUNTO
 %token COMA
 %token PYC
 %token OP_ASIG
 %token COMENTARIO
 %token COMENTARIO2
-%token <str_val> ID
 %token IF
 %token ELSE
 %token WHILE
@@ -105,7 +106,10 @@
     }
   ;
   main:
-    bloque_declarativo programa {printf("\t{bloque_declarativo programa} es main\n");}
+    bloque_declarativo programa {
+      printf("\t{bloque_declarativo programa} es main\n");
+      escribirGragh(programaPtr);
+    }
   ;
   
   bloque_declarativo:
@@ -129,14 +133,33 @@
     FLOAT   {printf("\t{FLOAT} es tipo_dato\n");}|
     INTEGER {printf("\t{INTEGER} es tipo_dato\n");}  
   ;
+  
+  //ACA ARRANCA EL PROGRAMA LO DE ARRIBA PERTENECE A LA DECLARACION DE VARIABLES
+  
   programa:
-    sentencia  {printf("\t{sentencia} es programa\n");}|
-    programa sentencia {printf("\t{programa sentencia} es programa\n");}
+    sentencia  {
+      printf("\t{sentencia} es programa\n");
+      programaPtr = sentenciaPtr;
+    }|
+    programa sentencia {
+      printf("\t{programa sentencia} es programa\n");
+      programaPtr = crearNodo("programa", programaPtr, sentenciaPtr);
+    }
+    
   ;
   sentencia:
-    impresion {printf("\t{sentencia impresion} es sentencia\n");}|
-    lectura {printf("\t{lectura} es sentencia\n");}|
-    lista_asignacion {printf("\t{lista_asignacion} es sentencia\n");}|
+    impresion {
+      printf("\t{sentencia impresion} es sentencia\n");
+      sentenciaPtr = impresionPtr;
+    }|
+    lectura {
+      printf("\t{lectura} es sentencia\n");
+      sentenciaPtr = lecturaPtr;
+    }|
+    lista_asignacion {
+      printf("\t{lista_asignacion} es sentencia\n");
+      sentenciaPtr = lista_asignacionPtr;
+    }|
     en_lista {printf("\t{en_lista} es sentencia\n");}|
     while {printf("\t{while} es sentencia\n");}|
     if  {printf("\t{if} es sentencia\n");}
@@ -197,24 +220,38 @@
     asignacion OP_ASIG expresion PYC {
       printf("\t{asignacion OP_ASIG expresion PYC} es lista_asignacion\n");
       lista_asignacionPtr = crearNodo(":", asignacionPtr, expresionPtr);
-      escribirGragh(lista_asignacionPtr);
     };
   ;
   asignacion:
     asignacion OP_ASIG ID {
       printf("\t {asignacion OP_ASIG ID} es asignacion\n");
-      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja(yytext));
+      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3));
     }|
-    ID {printf("\t{ID} es asignacion\n");}
+    ID {
+      printf("\t{ID} es asignacion\n");
+      asignacionPtr = crearHoja($1);
+    }
   ;
 
   lectura:
-    READ CONST_STRING PYC {printf("\t{READ CONST_STRING PYC} es lectura\n");}|
-    READ expresion PYC {printf("\t{READ expresion PYC} es lectura\n");}
+    READ CONST_STRING PYC {
+      printf("\t{READ CONST_STRING PYC} es lectura\n");
+      lecturaPtr = crearNodo("READ", crearHoja($2), NULL);
+    }|
+    READ expresion PYC {
+      printf("\t{READ expresion PYC} es lectura\n");
+      lecturaPtr = crearNodo("READ", expresionPtr, NULL);
+    }
   ;
   impresion:
-    WRITE CONST_STRING PYC {printf("\t{WRITE CONST_STRING PYC} es impresion\n");}|
-    WRITE expresion PYC {printf("\t{WRITE expresion PYC} es impresion\n");}
+    WRITE CONST_STRING PYC {
+      printf("\t{WRITE CONST_STRING PYC} es impresion\n");
+      impresionPtr = crearNodo("WRITE", crearHoja($2), NULL);
+    }|
+    WRITE expresion PYC {
+      printf("\t{WRITE expresion PYC} es impresion\n");
+      impresionPtr = crearNodo("WRITE", expresionPtr, NULL);
+    }
   ;
   expresion:
     expresion SUM termino {
@@ -250,15 +287,15 @@
     }|
     ID {
       printf("\t{ID} es factor\n");
-      factorPtr = crearHoja(yytext);
+      factorPtr = crearHoja($1);
     }|
     CONST_INTEGER {
       printf("\t{CONST_INTEGER} es factor\n");
-      factorPtr = crearHoja(yytext);
+      factorPtr = crearHoja($1);
     }|
     CONST_FLOAT { 
       printf("\t{CONST_FLOAT} es factor\n");      
-      factorPtr = crearHoja(yytext);
+      factorPtr = crearHoja($1);
     }
   ;
 %%

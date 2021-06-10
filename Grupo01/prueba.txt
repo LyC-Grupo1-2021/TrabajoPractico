@@ -5,6 +5,12 @@ DECVAR
     actual, suma: Float; 
 ENDDEC
 
-d : 3 / 5;
+-/ donde base es una variable /-
 
+    actual:333.3333;
+    a1:a2:a3:a4: ((3 + 8) * 9) + 5;
+    write "soy un write";
+    write (a + 2 / 5);
+    read "soy un read";
+    read (b + 9 * 19.6);
     

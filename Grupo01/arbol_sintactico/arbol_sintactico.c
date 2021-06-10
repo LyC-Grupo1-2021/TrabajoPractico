@@ -45,10 +45,10 @@ void llenarGragh(nodo* padre, FILE *arch, int numNodo) {
     int numHD = numNodo*2+2;
     
     if(padre->hijoIzq) {
-        fprintf(arch, "\t\"%s -->%d\" -> \"%s -->%d\"\n", padre->dato, numNodo, padre->hijoIzq->dato, numHI);
+        fprintf(arch, "\t\"nodo_%d \\n%s\" -> \"nodo_%d \\n%s\"\n", numNodo, padre->dato, numHI, padre->hijoIzq->dato);
     }
     if(padre->hijoDer) {
-        fprintf(arch, "\t\"%s -->%d\" -> \"%s -->%d\"\n", padre->dato, numNodo, padre->hijoDer->dato, numHD);
+        fprintf(arch, "\t\"nodo_%d \\n%s\" -> \"nodo_%d \\n%s\"\n", numNodo, padre->dato ,numHD ,padre->hijoDer->dato);
     }
     llenarGragh(padre->hijoIzq, arch, numHI);
     llenarGragh(padre->hijoDer, arch, numHD);

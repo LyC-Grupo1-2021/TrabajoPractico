@@ -2,8 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    //#include <conio.h>
-    #include <curses.h>
+    #include <conio.h>
+    //#include <curses.h>
     #include <string.h> 
     #include "y.tab.h"
 	
@@ -132,7 +132,7 @@ COR_C           "]"
 
 void procesarFloat() {
     float num  = atof(yytext);
-
+    yylval.str_val = strdup(yytext);
     if(num > +3.4E+30 || num < -3.4E+38){
         printf("El numero real supera los limites.\n");
         exit(-1);
@@ -144,7 +144,7 @@ void procesarFloat() {
 
 void procesarInt() {
     int num = atoi(yytext);
-
+    yylval.str_val = strdup(yytext);
 	if (num > LIM_INT_POS || num < LIM_INT_NEG) {
 		printf("El numero entero no debe ser superior a %d ni inferior a -%d.\n", LIM_INT_POS, LIM_INT_NEG);
 		exit(-1);
@@ -155,9 +155,15 @@ void procesarInt() {
 }
 
 void procesarString(){
+   	int longitud = strlen(yytext)-2;
+	char* subBuff = (char *) malloc(longitud + 1);
+	strncpy(subBuff, yytext + 1, longitud);
+	subBuff[longitud] = '\0';
+    yylval.str_val = strdup(subBuff);
+
     char auxCad[100];
 	strcpy(auxCad, yytext);
-
+    
     if(strlen(auxCad) > MAXLENSTR) {
         printf("El largo maximo de la cadena es: %d caracteres\n", MAXLENSTR);
         exit(-1);
@@ -170,6 +176,7 @@ void procesarString(){
 void procesarId() {
 	char auxId[100];
     strcpy(auxId, yytext);
+    yylval.str_val = strdup(yytext);
 
     if(strlen(auxId) > MAXLENID) { 
         printf("La variable %s no debe superar los %d caracteres.\n", yytext, MAXLENID);

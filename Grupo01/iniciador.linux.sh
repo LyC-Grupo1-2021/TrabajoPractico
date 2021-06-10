@@ -8,3 +8,4 @@ rm y.tab.c
 rm y.output
 rm y.tab.h
 rm primera.o
+rm gragh.dot
