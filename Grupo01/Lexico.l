@@ -2,8 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    #include <conio.h>
-    //#include <curses.h>
+    //#include <conio.h>
+    #include <curses.h>
     #include <string.h> 
     #include "y.tab.h"
 	

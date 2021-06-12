@@ -2,8 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    #include <conio.h>
-    //#include <curses.h>
+    //#include <conio.h>
+    #include <curses.h>
     #include "y.tab.h"
 
     #include "tabla_simbolos.h"
@@ -30,6 +30,9 @@
     nodo* operador_compPtr = NULL;
     nodo* en_listaPtr = NULL;
     nodo* lista_expresionesPtr = NULL;
+    nodo* lista_expresionesPtr1 = NULL;
+    nodo* lista_expresionesPtr2 = NULL;
+    nodo* lista_expAuxPtr = NULL;
     nodo* bloque_declarativoPtr = NULL;
     nodo* multiple_declaracionesPtr = NULL;
     nodo* sentencia_declarativaPtr = NULL;
@@ -42,6 +45,7 @@
     nodo* expresionPtr = NULL;
     nodo* terminoPtr = NULL;
     nodo* factorPtr = NULL;
+    nodo* ptrIdList = NULL;
 %}
 
 %union {
@@ -160,7 +164,10 @@
       printf("\t{lista_asignacion} es sentencia\n");
       sentenciaPtr = lista_asignacionPtr;
     }|
-    en_lista {printf("\t{en_lista} es sentencia\n");}|
+    en_lista {
+      printf("\t{en_lista} es sentencia\n");
+      sentenciaPtr = en_listaPtr;
+    }|
     while {printf("\t{while} es sentencia\n");}|
     if  {printf("\t{if} es sentencia\n");}
   ;
@@ -210,11 +217,26 @@
     }
   ;
   en_lista:
-    INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC {printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");}
+    INLIST PAR_A ID {ptrIdList = crearHoja($3);} PYC COR_A lista_expresiones COR_C PAR_C PYC {
+      printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");
+      en_listaPtr = lista_expresionesPtr;
+    }
   ;
   lista_expresiones:
-    expresion {printf("\t{expresion} es lista_expresiones\n");}|
-    lista_expresiones PYC expresion {printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");}
+    expresion {
+      printf("\t{expresion} es lista_expresiones\n");
+      lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), expresionPtr);
+      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, ptrIdList);
+      lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true")); 
+    }|
+    lista_expresiones PYC expresion {
+      printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
+      lista_expresionesPtr1 = lista_expresionesPtr; // Para no perderlo
+      lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), expresionPtr);
+      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja("a")); //TODO CAMBIAR POR EL LEXEMA Y NO HARCODEAR
+      lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true")); 
+      lista_expresionesPtr = crearNodo(";", lista_expresionesPtr1, lista_expresionesPtr);
+    }
   ; 
   lista_asignacion:
     asignacion OP_ASIG expresion PYC {
@@ -291,11 +313,11 @@
     }|
     CONST_INTEGER {
       printf("\t{CONST_INTEGER} es factor\n");
-      factorPtr = crearHoja($1);
+      factorPtr = crearHoja(castConst($1));
     }|
     CONST_FLOAT { 
       printf("\t{CONST_FLOAT} es factor\n");      
-      factorPtr = crearHoja($1);
+      factorPtr = crearHoja(castConst($1));
     }
   ;
 %%

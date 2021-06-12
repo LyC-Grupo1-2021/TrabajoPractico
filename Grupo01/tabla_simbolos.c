@@ -67,3 +67,9 @@ char * mapNombreTipoToken(const int tipo) {
 			return "IDENTIFICADOR";
 	}
 }
+
+char * castConst(const char * value){
+    char name[32] = "_";
+    strcat(name, value);
+    return strdup(name);
+}
