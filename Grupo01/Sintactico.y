@@ -26,8 +26,10 @@
     nodo* programaPtr = NULL;
     nodo* sentenciaPtr = NULL;
     nodo* ifPtr = NULL;
+    nodo* ifBodyPtr = NULL;
     nodo* whilePtr = NULL;
     nodo* condicion_simplePtr = NULL;
+    nodo* condicion_simple2Ptr = NULL;
     nodo* condicionPtr = NULL;
     nodo* operador_logPtr = NULL;
     nodo* operador_compPtr = NULL;
@@ -94,8 +96,8 @@
 %token OP_MENOR
 %token OP_DIST
 %token OP_IGUAL
-%token AND
-%token OR
+%token <str_val> AND
+%token <str_val> OR
 %token NOT
 %token PAR_A
 %token PAR_C
@@ -148,11 +150,9 @@
     sentencia  {
       printf("\t{sentencia} es programa\n");
       apilar(sentenciaPtr);
-      //programaPtr = sentenciaPtr;
     }|
     programa sentencia {
       printf("\t{programa sentencia} es programa\n");
-      //programaPtr = crearNodo("programa", programaPtr, sentenciaPtr);
       programaPtr = crearNodo("programa", desapilar(), sentenciaPtr);
       apilar(programaPtr);
     }
@@ -181,18 +181,30 @@
     }|
     while {
       printf("\t{while} es sentencia\n");
+      sentenciaPtr = whilePtr;
     }
   ;
   if:
     IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
       printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");
-      ifPtr = crearNodo("IF", condicionPtr, desapilar());
+      nodo* auxDerPtr=desapilar();
+      nodo* auxIzqPtr=desapilar();
+      ifPtr = crearNodo("IF", auxIzqPtr, auxDerPtr);
     }|
-    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}
+    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {
+      printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");
+      nodo* auxIzqPtr=desapilar();
+      nodo* auxDerPtr=desapilar();
+      ifBodyPtr = crearNodo("body", auxIzqPtr, auxDerPtr);
+      ifPtr = crearNodo("IF", desapilar(), ifBodyPtr);
+    }
   ;
   while:
     WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
       printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");
+      nodo* auxDerPtr=desapilar();
+      nodo* auxIzqPtr=desapilar();
+      whilePtr = crearNodo("WHILE", auxIzqPtr, auxDerPtr);
   }
   ;
   condicion_simple:
@@ -205,13 +217,28 @@
     condicion_simple {
       printf("\t {condicion_simple} es condicion\n");
       condicionPtr = condicion_simplePtr;
+      apilar(condicionPtr);
     }|
-    NOT PAR_A condicion_simple PAR_C {printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");}|
-    condicion_simple operador_log condicion_simple {printf("\t {condicion operador_log condicion} es condicion\n");}
+    NOT PAR_A condicion_simple PAR_C { //TODO: Preguntar si el NOT genera un nodo o si cambia el orden del body en el if
+      printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");
+      condicionPtr = crearNodo("not", condicion_simplePtr, NULL);
+      apilar(condicionPtr);
+    }|
+    condicion_simple {condicion_simple2Ptr = condicion_simplePtr;} operador_log condicion_simple {
+      printf("\t {condicion operador_log condicion} es condicion\n");
+      condicionPtr = crearNodo(operador_logPtr->dato, condicion_simple2Ptr, condicion_simplePtr);
+      apilar(condicionPtr);
+    }
   ;
   operador_log:
-    AND {printf("\t {AND} operador_log");}|
-    OR {printf("\t {OR} es operador_log\n");}
+    AND {
+      printf("\t {AND} operador_log");
+      operador_logPtr = crearHoja("and");
+    }|
+    OR {
+      printf("\t {OR} es operador_log\n");
+      operador_logPtr = crearHoja("or");
+    }
   ;
   operador_comp:
     OP_MENOR {
