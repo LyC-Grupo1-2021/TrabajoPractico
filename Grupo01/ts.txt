@@ -2,8 +2,5 @@ Token                                   Valor                                   
 IDENTIFICADOR                                                                   1                        a                                       
 IDENTIFICADOR                                                                   1                        b                                       
 IDENTIFICADOR                                                                   1                        d                                       
-CTE_INTEGER                             2                                                                2                                       
-CTE_INTEGER                             7                                                                7                                       
-CTE_INTEGER                             12                                                               12                                      
+IDENTIFICADOR                                                                   1                        c                                       
 CTE_INTEGER                             34                                                               34                                      
-CTE_INTEGER                             48                                                               48                                      

@@ -2,8 +2,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     //Usuarios de linux usar "curses.h", usuarios de windows usar "conio.h"
-    //#include <conio.h>
-    #include <curses.h>
+    #include <conio.h>
+    //#include <curses.h>
     #include "y.tab.h"
 
     #include "tabla_simbolos.h"
@@ -17,6 +17,9 @@
 
     int yyerror(const char *);
     int yylex();
+    
+    nodo* apilar(nodo*);
+    nodo* desapilar();
 
     //Declaración de punteros árbol sintáctico
     nodo* mainPtr = NULL;
@@ -42,10 +45,11 @@
     nodo* asignacionPtr = NULL;
     nodo* lecturaPtr = NULL;
     nodo* impresionPtr = NULL;
-    nodo* expresionPtr = NULL;
     nodo* terminoPtr = NULL;
     nodo* factorPtr = NULL;
     nodo* ptrIdList = NULL;
+
+    t_pila pila = NULL;
 %}
 
 %union {
@@ -225,14 +229,14 @@
   lista_expresiones:
     expresion {
       printf("\t{expresion} es lista_expresiones\n");
-      lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), expresionPtr);
+      lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), desapilar());
       lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, ptrIdList);
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true")); 
     }|
     lista_expresiones PYC expresion {
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
       lista_expresionesPtr1 = lista_expresionesPtr; // Para no perderlo
-      lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), expresionPtr);
+      lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), desapilar());
       lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja("a")); //TODO CAMBIAR POR EL LEXEMA Y NO HARCODEAR
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true")); 
       lista_expresionesPtr = crearNodo(";", lista_expresionesPtr1, lista_expresionesPtr);
@@ -241,7 +245,7 @@
   lista_asignacion:
     asignacion OP_ASIG expresion PYC {
       printf("\t{asignacion OP_ASIG expresion PYC} es lista_asignacion\n");
-      lista_asignacionPtr = crearNodo(":", asignacionPtr, expresionPtr);
+      lista_asignacionPtr = crearNodo(":", asignacionPtr, desapilar());
     };
   ;
   asignacion:
@@ -262,7 +266,7 @@
     }|
     READ expresion PYC {
       printf("\t{READ expresion PYC} es lectura\n");
-      lecturaPtr = crearNodo("READ", expresionPtr, NULL);
+      lecturaPtr = crearNodo("READ", desapilar(), NULL);
     }
   ;
   impresion:
@@ -272,31 +276,37 @@
     }|
     WRITE expresion PYC {
       printf("\t{WRITE expresion PYC} es impresion\n");
-      impresionPtr = crearNodo("WRITE", expresionPtr, NULL);
+      impresionPtr = crearNodo("WRITE", desapilar(), NULL);
     }
   ;
   expresion:
     expresion SUM termino {
       printf("\t{expresion SUM termino} es expresion\n");
-      expresionPtr = crearNodo("+", expresionPtr, terminoPtr);
+      apilar(crearNodo("+", desapilar(), terminoPtr));
     }|
     expresion RES termino {
       printf("\t{expresion RES termino} es expresion\n");
-      expresionPtr = crearNodo("-", expresionPtr, terminoPtr);
+      apilar(crearNodo("-", desapilar(), terminoPtr));
     }|
     termino {
       printf("\t{termino} es expresion\n");
-      expresionPtr = terminoPtr;
+      apilar(terminoPtr);
     };
   termino:
-    termino MULT factor {
+    termino MULT {
+      apilar(terminoPtr);
+    } factor {
       printf("\t{termino MULT factor} es termino\n");
-      terminoPtr = crearNodo("*", terminoPtr, factorPtr);
+      terminoPtr = crearNodo("*",  desapilar(), factorPtr);
     }|
-    termino DIV factor {
+
+    termino DIV {
+      apilar(terminoPtr);
+    }factor {
       printf("\t{termino DIV factor} es termino\n");
-      terminoPtr = crearNodo("/", terminoPtr, factorPtr);
+      terminoPtr = crearNodo("/", desapilar(), factorPtr);
     }|
+
     factor {
       printf("\t{factor} es termino\n");
       terminoPtr = factorPtr;
@@ -305,7 +315,7 @@
   factor:
     PAR_A expresion PAR_C {
       printf("\t{PAR_A expresion PAR_C} es factor\n");
-      factorPtr = expresionPtr;
+      factorPtr = desapilar();
     }|
     ID {
       printf("\t{ID} es factor\n");
@@ -342,4 +352,14 @@ int yyerror(const char *s)
   printf("Error de sintáxis\n");
   printf("Nro. de linea: %d \t %s\n", yylineno, s);
   exit(1);
-}   
+}
+
+nodo * apilar(nodo *arg) {
+    apilarDinamica(&pila, &arg);
+}
+
+nodo * desapilar() {
+    nodo * ret = NULL;
+    desapilarDinamica(&pila, &ret);
+    return ret;
+}

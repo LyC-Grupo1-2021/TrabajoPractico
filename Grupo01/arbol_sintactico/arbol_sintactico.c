@@ -147,32 +147,29 @@ void escribirGragh(nodo* padre) {
 //     *pp = NULL;
 // }
 
-// int apilarDinamica(t_pila *PP, const t_dato *pd)
-// {
-//     t_nodo *pnue= (t_nodo *)malloc(sizeof(t_nodo));
-//     if(!pnue)
-//         return 0;
+int apilarDinamica(t_pila *PP, const t_dato *pd)
+ {
+    t_nodo *pnue= (t_nodo *)malloc(sizeof(t_nodo));
+    if(!pnue)
+        return 0;
+    pnue->dato = *pd;
+    pnue->psig = *PP;
+    *PP=pnue;
+    return 1;
+}
 
-//     pnue->dato = *pd;
-//     pnue->psig = *PP;
-//     *PP=pnue;
-//     return 1;
+int desapilarDinamica(t_pila *pp, t_dato *pd)
+{
+    t_nodo *aux;
+    if(*pp==NULL)
+        return 0;
 
-// }
-
-// int desapilarDinamica(t_pila *pp, t_dato *pd)
-// {
-//     t_nodo *aux;
-//     if(*pp==NULL)
-//         return 0;
-
-//     aux = *pp;
-//     *pd = aux->dato; //== (*pp)->dato
-//     *pp = aux->psig;
-//     free(aux);
-//     return 1;
-
-// }
+    aux = *pp;
+    *pd = aux->dato; //== (*pp)->dato
+    *pp = aux->psig;
+    free(aux);
+    return 1;
+}
 
 // int verTopeDinamica(t_pila *PP, t_dato *pd)
 // {

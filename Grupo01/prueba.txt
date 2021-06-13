@@ -4,5 +4,7 @@ DECVAR
     d: Integer;
 ENDDEC
 
-a : a+b*(34+d);
+-/ donde base es una variable /-
+
+a : c + b * ( 34 + d );
     
