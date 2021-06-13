@@ -16,8 +16,9 @@ struct struct_tabla_simbolos {
 
 struct struct_tabla_simbolos tablaSimb[2500];
 
-void grabarToken(int, char *, char *, int);
+void grabarToken(int, char*, char *, char *, int);
 int crearArchivo();
 char * mapNombreTipoToken(int);
 char * castConst(const char *);
+void actualizarTipoDatoAID(char *, char *);
 #endif

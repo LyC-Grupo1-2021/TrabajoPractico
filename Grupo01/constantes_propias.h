@@ -16,5 +16,7 @@
 #define TOKEN_CTE_FLOAT 30
 #define TOKEN_CTE_STRING 40
 #define TOKEN_ID 50
+#define VARIABLE_AUXILIAR 60
+
 
 #endif

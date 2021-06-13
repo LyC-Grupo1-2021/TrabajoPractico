@@ -2,7 +2,7 @@
 
 int pos = 0;
 
-void grabarToken(int token, char *nombre, char *valor, int longitud) {
+void grabarToken(int token, char* tipo, char *nombre, char *valor, int longitud) {
     int i;
 
     for(i = 0; i < pos; i++){
@@ -13,6 +13,7 @@ void grabarToken(int token, char *nombre, char *valor, int longitud) {
     tablaSimb[pos].tipo_token = token;
     strcpy(tablaSimb[pos].nombre, nombre);
     strcpy(tablaSimb[pos].valor, valor);
+    strcpy(tablaSimb[pos].tipo, tipo);
 
     char parseLong[10];
     sprintf(parseLong, "%d", longitud);
@@ -34,24 +35,27 @@ int crearArchivo() {
     if(!txt) return ERROR;
 
     //Imprimimos encabezados
-    fprintf(txt, "%-40s%-40s%-25s%-40s%-25s\n", "Token", "Valor", "Longitud", "Nombre", "Tipo");
+    //fprintf(txt, "%-40s%-40s%-25s%-40s%-25s\n", "Token", "Valor", "Longitud", "Nombre", "Tipo");
+    fprintf(txt, "%-40s%-25s%-25s%-25s%-25s\n", "Nombre", "TipoDato", "Valor", "Longitud", "Token");
 
     for (i = 0; i < pos; i++) {
         if ((tablaSimb[i].tipo_token == TOKEN_CTE_INTEGER) 
             || (tablaSimb[i].tipo_token == TOKEN_CTE_FLOAT)) {
-                fprintf(txt, "%-40s%-40s%-25s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), tablaSimb[i].valor, "", tablaSimb[i].nombre);
+                fprintf(txt, "%-40s%-25s%-25s%-25s%-25s\n", tablaSimb[i].nombre, tablaSimb[i].tipo, 
+                    tablaSimb[i].valor, "", mapNombreTipoToken(tablaSimb[i].tipo_token));
         }else if(tablaSimb[i].tipo_token == TOKEN_CTE_STRING){
-            fprintf(txt, "%-40s%-40s%-25s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), tablaSimb[i].valor, tablaSimb[i].longitud, tablaSimb[i].nombre);
+            fprintf(txt, "%-40s%-25s%-25s%-25s%-25s\n", tablaSimb[i].nombre, tablaSimb[i].tipo, 
+                tablaSimb[i].valor, tablaSimb[i].longitud, mapNombreTipoToken(tablaSimb[i].tipo_token));
         }else{
             //id
-            fprintf(txt, "%-40s%-40s%-25s%-40s\n", mapNombreTipoToken(tablaSimb[i].tipo_token), "", tablaSimb[i].longitud, tablaSimb[i].nombre);
+            fprintf(txt, "%-40s%-25s%-25s%-25s%-25s\n", tablaSimb[i].nombre, tablaSimb[i].tipo, "", 
+                tablaSimb[i].longitud, mapNombreTipoToken(tablaSimb[i].tipo_token));
         }
     }
 
     fclose(txt);
 
     return ARCHIVO_OK;
-
 }
 
 
@@ -65,6 +69,8 @@ char * mapNombreTipoToken(const int tipo) {
 			return "CTE_STRING";
 		case TOKEN_ID:
 			return "IDENTIFICADOR";
+        case VARIABLE_AUXILIAR:
+            return "VARIABLE_AUXILIAR";
 	}
 }
 
@@ -72,4 +78,17 @@ char * castConst(const char * value){
     char name[32] = "_";
     strcat(name, value);
     return strdup(name);
+}
+
+
+/**
+ * Actualiza el tipo de dato del ID en TS
+ */
+void actualizarTipoDatoAID(char * id, char * tipo) {
+	int i;
+	for (i = 0; i < pos; i++) {
+		if (strcmp(tablaSimb[i].nombre, id) == 0) {
+            strcpy(tablaSimb[i].tipo, tipo);
+		}
+	}		
 }
