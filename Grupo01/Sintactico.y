@@ -149,6 +149,7 @@
   programa:
     sentencia  {
       printf("\t{sentencia} es programa\n");
+      programaPtr = sentenciaPtr;
       apilar(sentenciaPtr);
     }|
     programa sentencia {
