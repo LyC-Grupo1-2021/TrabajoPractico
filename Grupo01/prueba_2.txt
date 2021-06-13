@@ -1,0 +1,15 @@
+DECVAR
+    texto: String;
+    contador: Integer;
+    promedio: Float;
+    actual, suma: Float; 
+ENDDEC
+
+    
+
+    INLIST (a; [2 / b + 7; 12]);
+    b: 7;
+
+    if(contador <= 92) {
+        actual: (contador/0.342) + (contador*contador);
+    }

@@ -1,6 +1,13 @@
 Token                                   Valor                                   Longitud                 Nombre                                  Tipo                     
+IDENTIFICADOR                                                                   5                        texto                                   
+IDENTIFICADOR                                                                   8                        contador                                
+IDENTIFICADOR                                                                   8                        promedio                                
+IDENTIFICADOR                                                                   6                        actual                                  
+IDENTIFICADOR                                                                   4                        suma                                    
 IDENTIFICADOR                                                                   1                        a                                       
+CTE_INTEGER                             2                                                                2                                       
 IDENTIFICADOR                                                                   1                        b                                       
-IDENTIFICADOR                                                                   1                        d                                       
-IDENTIFICADOR                                                                   1                        c                                       
-CTE_INTEGER                             34                                                               34                                      
+CTE_INTEGER                             7                                                                7                                       
+CTE_INTEGER                             12                                                               12                                      
+CTE_INTEGER                             92                                                               92                                      
+CTE_FLOAT                               0.342                                                            0.342                                   

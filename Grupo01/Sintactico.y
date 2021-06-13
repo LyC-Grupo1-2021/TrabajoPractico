@@ -147,11 +147,14 @@
   programa:
     sentencia  {
       printf("\t{sentencia} es programa\n");
-      programaPtr = sentenciaPtr;
+      apilar(sentenciaPtr);
+      //programaPtr = sentenciaPtr;
     }|
     programa sentencia {
       printf("\t{programa sentencia} es programa\n");
-      programaPtr = crearNodo("programa", programaPtr, sentenciaPtr);
+      //programaPtr = crearNodo("programa", programaPtr, sentenciaPtr);
+      programaPtr = crearNodo("programa", desapilar(), sentenciaPtr);
+      apilar(programaPtr);
     }
     
   ;
@@ -172,21 +175,37 @@
       printf("\t{en_lista} es sentencia\n");
       sentenciaPtr = en_listaPtr;
     }|
-    while {printf("\t{while} es sentencia\n");}|
-    if  {printf("\t{if} es sentencia\n");}
+    if  {
+      printf("\t{if} es sentencia\n");
+      sentenciaPtr = ifPtr;
+    }|
+    while {
+      printf("\t{while} es sentencia\n");
+    }
   ;
   if:
-    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}|
+    IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
+      printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");
+      ifPtr = crearNodo("IF", condicionPtr, desapilar());
+    }|
     IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");}
   ;
   while:
-    WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");}
+    WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
+      printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");
+  }
   ;
   condicion_simple:
-    factor operador_comp factor {printf("\t {factor operador_comp factor} es condicion\n");}
+    expresion operador_comp expresion {
+      printf("\t {factor operador_comp factor} es condicion\n");
+      condicion_simplePtr = crearNodo(operador_compPtr->dato, desapilar(), desapilar());
+    }
   ;
   condicion:
-    condicion_simple {printf("\t {condicion_simple} es condicion\n");}|
+    condicion_simple {
+      printf("\t {condicion_simple} es condicion\n");
+      condicionPtr = condicion_simplePtr;
+    }|
     NOT PAR_A condicion_simple PAR_C {printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");}|
     condicion_simple operador_log condicion_simple {printf("\t {condicion operador_log condicion} es condicion\n");}
   ;

@@ -30,7 +30,7 @@ typedef t_nodo* t_pila;
 nodo* crearNodo(const char* , nodo* , nodo* );
 nodo* crearHoja(const char*);
 void liberarMemoria(nodo* );
-void llegarGragh(nodo* , FILE*, int );
+void llenarGragh(nodo* , FILE*, int );
 void escribirGragh(nodo*);
 int inOrden(FILE *, nodo *);
 void escribirArbol(nodo *padre);

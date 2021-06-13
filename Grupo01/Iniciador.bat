@@ -5,7 +5,7 @@ pause
 gcc lex.yy.c y.tab.c tabla_simbolos.c arbol_sintactico/arbol_sintactico.c -o Primera.exe
 pause
 pause
-Primera.exe prueba.txt
+Primera.exe prueba_resguardo.txt
 pause
 dot -Tpng gragh.dot -o gragh.png
 pause
