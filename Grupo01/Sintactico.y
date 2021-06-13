@@ -290,7 +290,7 @@
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
       lista_expresionesAntPtr = lista_expresionesPtr; // Para no perderlo
       lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), desapilar());
-      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja("a")); //TODO CAMBIAR POR EL LEXEMA Y NO HARCODEAR
+      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(ptrIdList->dato));
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true")); 
       lista_expresionesPtr = crearNodo(";", lista_expresionesAntPtr, lista_expresionesPtr);
     }
