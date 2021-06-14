@@ -17,12 +17,13 @@
 
     int yyerror(const char *);
     int yylex();
+    void agregarVariable();
+    void actualizarTipoDeclaracionID(char *);
     
     nodo* apilar(nodo*);
     nodo* desapilar();
 
     //Declaración de punteros árbol sintáctico
-    nodo* mainPtr = NULL;
     nodo* programaPtr = NULL;
     nodo* sentenciaPtr = NULL;
     nodo* ifPtr = NULL;
@@ -35,14 +36,7 @@
     nodo* operador_compPtr = NULL;
     nodo* en_listaPtr = NULL;
     nodo* lista_expresionesPtr = NULL;
-    nodo* lista_expresionesPtr1 = NULL;
-    nodo* lista_expresionesPtr2 = NULL;
-    nodo* lista_expAuxPtr = NULL;
-    nodo* bloque_declarativoPtr = NULL;
-    nodo* multiple_declaracionesPtr = NULL;
-    nodo* sentencia_declarativaPtr = NULL;
-    nodo* lista_variablesPtr = NULL;
-    nodo* tipo_datoPtr = NULL;
+    nodo* lista_expresionesAntPtr = NULL;
     nodo* lista_asignacionPtr = NULL;
     nodo* asignacionPtr = NULL;
     nodo* lecturaPtr = NULL;
@@ -52,6 +46,9 @@
     nodo* ptrIdList = NULL;
 
     t_pila pila = NULL;
+
+    char * idsAsignacionTipo[100]; //Array usado para asociar los tipos a los id (sirve para tabla simbolos)
+    int indexAsignacionTipo = 0; //Index array 
 %}
 
 %union {
@@ -124,7 +121,7 @@
   
   bloque_declarativo:
     DECVAR multiple_declaraciones ENDDEC {
-      printf("\t{DECVAR lista_variables OP_ASIG tipo_dato ENDDEC PYC} es bloque_declarativo\n");
+      printf("\t{DECVAR multiple_declaraciones ENDDEC} es bloque_declarativo\n");
     } 
   ;
   multiple_declaraciones:
@@ -132,20 +129,29 @@
     multiple_declaraciones sentencia_declarativa {printf("\t{multiple_declaraciones sentencia_declarativa} es multiple_declaraciones\n");}
   ;
   sentencia_declarativa:
-    lista_variables OP_ASIG tipo_dato PYC {printf("\t{lista_variables} es sentencia_declarativa\n");}
+    lista_variables OP_ASIG STRING PYC {
+      printf("\t{lista_variables OP_ASIG STRING PYC}\n");
+      actualizarTipoDeclaracionID("STRING");
+    }|
+    lista_variables OP_ASIG FLOAT PYC {
+      printf("\t{lista_variables OP_ASIG FLOAT PYC}\n");
+      actualizarTipoDeclaracionID("FLOAT");
+    }|
+    lista_variables OP_ASIG INTEGER PYC {
+      printf("\t{lista_variables OP_ASIG INTEGER PYC}\n");
+      actualizarTipoDeclaracionID("INTEGER");
+    }
   ;
   lista_variables:
-    ID {printf("\t lista_variables es {ID}\n");}|
-    lista_variables COMA ID {printf("\t{lista_variables COMA ID} es lista_variables\n");}
+    ID {
+      printf("\t lista_variables es {ID}\n");
+      agregarVariable();
+    }|
+    lista_variables COMA ID {
+      printf("\t{lista_variables COMA ID} es lista_variables\n");
+      agregarVariable();
+    }
   ;
-  tipo_dato:
-    STRING  {printf("\t{STRING} es tipo_dato\n");}|  
-    FLOAT   {printf("\t{FLOAT} es tipo_dato\n");}|
-    INTEGER {printf("\t{INTEGER} es tipo_dato\n");}  
-  ;
-  
-  //ACA ARRANCA EL PROGRAMA LO DE ARRIBA PERTENECE A LA DECLARACION DE VARIABLES
-  
   programa:
     sentencia  {
       printf("\t{sentencia} es programa\n");
@@ -282,11 +288,11 @@
     }|
     lista_expresiones PYC expresion {
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
-      lista_expresionesPtr1 = lista_expresionesPtr; // Para no perderlo
+      lista_expresionesAntPtr = lista_expresionesPtr; // Para no perderlo
       lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), desapilar());
-      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja("a")); //TODO CAMBIAR POR EL LEXEMA Y NO HARCODEAR
+      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(ptrIdList->dato));
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true")); 
-      lista_expresionesPtr = crearNodo(";", lista_expresionesPtr1, lista_expresionesPtr);
+      lista_expresionesPtr = crearNodo(";", lista_expresionesAntPtr, lista_expresionesPtr);
     }
   ; 
   lista_asignacion:
@@ -378,6 +384,25 @@
     }
   ;
 %%
+
+
+
+void agregarVariable() {
+    char * aux = (char *) malloc(sizeof(char) * (strlen(yylval.str_val) + 1));
+    strcpy(aux, yylval.str_val);
+    idsAsignacionTipo[indexAsignacionTipo] = aux;
+    indexAsignacionTipo++;
+    return;
+}
+
+
+void actualizarTipoDeclaracionID(char * tipo) {
+    int i;
+    for (i = 0; i < indexAsignacionTipo; i++) {
+        actualizarTipoDatoAID(idsAsignacionTipo[i], tipo);
+    }
+    indexAsignacionTipo = 0;
+}
 
 int main(int argc, char *argv[])
 {

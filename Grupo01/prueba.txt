@@ -3,6 +3,7 @@ DECVAR
     contador: Integer;
     promedio: Float;
     actual, suma: Float; 
+    a,b, a1, a2, a3, a4: Integer;
 ENDDEC
 
 -/ donde base es una variable /-

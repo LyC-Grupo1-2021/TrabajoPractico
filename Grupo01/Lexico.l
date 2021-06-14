@@ -139,7 +139,7 @@ void procesarFloat() {
     }
 
     printf("%s -> CONST_FLOAT\n", yytext);
-    grabarToken(TOKEN_CTE_FLOAT, strdup(yytext), yytext, 0);
+    grabarToken(TOKEN_CTE_FLOAT, "FLOAT", castConst(strdup(yytext)), yytext, 0);
 }
 
 void procesarInt() {
@@ -151,7 +151,7 @@ void procesarInt() {
 	}
 
     printf("%s -> CONST_INTEGER\n", yytext);
-	grabarToken(TOKEN_CTE_INTEGER, strdup(yytext), yytext, 0);
+	grabarToken(TOKEN_CTE_INTEGER, "INTEGER", castConst(strdup(yytext)), yytext, 0);
 }
 
 void procesarString(){
@@ -162,7 +162,10 @@ void procesarString(){
     yylval.str_val = strdup(subBuff);
 
     char auxCad[100];
-	strcpy(auxCad, yytext);
+
+    //quito comillas
+    yytext[strlen(yytext)-1] = '\0';
+	strcpy(auxCad, yytext + 1); 
     
     if(strlen(auxCad) > MAXLENSTR) {
         printf("El largo maximo de la cadena es: %d caracteres\n", MAXLENSTR);
@@ -170,7 +173,7 @@ void procesarString(){
     }
 	printf("%s -> CONST_STRING\n", yytext);
 
-	grabarToken(TOKEN_CTE_STRING, strdup(auxCad), auxCad, strlen(auxCad));
+	grabarToken(TOKEN_CTE_STRING, "STRING", castConst(strdup(auxCad)), auxCad, strlen(auxCad));
 }
 
 void procesarId() {
@@ -183,5 +186,5 @@ void procesarId() {
         exit(-1);
     }
     printf("%s -> ID\n", yytext);
-	grabarToken(TOKEN_ID, strdup(yytext), "", strlen(yytext));
+	grabarToken(TOKEN_ID, "", strdup(yytext), "", strlen(yytext));
 }
