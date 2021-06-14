@@ -2,11 +2,11 @@ flex Lexico.l
 pause
 bison -dyv ./Sintactico.y
 pause
-gcc lex.yy.c y.tab.c tabla_simbolos.c arbol_sintactico/arbol_sintactico.c -o Primera.exe
+gcc lex.yy.c y.tab.c tabla_simbolos.c arbol_sintactico/arbol_sintactico.c -o Segunda.exe
 pause
-Primera.exe prueba.txt
+Segunda.exe prueba.txt
 pause
-dot -Tpng gragh.dot -o gragh.png
+dot -Tpng gragh.dot -o intermedia.png
 pause
 del lex.yy.c
 del y.tab.c
