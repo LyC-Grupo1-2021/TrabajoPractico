@@ -1,25 +1,9 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
-texto                                   STRING                                            5                        IDENTIFICADOR            
-contador                                INTEGER                                           8                        IDENTIFICADOR            
-promedio                                FLOAT                                             8                        IDENTIFICADOR            
-actual                                  FLOAT                                             6                        IDENTIFICADOR            
-suma                                    FLOAT                                             4                        IDENTIFICADOR            
-a                                       INTEGER                                           1                        IDENTIFICADOR            
-b                                       INTEGER                                           1                        IDENTIFICADOR            
-a1                                      INTEGER                                           2                        IDENTIFICADOR            
-a2                                      INTEGER                                           2                        IDENTIFICADOR            
-a3                                      INTEGER                                           2                        IDENTIFICADOR            
-a4                                      INTEGER                                           2                        IDENTIFICADOR            
-_333.3333                               FLOAT                    333.3333                                          CTE_FLOAT                
-_3                                      INTEGER                  3                                                 CTE_INTEGER              
-_8                                      INTEGER                  8                                                 CTE_INTEGER              
-_9                                      INTEGER                  9                                                 CTE_INTEGER              
-_5                                      INTEGER                  5                                                 CTE_INTEGER              
-_Hola mundo!                            STRING                   Hola mundo!              11                       CTE_STRING               
+var                                     STRING                                            3                        IDENTIFICADOR            
+a                                                                                         1                        IDENTIFICADOR            
 _2                                      INTEGER                  2                                                 CTE_INTEGER              
+b                                                                                         1                        IDENTIFICADOR            
 _7                                      INTEGER                  7                                                 CTE_INTEGER              
 @aux                                    INTEGER                                                                    VARIABLE_AUXILIAR        
 _12                                     INTEGER                  12                                                CTE_INTEGER              
-_92                                     INTEGER                  92                                                CTE_INTEGER              
-_1                                      INTEGER                  1                                                 CTE_INTEGER              
-_0.342                                  FLOAT                    0.342                                             CTE_FLOAT                
+_Hola mundo!                            STRING                   Hola mundo!              11                       CTE_STRING               

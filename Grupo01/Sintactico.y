@@ -46,6 +46,8 @@
     nodo* factorPtr = NULL;
     nodo* ptrIdList = NULL;
 
+    char idEnLista[100];
+
     t_pila pila = NULL;
 
     char * idsAsignacionTipo[100]; //Array usado para asociar los tipos a los id (sirve para tabla simbolos)
@@ -180,10 +182,6 @@
       printf("\t{lista_asignacion} es sentencia\n");
       sentenciaPtr = lista_asignacionPtr;
     }|
-    en_lista {
-      printf("\t{en_lista} es sentencia\n");
-      sentenciaPtr = en_listaPtr;
-    }|
     if  {
       printf("\t{if} es sentencia\n");
       sentenciaPtr = ifPtr;
@@ -237,6 +235,11 @@
       printf("\t {condicion operador_log condicion} es condicion\n");
       condicionPtr = crearNodo(operador_logPtr->dato, condicion_simple2Ptr, condicion_simplePtr);
       apilar(condicionPtr);
+    }|
+    en_lista {
+      printf("\t{en_lista} es condicion\n");
+      condicionPtr = en_listaPtr;
+      apilar(en_listaPtr);
     }
   ;
   operador_log:
@@ -276,7 +279,7 @@
     }
   ;
   en_lista:
-    INLIST PAR_A ID {ptrIdList = crearHoja($3);} PYC COR_A lista_expresiones COR_C PAR_C PYC {
+    INLIST PAR_A ID {ptrIdList = crearHoja($3); strcpy(idEnLista, $3);} PYC COR_A lista_expresiones COR_C PAR_C {
       printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");
       en_listaPtr = lista_expresionesPtr;
     }
@@ -292,7 +295,7 @@
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
       lista_expresionesAntPtr = lista_expresionesPtr; // Para no perderlo
       lista_expresionesPtr = crearNodo(":", crearHoja("@aux"), desapilar());
-      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(ptrIdList->dato));
+      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(idEnLista));
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true")); 
       lista_expresionesPtr = crearNodo(";", lista_expresionesAntPtr, lista_expresionesPtr);
     }

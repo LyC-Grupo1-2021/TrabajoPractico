@@ -5,5 +5,9 @@
 
 int toAssembler(nodo *);
 int printHeader();
+int printData();
+int printInstructions();
+int printFooter();
+char * checkEmptyValue(char *);
 
 #endif

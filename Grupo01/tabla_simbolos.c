@@ -92,3 +92,8 @@ void actualizarTipoDatoAID(char * id, char * tipo) {
 		}
 	}		
 }
+
+
+int getPosicionTS(){
+    return pos;
+}

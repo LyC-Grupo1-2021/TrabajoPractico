@@ -21,4 +21,5 @@ int crearArchivo();
 char * mapNombreTipoToken(int);
 char * castConst(const char *);
 void actualizarTipoDatoAID(char *, char *);
+int getPosicionTS();
 #endif

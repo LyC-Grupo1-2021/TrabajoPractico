@@ -1,0 +1,9 @@
+	.DATA
+var                             	dd	?
+a                               	dd	?
+_2                              	dd	2
+b                               	dd	?
+_7                              	dd	7
+@aux                            	dd	?
+_12                             	dd	12
+_Hola mundo!                    	db	Hola mundo!,'$', 11 dup (?)
