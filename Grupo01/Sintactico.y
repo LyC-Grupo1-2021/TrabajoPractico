@@ -9,6 +9,7 @@
     #include "tabla_simbolos.h"
 	  #include "constantes_propias.h"
     #include "arbol_sintactico/arbol_sintactico.h"
+    #include "assembler/assembler.h"
 
     int yystopparser=0;
     int yylineno;    
@@ -109,13 +110,14 @@
   programaPrima:
     main {
       printf("\n----------------\nCompilacion OK\n----------------\n");
-      crearArchivo();
+      escribirGragh(programaPtr);
+      toAssembler(programaPtr);
+      crearArchivo(); //tabla de simbolos
     }
   ;
   main:
     bloque_declarativo programa {
       printf("\t{bloque_declarativo programa} es main\n");
-      escribirGragh(programaPtr);
     }
   ;
   

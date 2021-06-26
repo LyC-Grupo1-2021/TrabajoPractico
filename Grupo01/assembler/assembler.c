@@ -1,18 +1,16 @@
 
+#include "assembler.h"
 
 int toAssembler(nodo * root){
-    if(printHeader() === -1){
+    if(printHeader() == -1){
         printf("Error al generar el assembler");
-        return
+        return -1;
     }
-
-
-    
 }
 
 
 int printHeader(){
-    FILE * fp = fopen("./assembler/header.txt", "w");
+    FILE * fp = fopen("header.txt", "w");
 	if (fp == NULL) {
 		printf("Error abierndo el archivo del header");
 		return -1;

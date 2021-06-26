@@ -1,8 +1,8 @@
 flex Lexico.l
 pause
 bison -dyv ./Sintactico.y
-pause
-gcc lex.yy.c y.tab.c tabla_simbolos.c arbol_sintactico/arbol_sintactico.c -o Segunda.exe
+
+gcc lex.yy.c y.tab.c arbol_sintactico/arbol_sintactico.c assembler/assembler.c tabla_simbolos.c -o Segunda.exe
 pause
 Segunda.exe prueba.txt
 pause
