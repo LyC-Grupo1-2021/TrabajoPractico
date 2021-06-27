@@ -1,9 +1,11 @@
 	.DATA
 var                             	dd	?
 a                               	dd	?
-_2                              	dd	2
 b                               	dd	?
-_7                              	dd	7
-@aux                            	dd	?
-_12                             	dd	12
-_Hola mundo!                    	db	Hola mundo!,'$', 11 dup (?)
+c                               	dd	?
+_4                              	dd	4
+_8                              	dd	8
+r                               	dd	?
+d                               	dd	?
+f                               	dd	?
+_NICO                           	db	NICO,'$', 4 dup (?)

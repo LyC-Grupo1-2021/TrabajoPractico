@@ -13,13 +13,14 @@ nodo* crearNodo(const char *d, nodo* hI, nodo* hD) {
     return nodoPadre;
 }
 
-nodo* crearHoja(const char *d) {
+nodo* crearHoja(const char *d, int tipo) {
 	nodo* nuevoNodo = (nodo*)malloc(sizeof(nodo));
     if(nuevoNodo == NULL) {
         printf("No hay memoria disponible");
         exit(1);
     }
     strcpy(nuevoNodo->dato, d);
+    nuevoNodo->tipo = tipo;
     nuevoNodo->hijoDer = NULL;
     nuevoNodo->hijoIzq = NULL;
     if(strncmp(nuevoNodo->dato, "@", 1) == 0) {
@@ -63,7 +64,7 @@ void escribirGragh(nodo* padre) {
 	if (archivo == NULL) {
 		return;
 	}
-    //escribir la plantilla para dibujar el grafo
+    //Escribir plantilla para poder dibujar el grafo
     fprintf(archivo, "%s\n", "digraph G {");
     llenarGragh(padre, archivo, 0);
     fprintf(archivo, "%s", "}");
@@ -71,6 +72,13 @@ void escribirGragh(nodo* padre) {
     fclose(archivo);
     liberarMemoria(padre);
     return;
+}
+
+int esHoja(nodo *hoja) {
+    if (hoja == NULL) {
+        return 0;
+    }
+    return hoja->hijoIzq == NULL && hoja->hijoDer == NULL;
 }
 
 int apilarDinamica(t_pila *PP, const t_dato *pd)

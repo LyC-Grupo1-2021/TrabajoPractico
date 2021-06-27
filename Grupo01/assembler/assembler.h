@@ -6,8 +6,14 @@
 int toAssembler(nodo *);
 int printHeader();
 int printData();
-int printInstructions();
+int printInstructions(nodo *);
 int printFooter();
 char * checkEmptyValue(char *);
+void pushLabel(const int);
+void recorrerArbolParaAssembler(FILE *, nodo*);
+int getTopLabelStack(const int);
+int popLabel(const int);
+void setOperation(FILE *, nodo *);
+int isArithmetic(const char *);
 
 #endif

@@ -1,0 +1,9 @@
+
+.CODE
+START:
+MOV AX,@DATA
+MOV DS,AX
+MOV es,ax
+FINIT
+FFREE
+

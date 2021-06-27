@@ -12,6 +12,7 @@ typedef struct nodo{
     char dato[20];
     struct nodo* hijoDer;
     struct nodo* hijoIzq;
+    int tipo;
 }nodo;
 
 // Estructura para el dato de la pila dinamica
@@ -28,14 +29,11 @@ typedef struct s_nodo
 typedef t_nodo* t_pila;
 
 nodo* crearNodo(const char* , nodo* , nodo* );
-nodo* crearHoja(const char*);
+nodo* crearHoja(const char*, int);
 void liberarMemoria(nodo* );
 void llenarGragh(nodo* , FILE*, int );
 void escribirGragh(nodo*);
-int inOrden(FILE *, nodo *);
-void escribirArbol(nodo *padre);
 int esHoja(nodo *hoja);
-void escribeLog(const char *, const char *, const char *);
 
 int apilarDinamica(t_pila *, const t_dato *);
 int desapilarDinamica(t_pila *,t_dato *);

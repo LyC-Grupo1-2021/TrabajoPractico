@@ -1,9 +1,11 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
 var                                     STRING                                            3                        IDENTIFICADOR            
 a                                                                                         1                        IDENTIFICADOR            
-_2                                      INTEGER                  2                                                 CTE_INTEGER              
 b                                                                                         1                        IDENTIFICADOR            
-_7                                      INTEGER                  7                                                 CTE_INTEGER              
-@aux                                    INTEGER                                                                    VARIABLE_AUXILIAR        
-_12                                     INTEGER                  12                                                CTE_INTEGER              
-_Hola mundo!                            STRING                   Hola mundo!              11                       CTE_STRING               
+c                                                                                         1                        IDENTIFICADOR            
+_4                                      INTEGER                  4                                                 CTE_INTEGER              
+_8                                      INTEGER                  8                                                 CTE_INTEGER              
+r                                                                                         1                        IDENTIFICADOR            
+d                                                                                         1                        IDENTIFICADOR            
+f                                                                                         1                        IDENTIFICADOR            
+_NICO                                   STRING                   NICO                     4                        CTE_STRING               

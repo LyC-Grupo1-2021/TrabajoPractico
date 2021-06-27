@@ -12,11 +12,16 @@
 #define ERROR -1
 
 //Numero arbitrarios para tipos de datos
+#define TOKEN_NULL 10
 #define TOKEN_CTE_INTEGER 20
 #define TOKEN_CTE_FLOAT 30
 #define TOKEN_CTE_STRING 40
 #define TOKEN_ID 50
 #define VARIABLE_AUXILIAR 60
+
+
+#define LABEL_IF 70
+#define LABEL_WHILE 80
 
 
 #endif
