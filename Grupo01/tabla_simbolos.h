@@ -22,4 +22,7 @@ char * mapNombreTipoToken(int);
 char * castConst(const char *);
 void actualizarTipoDatoAID(char *, char *);
 int getPosicionTS();
+int getTipo(char * );
+int typeDecorator(const int tipo_token);
+int resolveType(int tipo1, int tipo2);
 #endif

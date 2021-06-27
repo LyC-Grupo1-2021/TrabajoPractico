@@ -280,23 +280,26 @@
     }
   ;
   en_lista:
-    INLIST PAR_A ID {ptrIdList = crearHoja($3, TOKEN_NULL); strcpy(idEnLista, $3);} PYC COR_A lista_expresiones COR_C PAR_C {
-      printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");
-      en_listaPtr = lista_expresionesPtr;
-    }
+    INLIST PAR_A ID {
+        ptrIdList = crearHoja($3, getTipo($3)); strcpy(idEnLista, $3);
+      } PYC COR_A lista_expresiones COR_C PAR_C {
+        printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");
+        en_listaPtr = lista_expresionesPtr;
+      }
   ;
   lista_expresiones:
     expresion {
       printf("\t{expresion} es lista_expresiones\n");
-      lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_NULL), desapilar());
+      
+      lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_CTE_INTEGER), desapilar());
       lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, ptrIdList);
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true", TOKEN_NULL)); 
     }|
     lista_expresiones PYC expresion {
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
       lista_expresionesAntPtr = lista_expresionesPtr; // Para no perderlo
-      lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_NULL), desapilar());
-      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(idEnLista, TOKEN_NULL));
+      lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_CTE_INTEGER), desapilar());
+      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(idEnLista, getTipo(idEnLista)));
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true", TOKEN_NULL)); 
       lista_expresionesPtr = crearNodo(";", lista_expresionesAntPtr, lista_expresionesPtr);
     }
@@ -308,23 +311,23 @@
     }|
     asignacion OP_ASIG CONST_STRING PYC {
       printf("\t{asignacion OP_ASIG CONST_STRING PYC} es lista_asignacion\n");
-      lista_asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3, TOKEN_NULL));
+      lista_asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3, TOKEN_CTE_STRING));
     }
   ;
   asignacion:
     asignacion OP_ASIG ID {
       printf("\t {asignacion OP_ASIG ID} es asignacion\n");
-      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3, TOKEN_NULL));
+      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3, getTipo($3)));
     }|
     ID {
       printf("\t{ID} es asignacion\n");
-      asignacionPtr = crearHoja($1, TOKEN_NULL);
+      asignacionPtr = crearHoja($1, getTipo($1));
     }
   ;
   lectura:
     READ CONST_STRING PYC {
       printf("\t{READ CONST_STRING PYC} es lectura\n");
-      lecturaPtr = crearNodo("READ", crearHoja($2, TOKEN_NULL), NULL);
+      lecturaPtr = crearNodo("READ", crearHoja($2, TOKEN_CTE_STRING), NULL);
     }|
     READ expresion PYC {
       printf("\t{READ expresion PYC} es lectura\n");
@@ -334,7 +337,7 @@
   impresion:
     WRITE CONST_STRING PYC {
       printf("\t{WRITE CONST_STRING PYC} es impresion\n");
-      impresionPtr = crearNodo("WRITE", crearHoja($2, TOKEN_NULL), NULL);
+      impresionPtr = crearNodo("WRITE", crearHoja($2, TOKEN_CTE_STRING), NULL);
     }|
     WRITE expresion PYC {
       printf("\t{WRITE expresion PYC} es impresion\n");
@@ -381,15 +384,15 @@
     }|
     ID {
       printf("\t{ID} es factor\n");
-      factorPtr = crearHoja($1, TOKEN_NULL);
+      factorPtr = crearHoja($1, getTipo($1));
     }|
     CONST_INTEGER {
       printf("\t{CONST_INTEGER} es factor\n");
-      factorPtr = crearHoja(castConst($1), TOKEN_NULL);
+      factorPtr = crearHoja(castConst($1), TOKEN_CTE_INTEGER);
     }|
     CONST_FLOAT { 
       printf("\t{CONST_FLOAT} es factor\n");      
-      factorPtr = crearHoja(castConst($1), TOKEN_NULL);
+      factorPtr = crearHoja(castConst($1), TOKEN_CTE_FLOAT);
     }
   ;
 %%

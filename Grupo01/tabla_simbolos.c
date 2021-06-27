@@ -93,7 +93,45 @@ void actualizarTipoDatoAID(char * id, char * tipo) {
 	}		
 }
 
+int getTipo(char * id) {
+	int i;
+	for (i = 0; i < pos; i++) {
+		if (strcmp(tablaSimb[i].nombre, id) == 0) {
+			return tablaSimb[i].tipo_token;
+		}
+	}
+	return -1;
+}
+
+
 
 int getPosicionTS(){
     return pos;
+}
+
+
+int resolveType(int type1, int type2) {
+	type1 = typeDecorator(type1);
+	type2 = typeDecorator(type2);
+	const int retType = typeCompatibility[type1][type2];
+	if (retType == TIPO_ERROR) {
+		yyerror("EXISTE UN ERROR DE COMPATIBILIDAD DE TIPOS");
+	}
+
+    return retType;
+}
+
+
+int typeDecorator(const int tipo_token) {
+	switch(tipo_token) {
+		case TOKEN_CTE_INTEGER:
+			return TIPO_INTEGER;
+		case TOKEN_CTE_FLOAT:
+			return TIPO_FLOAT;
+		case TOKEN_CTE_STRING:
+			return TIPO_STRING;
+		case TOKEN_ID:
+			return TIPO_ERROR;
+	}
+	return tipo_token;
 }

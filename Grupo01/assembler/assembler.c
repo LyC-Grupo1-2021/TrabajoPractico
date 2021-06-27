@@ -13,6 +13,8 @@ int stackNumLabelIf [25];
 int topStackIf = 0;
 int topStackWhile = 0;
 
+int addCodeToProcesString = 0;
+
 int toAssembler(nodo * root){
     if(printHeader() == -1){
         printf("Error al generar el assembler");
@@ -62,7 +64,7 @@ int printData(){
 	fprintf(fp, "\t.DATA\n");    
     // fprintf(fp, "\tTRUE equ 1\n");
     // fprintf(fp, "\tFALSE equ 0\n");
-    // fprintf(fp, "\tMAXTEXTSIZE equ %d\n", 200);
+    fprintf(fp, "\tMAXTEXTSIZE equ %d\n", 200);
 
     //Aca va la tabla de simbolo con todos los auxiliares
     int i;
@@ -75,34 +77,34 @@ int printData(){
             fprintf(fp, "%-32s\tdd\t%s\n", tablaSimb[i].nombre, checkEmptyValue(tablaSimb[i].valor));
     }
 
-    // fprintf(fp, "\n.CODE\n");
-    // if (addProcToAssignString == 1) {
-    //     // Agrego los procesimiento para asginar string
-    //     fprintf(fp, "strlen proc\n");
-    //     fprintf(fp, "\tmov bx, 0\n");
-    //     fprintf(fp, "\tstrLoop:\n");
-    //     fprintf(fp, "\t\tcmp BYTE PTR [si+bx],'$'\n");
-    //     fprintf(fp, "\t\tje strend\n");
-    //     fprintf(fp, "\t\tinc bx\n");
-    //     fprintf(fp, "\t\tjmp strLoop\n");
-    //     fprintf(fp, "\tstrend:\n");
-    //     fprintf(fp, "\t\tret\n");
-    //     fprintf(fp, "strlen endp\n");
+    fprintf(fp, "\n.CODE\n");
+    if (addCodeToProcesString == 1) {
+        // Agrego los procesimiento para asginar string
+        fprintf(fp, "strlen proc\n");
+        fprintf(fp, "\tmov bx, 0\n");
+        fprintf(fp, "\tstrLoop:\n");
+        fprintf(fp, "\t\tcmp BYTE PTR [si+bx],'$'\n");
+        fprintf(fp, "\t\tje strend\n");
+        fprintf(fp, "\t\tinc bx\n");
+        fprintf(fp, "\t\tjmp strLoop\n");
+        fprintf(fp, "\tstrend:\n");
+        fprintf(fp, "\t\tret\n");
+        fprintf(fp, "strlen endp\n");
 
-    //     fprintf(fp, "assignString proc\n");
-    //     fprintf(fp, "\tcall strlen\n");
-    //     fprintf(fp, "\tcmp bx , MAXTEXTSIZE\n");
-    //     fprintf(fp, "\tjle assignStringSizeOk\n");
-    //     fprintf(fp, "\tmov bx , MAXTEXTSIZE\n");
-    //     fprintf(fp, "\tassignStringSizeOk:\n");
-    //     fprintf(fp, "\t\tmov cx , bx\n");
-    //     fprintf(fp, "\t\tcld\n");
-    //     fprintf(fp, "\t\trep movsb\n");
-    //     fprintf(fp, "\t\tmov al , '$'\n");
-    //     fprintf(fp, "\t\tmov byte ptr[di],al\n");
-    //     fprintf(fp, "\t\tret\n");
-    //     fprintf(fp, "assignString endp\n");
-    // }
+        fprintf(fp, "assignString proc\n");
+        fprintf(fp, "\tcall strlen\n");
+        fprintf(fp, "\tcmp bx , MAXTEXTSIZE\n");
+        fprintf(fp, "\tjle assignStringSizeOk\n");
+        fprintf(fp, "\tmov bx , MAXTEXTSIZE\n");
+        fprintf(fp, "\tassignStringSizeOk:\n");
+        fprintf(fp, "\t\tmov cx , bx\n");
+        fprintf(fp, "\t\tcld\n");
+        fprintf(fp, "\t\trep movsb\n");
+        fprintf(fp, "\t\tmov al , '$'\n");
+        fprintf(fp, "\t\tmov byte ptr[di],al\n");
+        fprintf(fp, "\t\tret\n");
+        fprintf(fp, "assignString endp\n");
+    }
 
     fclose(fp);
     return 0;
@@ -117,7 +119,7 @@ int printInstructions(nodo * root){
 		return -1;
 	}
 
-    fprintf(fp, "\n.CODE\nSTART:\nMOV AX,@DATA\nMOV DS,AX\nMOV es,ax\nFINIT\nFFREE\n\n");
+    fprintf(fp, "\nSTART:\nMOV AX,@DATA\nMOV DS,AX\nMOV es,ax\nFINIT\nFFREE\n\n");
 	recorrerArbolParaAssembler(fp, root);
 	fclose(fp);
 	return 0;
@@ -216,7 +218,7 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         
         if (esHoja(root->hijoIzq) && esHoja(root->hijoDer)) {
             // soy nodo mas a la izquierda con dos hijos hojas
-            //setOperation(fp, root);
+            setOperation(fp, root);
             
             // reduzco arbol
             root->hijoIzq = NULL;
@@ -261,70 +263,93 @@ int popLabel(const int labelType) {
 }
 
 
-// void setOperation(FILE * fp, nodo * root){
-//       if(isArithmetic(root->dato)) {
-//         if(strcmp(root->dato, ":") == 0) {
-//             if (root->tipo == TOKEN_CTE_STRING) {
-//                 addProcToAssignString = 1; 
-//                 fprintf(fp, "MOV si, OFFSET   %s\n", root->hijoDer);
-//                 fprintf(fp, "MOV di, OFFSET  %s\n", root->hijoIzq);
-//                 fprintf(fp, "CALL assignString\n");
-//             } else {
+void setOperation(FILE * fp, nodo * root){
+      if(isArithmetic(root->dato)) {
+        if(strcmp(root->dato, ":") == 0) {
+            if (root->tipo == TOKEN_CTE_STRING) {
+                addCodeToProcesString = 1; 
+                fprintf(fp, "MOV si, OFFSET   %s\n", root->hijoDer);
+                fprintf(fp, "MOV di, OFFSET  %s\n", root->hijoIzq);
+                fprintf(fp, "CALL assignString\n");
+            } else {
+                //ASIGNACION DE ALGO QUE NO ES UN STRING (FLOAT O INT)
+                fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato);
+                fprintf(fp, "f%sstp %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato);
+            }
+        } else {
+            fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq
+            fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der st1 = izq
+            fprintf(fp, "%s\n", getArithmeticInstruction(root->dato));
+            fprintf(fp, "f%sstp @aux%d\n", determinarDescargaPila(root), pedirAux(root->tipo));
 
-//                 if (strcmp(root->hijoIzq->dato, "@NUMFACT") == 0) {
-//                     hayFactorial = 1;
-//                     tsInsertarToken(CTE_STRING, "_errorFact", "\"Error factorial\"", 16);
-//                     tsInsertarToken(CTE_INTEGER, "0", "0", 0);
-                    
-//                     fprintf(fp, "fild %s\n", root->hijoDer->dato);
-//                     fprintf(fp, "fild _0\n");
-//                     fprintf(fp, "fcom\n");
-//                     fprintf(fp, "fstsw ax\n");
-//                     fprintf(fp, "sahf\n");
-//                     fprintf(fp, "JNBE showErrorFact\n");
-//                 }
-//                 fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato);
-//                 fprintf(fp, "f%sstp %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato);
-//             }
-//         } else {
-//             fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq
-//             fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der st1 = izq
-//             fprintf(fp, "%s\n", obtenerInstruccionAritmetica(root->dato));
-//             fprintf(fp, "f%sstp @aux%d\n", determinarDescargaPila(root), pedirAux(root->tipo));
+            // Guardo en el arbol el dato del resultado, si uso un aux
+            sprintf(root->dato, "@aux%d", cantAux);
+        }
+    }
 
-//             // Guardo en el arbol el dato del resultado, si uso un aux
-//             sprintf(root->dato, "@aux%d", cantAux);
-//         }
-//     }
+    if(isComparation(root->dato)) {
+        // esto funciona para comparaciones simples
+        fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der
+        fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq  st1 = der
+        fprintf(fp, "fcom\n"); // compara ST0 con ST1"
+        fprintf(fp, "fstsw ax\n");
+        fprintf(fp, "sahf\n");
+        if (esWhile)
+            fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), getTopLabelStack(LABEL_WHILE));
+        else
+            fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), getTopLabelStack(LABEL_IF));
+    }
 
-//     if(esComparacion(root->dato)) {
-//         // esto funciona para comparaciones simples
-//         fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der
-//         fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq  st1 = der
-//         fprintf(fp, "fcom\n"); // compara ST0 con ST1"
-//         fprintf(fp, "fstsw ax\n");
-//         fprintf(fp, "sahf\n");
-//         if (esWhile)
-//             fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), verTopePilaEtiqueta(ETIQUETA_WHILE));
-//         else
-//             fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), verTopePilaEtiqueta(ETIQUETA_IF));
-//     }
+    if(strcmp(root->dato, "READ") == 0) {
+        fprintf(fp, "%s %s\n", obtenerInstruccionGet(root->hijoIzq), root->hijoIzq->dato);
+    }
 
-//     if(strcmp(root->dato, "GET") == 0) {
-//         fprintf(fp, "%s %s\n", obtenerInstruccionGet(root->hijoIzq), root->hijoIzq->dato);
-//     }
-
-//     if(strcmp(root->dato, "DISPLAY") == 0) {
-//         fprintf(fp, "%s\n", obtenerInstruccionDisplay(root->hijoDer));
-//         fprintf(fp, "newLine 1\n");
-//     }
-// }
+    if(strcmp(root->dato, "WRITE") == 0) {
+        fprintf(fp, "%s\n", obtenerInstruccionDisplay(root->hijoDer));
+        fprintf(fp, "newLine 1\n");
+    }
+}
 
 
 int isArithmetic(const char *operator) {
     return strcmp(operator, "+") == 0 ||
         strcmp(operator, "/") == 0 ||
         strcmp(operator, "*") == 0 ||
-        strcmp(operator, ":=") == 0 || 
+        strcmp(operator, ":") == 0 || 
         strcmp(operator, "-") == 0;
+}
+
+char *determinarCargaPila(const nodo * raiz, const nodo * hijo) {
+    if (typeDecorator(hijo->tipo) == TOKEN_CTE_INTEGER) {
+        return "i";
+    }
+    return "";
+}
+
+char *determinarDescargaPila(const nodo * raiz) {
+    if (typeDecorator(raiz->tipo) == TOKEN_CTE_INTEGER) {
+        return "i";
+    }
+    return "";
+}
+
+char* getArithmeticInstruction(const char *operator) {
+    if (strcmp(operator, "+") == 0)
+        return "fadd";
+    if (strcmp(operator, "-") == 0)
+        return "fsub";
+    if (strcmp(operator, "*") == 0)
+        return "fmul";
+    if (strcmp(operator, "/") == 0)
+        return "fdiv";
+}
+
+
+int isComparation(const char *comp) {
+    return strcmp(comp, ">") == 0 ||
+    strcmp(comp, ">=") == 0 ||
+    strcmp(comp, "<") == 0 ||
+    strcmp(comp, "<=") == 0 ||
+    strcmp(comp, "==") == 0 ||
+    strcmp(comp, "!=") == 0;
 }
