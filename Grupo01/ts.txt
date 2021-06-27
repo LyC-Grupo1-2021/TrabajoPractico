@@ -1,11 +1,18 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
-var                                     STRING                                            3                        IDENTIFICADOR            
-a                                                                                         1                        IDENTIFICADOR            
-b                                                                                         1                        IDENTIFICADOR            
-c                                                                                         1                        IDENTIFICADOR            
-_4                                      INTEGER                  4                                                 CTE_INTEGER              
-_8                                      INTEGER                  8                                                 CTE_INTEGER              
-r                                                                                         1                        IDENTIFICADOR            
-d                                                                                         1                        IDENTIFICADOR            
-f                                                                                         1                        IDENTIFICADOR            
-_NICO                                   STRING                   NICO                     4                        CTE_STRING               
+texto                                   STRING                                            5                        IDENTIFICADOR            
+contador                                INTEGER                                           8                        IDENTIFICADOR            
+promedio                                FLOAT                                             8                        IDENTIFICADOR            
+actual                                  FLOAT                                             6                        IDENTIFICADOR            
+suma                                    FLOAT                                             4                        IDENTIFICADOR            
+a                                       INTEGER                                           1                        IDENTIFICADOR            
+b                                       INTEGER                                           1                        IDENTIFICADOR            
+a1                                      INTEGER                                           2                        IDENTIFICADOR            
+a2                                      INTEGER                                           2                        IDENTIFICADOR            
+a3                                      INTEGER                                           2                        IDENTIFICADOR            
+a4                                      INTEGER                                           2                        IDENTIFICADOR            
+_2                                      INTEGER                  2                                                 CTE_INTEGER              
+_7                                      INTEGER                  7                                                 CTE_INTEGER              
+@aux                                    INTEGER                                                                    VARIABLE_AUXILIAR        
+_12                                     INTEGER                  12                                                CTE_INTEGER              
+_hola                                   STRING                   hola                     4                        CTE_STRING               
+_Hola mundo!                            STRING                   Hola mundo!              11                       CTE_STRING               

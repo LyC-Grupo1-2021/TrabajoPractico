@@ -74,6 +74,21 @@ char * mapNombreTipoToken(const int tipo) {
 	}
 }
 
+char * mapNombreTipoDato(const int tipo) {
+	switch(tipo) {
+		case TOKEN_CTE_FLOAT:
+			return "FLOAT";
+		case TOKEN_CTE_INTEGER:
+			return "INTEGER";
+		case TOKEN_CTE_STRING:
+			return "STRING";
+		case TOKEN_ID:
+			return "";
+        case VARIABLE_AUXILIAR:
+            return "";
+	}
+}
+
 char * castConst(const char * value){
     char name[32] = "_";
     strcat(name, value);

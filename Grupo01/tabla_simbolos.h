@@ -25,4 +25,5 @@ int getPosicionTS();
 int getTipo(char * );
 int typeDecorator(const int tipo_token);
 int resolveType(int tipo1, int tipo2);
+char * mapNombreTipoDato(const int);
 #endif

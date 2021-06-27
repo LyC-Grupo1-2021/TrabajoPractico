@@ -1,7 +1,18 @@
 DECVAR
-    var: String;
+    texto: String;
+    contador: Integer;
+    promedio: Float;
+    actual, suma: Float; 
+    a,b, a1, a2, a3, a4: Integer;
 ENDDEC
 
+-/ donde base es una variable /-
 
-a:b:c: 4*8;
-r:d:f: "NICO";
+if(INLIST (a; [2 / b + 7; 12])){
+   write "hola";
+}
+
+   
+
+write "Hola mundo!"; -/ "comentarios" /-
+-/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-

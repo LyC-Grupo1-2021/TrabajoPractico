@@ -19,4 +19,10 @@ char *determinarCargaPila(const nodo *, const nodo *);
 char *determinarDescargaPila(const nodo *);
 char* getArithmeticInstruction(const char *);
 int isComparation(const char *);
+
+int pedirAux(const int);
+char* obtenerSalto();
+char* obtenerInstruccionComparacion(const char *);
+char* obtenerInstruccionDisplay(nodo*);
+char* obtenerInstruccionGet(nodo*);
 #endif

@@ -1,5 +1,5 @@
 #include "assembler.h"
-
+int cantAux = 0;
 int hasElse = 0;
 int ORcondition = 0;
 int isWhile = 0;
@@ -9,6 +9,7 @@ int numLabelIf = 0;
 
 int stackNumLabelWhile [25];
 int stackNumLabelIf [25];
+char instruccionDisplay[60];
 
 int topStackIf = 0;
 int topStackWhile = 0;
@@ -294,7 +295,7 @@ void setOperation(FILE * fp, nodo * root){
         fprintf(fp, "fcom\n"); // compara ST0 con ST1"
         fprintf(fp, "fstsw ax\n");
         fprintf(fp, "sahf\n");
-        if (esWhile)
+        if (isWhile)
             fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), getTopLabelStack(LABEL_WHILE));
         else
             fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), getTopLabelStack(LABEL_IF));
@@ -326,6 +327,7 @@ char *determinarCargaPila(const nodo * raiz, const nodo * hijo) {
     return "";
 }
 
+
 char *determinarDescargaPila(const nodo * raiz) {
     if (typeDecorator(raiz->tipo) == TOKEN_CTE_INTEGER) {
         return "i";
@@ -344,6 +346,40 @@ char* getArithmeticInstruction(const char *operator) {
         return "fdiv";
 }
 
+char* obtenerInstruccionComparacion(const char *comparador) {
+    // Esto nos va a servir para cuando venga un OR, ya que hay que invertir la primer comparacion
+    // para que pueda evaluar las dos, sin hacer tantos if
+    if(ORcondition) {
+        ORcondition = 0;
+        if (strcmp(comparador, ">") == 0)
+            return "JNBE";
+        if (strcmp(comparador, ">=") == 0)
+            return "JNB";
+        if (strcmp(comparador, "<") == 0)
+            return "JNAE";
+        if (strcmp(comparador, "<=") == 0)
+            return "JNA";
+        if (strcmp(comparador, "==") == 0)
+            return "JE";
+        if (strcmp(comparador, "!=") == 0)
+            return "JNE";
+    } else {
+        if (strcmp(comparador, ">") == 0)
+            return "JNA";
+        if (strcmp(comparador, ">=") == 0)
+            return "JNAE";
+        if (strcmp(comparador, "<") == 0)
+            return "JNB";
+        if (strcmp(comparador, "<=") == 0)
+            return "JNBE";
+        if (strcmp(comparador, "==") == 0)
+            return "JNE";
+        if (strcmp(comparador, "!=") == 0)
+            return "JE";
+    }
+}
+
+
 
 int isComparation(const char *comp) {
     return strcmp(comp, ">") == 0 ||
@@ -352,4 +388,56 @@ int isComparation(const char *comp) {
     strcmp(comp, "<=") == 0 ||
     strcmp(comp, "==") == 0 ||
     strcmp(comp, "!=") == 0;
+}
+
+/*******POSIBLE ERROR**********/
+int pedirAux(const int tipo) {
+    cantAux++;
+    char aux[10];
+    sprintf(aux, "@aux%d", cantAux);
+    // grabarToken(int token, char* tipo, char *nombre, char *valor, int longitud)
+    grabarToken(tipo, mapNombreTipoDato(tipo) , aux, "", 0);
+    return cantAux;
+}
+
+char* obtenerSalto() {
+    if(ORcondition) {
+        if(isWhile)
+            return "startWhile";
+        return "startIf";
+    } else {
+        if(isWhile)
+            return "endwhile";
+        if (hasElse) {
+            return "else";
+        } else {
+            return "endif";
+        }
+    }
+}
+
+char* obtenerInstruccionDisplay(nodo* nodo) {
+    // Los prints solo se permiten pueden IDs o strings
+    int tipo = nodo->tipo;
+
+    if (tipo == TIPO_INTEGER) {
+        sprintf(instruccionDisplay, "DisplayInteger %s", nodo);
+    } else if (tipo == TIPO_FLOAT) {
+        sprintf(instruccionDisplay, "DisplayFloat %s,2", nodo);
+    } else if (tipo == TIPO_STRING) {
+        sprintf(instruccionDisplay, "displayString %s", nodo);
+    } else if (tipo == TOKEN_CTE_STRING) {
+        sprintf(instruccionDisplay, "displayString %s", castConst(nodo->dato));
+    }
+    return instruccionDisplay;
+}
+
+char* obtenerInstruccionGet(nodo* nodo) {
+    // Solo se permite get para IDs
+    if (nodo->tipo == TIPO_INTEGER)
+        return "GetInteger";
+    if (nodo->tipo == TIPO_FLOAT)
+        return "GetFloat";
+    if (nodo->tipo == TIPO_STRING)
+        return "getString";
 }
