@@ -1,0 +1,14 @@
+
+START:
+MOV AX,@DATA
+MOV DS,AX
+MOV es,ax
+FINIT
+FFREE
+
+fild _2
+fild _3
+fadd
+fstp @aux1
+fld @aux1
+fstp var

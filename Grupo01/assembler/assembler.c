@@ -281,6 +281,7 @@ void setOperation(FILE * fp, nodo * root){
             fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq
             fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der st1 = izq
             fprintf(fp, "%s\n", getArithmeticInstruction(root->dato));
+            
             fprintf(fp, "f%sstp @aux%d\n", determinarDescargaPila(root), pedirAux(root->tipo));
 
             // Guardo en el arbol el dato del resultado, si uso un aux
@@ -321,7 +322,7 @@ int isArithmetic(const char *operator) {
 }
 
 char *determinarCargaPila(const nodo * raiz, const nodo * hijo) {
-    if (typeDecorator(hijo->tipo) == TOKEN_CTE_INTEGER) {
+    if (typeDecorator(hijo->tipo) == TIPO_INTEGER) {
         return "i";
     }
     return "";
@@ -329,7 +330,7 @@ char *determinarCargaPila(const nodo * raiz, const nodo * hijo) {
 
 
 char *determinarDescargaPila(const nodo * raiz) {
-    if (typeDecorator(raiz->tipo) == TOKEN_CTE_INTEGER) {
+    if (typeDecorator(raiz->tipo) == TIPO_INTEGER) {
         return "i";
     }
     return "";
@@ -391,12 +392,12 @@ int isComparation(const char *comp) {
 }
 
 /*******POSIBLE ERROR**********/
-int pedirAux(const int tipo) {
+int pedirAux() {
     cantAux++;
     char aux[10];
     sprintf(aux, "@aux%d", cantAux);
-    // grabarToken(int token, char* tipo, char *nombre, char *valor, int longitud)
-    grabarToken(tipo, mapNombreTipoDato(tipo) , aux, "", 0);
+
+    grabarToken(TOKEN_ID, "FLOAT" , aux, "", strlen(aux));
     return cantAux;
 }
 

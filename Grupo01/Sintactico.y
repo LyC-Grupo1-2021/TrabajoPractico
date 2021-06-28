@@ -114,10 +114,8 @@
     main {
       printf("\n----------------\nCompilacion OK\n----------------\n");
       escribirGragh(programaPtr);
-      //toAssembler(programaPtr);
-      printf("ANTES\n");
+      toAssembler(programaPtr);
       crearArchivo(); //tabla de simbolos
-      printf("DESPUES\n");
     }
   ;
   main:

@@ -70,7 +70,6 @@ void escribirGragh(nodo* padre) {
     fprintf(archivo, "%s", "}");
     
     fclose(archivo);
-    liberarMemoria(padre);
     return;
 }
 

@@ -1,18 +1,6 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
-texto                                   STRING                                            5                        IDENTIFICADOR            
-contador                                INTEGER                                           8                        IDENTIFICADOR            
-promedio                                FLOAT                                             8                        IDENTIFICADOR            
-actual                                  FLOAT                                             6                        IDENTIFICADOR            
-suma                                    FLOAT                                             4                        IDENTIFICADOR            
-a                                       INTEGER                                           1                        IDENTIFICADOR            
-b                                       INTEGER                                           1                        IDENTIFICADOR            
-a1                                      INTEGER                                           2                        IDENTIFICADOR            
-a2                                      INTEGER                                           2                        IDENTIFICADOR            
-a3                                      INTEGER                                           2                        IDENTIFICADOR            
-a4                                      INTEGER                                           2                        IDENTIFICADOR            
+var                                     INTEGER                                           3                        IDENTIFICADOR            
 _2                                      INTEGER                  2                                                 CTE_INTEGER              
-_7                                      INTEGER                  7                                                 CTE_INTEGER              
-@aux                                    INTEGER                                                                    VARIABLE_AUXILIAR        
-_12                                     INTEGER                  12                                                CTE_INTEGER              
-_hola                                   STRING                   hola                     4                        CTE_STRING               
-_Hola mundo!                            STRING                   Hola mundo!              11                       CTE_STRING               
+_3                                      INTEGER                  3                                                 CTE_INTEGER              
+actual                                                                                    6                        IDENTIFICADOR            
+@aux1                                   FLOAT                                             5                        IDENTIFICADOR            

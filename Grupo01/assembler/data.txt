@@ -1,21 +1,8 @@
 	.DATA
 	MAXTEXTSIZE equ 200
-texto                           	dd	?
-contador                        	dd	?
-promedio                        	dd	?
-actual                          	dd	?
-suma                            	dd	?
-a                               	dd	?
-b                               	dd	?
-a1                              	dd	?
-a2                              	dd	?
-a3                              	dd	?
-a4                              	dd	?
+var                             	dd	?
 _2                              	dd	2
-_7                              	dd	7
-@aux                            	dd	?
-_12                             	dd	12
-_hola                           	db	hola,'$', 4 dup (?)
-_Hola mundo!                    	db	Hola mundo!,'$', 11 dup (?)
+_3                              	dd	3
+actual                          	dd	?
 
 .CODE
