@@ -42,7 +42,7 @@ int toAssembler(nodo * root){
 int printHeader(){
     FILE * fp = fopen("assembler/header.txt", "w");
 	if (fp == NULL) {
-		printf("Error abierndo el archivo del header\n");
+		printf("Error abriendo el archivo del header\n");
 		return -1;
 	}
 
@@ -80,7 +80,7 @@ int printData(){
 
     fprintf(fp, "\n.CODE\n");
     if (addCodeToProcesString == 1) {
-        // Agrego los procesimiento para asginar string
+        // Agrego los procesimientos para asignar string
         fprintf(fp, "strlen proc\n");
         fprintf(fp, "\tmov bx, 0\n");
         fprintf(fp, "\tstrLoop:\n");
@@ -153,8 +153,7 @@ char * checkEmptyValue(char *value) {
     return value;
 }
 
-
-/* Funcion que recorre el arbol*/
+// Función que recorre el arbol y llena el archivo instruction.txt con las instrucciones de assembler que correspondan
 void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
     if (root != NULL) {
         int currentIfNode = 0;
@@ -228,7 +227,7 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
     }
 }
 
-
+//Guarda en una pila el número de etiqueta correspondiente dependiendo de si el parámetro que se pasa es del tipo if o del tipo while.
 void pushLabel(const int labelType) {
     if (labelType == LABEL_IF) {
         numLabelIf++;
@@ -243,6 +242,7 @@ void pushLabel(const int labelType) {
     }
 }
 
+//Obtiene la etiqueta correspondiente del tope de la pila dependiendo del parámetro que se pase.
 int getTopLabelStack(const int labelType) {
     if (labelType == LABEL_IF) {
         return stackNumLabelIf[topStackIf - 1];
@@ -252,6 +252,7 @@ int getTopLabelStack(const int labelType) {
     }
 }
 
+//Saca de la pila el elemento que corresponda al tope, dependiendo del parámetro que se pase.
 int popLabel(const int labelType) {
     if (labelType == LABEL_IF) {
         topStackIf--;
@@ -263,7 +264,7 @@ int popLabel(const int labelType) {
     }
 }
 
-
+//Determina la operación entre el nodo, y sus 2 hijos, y escribe las instrucciones assembler en el archivo.
 void setOperation(FILE * fp, nodo * root){
       if(isArithmetic(root->dato)) {
         if(strcmp(root->dato, ":") == 0) {
@@ -297,22 +298,22 @@ void setOperation(FILE * fp, nodo * root){
         fprintf(fp, "fstsw ax\n");
         fprintf(fp, "sahf\n");
         if (isWhile)
-            fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), getTopLabelStack(LABEL_WHILE));
+            fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_WHILE));
         else
-            fprintf(fp, "%s %s%d\n", obtenerInstruccionComparacion(root->dato), obtenerSalto(), getTopLabelStack(LABEL_IF));
+            fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_IF));
     }
 
     if(strcmp(root->dato, "READ") == 0) {
-        fprintf(fp, "%s %s\n", obtenerInstruccionGet(root->hijoIzq), root->hijoIzq->dato);
+        fprintf(fp, "%s %s\n", getInstructionGet(root->hijoIzq), root->hijoIzq->dato);
     }
 
     if(strcmp(root->dato, "WRITE") == 0) {
-        fprintf(fp, "%s\n", obtenerInstruccionDisplay(root->hijoDer));
+        fprintf(fp, "%s\n", getDisplayInstruction(root->hijoDer));
         fprintf(fp, "newLine 1\n");
     }
 }
 
-
+//Devuelve true o false dependiendo si el operador que se pasa por parámetro es del tipo aritmético.
 int isArithmetic(const char *operator) {
     return strcmp(operator, "+") == 0 ||
         strcmp(operator, "/") == 0 ||
@@ -321,6 +322,7 @@ int isArithmetic(const char *operator) {
         strcmp(operator, "-") == 0;
 }
 
+//Si el tipo de dato del nodo, es del tipo integer, retorna una i, para que la instrucción se procese del tipo integer y sino, que se mantenga del tipo float.
 char *determinarCargaPila(const nodo * raiz, const nodo * hijo) {
     if (typeDecorator(hijo->tipo) == TIPO_INTEGER) {
         return "i";
@@ -328,7 +330,7 @@ char *determinarCargaPila(const nodo * raiz, const nodo * hijo) {
     return "";
 }
 
-
+//Si el tipo de dato del nodo, es del tipo integer, retorna una i, para que la instrucción se procese del tipo integer y sino, que se mantenga del tipo float.
 char *determinarDescargaPila(const nodo * raiz) {
     if (typeDecorator(raiz->tipo) == TIPO_INTEGER) {
         return "i";
@@ -336,6 +338,7 @@ char *determinarDescargaPila(const nodo * raiz) {
     return "";
 }
 
+//Obtiene la instrucción aritmética correspondiente dependiendo del operador.
 char* getArithmeticInstruction(const char *operator) {
     if (strcmp(operator, "+") == 0)
         return "fadd";
@@ -347,7 +350,8 @@ char* getArithmeticInstruction(const char *operator) {
         return "fdiv";
 }
 
-char* obtenerInstruccionComparacion(const char *comparador) {
+//Obtiene la instrucción de comparación correspondiente dependiendo del operador.
+char* getComparationInstruction(const char *comparador) {
     // Esto nos va a servir para cuando venga un OR, ya que hay que invertir la primer comparacion
     // para que pueda evaluar las dos, sin hacer tantos if
     if(ORcondition) {
@@ -380,8 +384,7 @@ char* obtenerInstruccionComparacion(const char *comparador) {
     }
 }
 
-
-
+//Devuelve true o false, dependiendo si el operador es del tipo comparación.
 int isComparation(const char *comp) {
     return strcmp(comp, ">") == 0 ||
     strcmp(comp, ">=") == 0 ||
@@ -392,6 +395,7 @@ int isComparation(const char *comp) {
 }
 
 /*******POSIBLE ERROR**********/
+//Guarda un auxiliar en la tabla de símbolo, por defecto lo genera del tipo float
 int pedirAux() {
     cantAux++;
     char aux[10];
@@ -401,7 +405,8 @@ int pedirAux() {
     return cantAux;
 }
 
-char* obtenerSalto() {
+//Obtiene la etiqueta de comienzo o fin de un if o while, dependiendo de si en la condición hay un OR.
+char* getJump() {
     if(ORcondition) {
         if(isWhile)
             return "startWhile";
@@ -417,8 +422,8 @@ char* obtenerSalto() {
     }
 }
 
-char* obtenerInstruccionDisplay(nodo* nodo) {
-    // Los prints solo se permiten pueden IDs o strings
+//Obtiene la instrucción display del archivo "numbers.asm", y dependiendo del tipo de dato del nodo, lo convierte a array para poder mostrarlo por pantalla.
+char* getDisplayInstruction(nodo* nodo) {
     int tipo = nodo->tipo;
 
     if (tipo == TIPO_INTEGER) {
@@ -433,12 +438,12 @@ char* obtenerInstruccionDisplay(nodo* nodo) {
     return instruccionDisplay;
 }
 
-char* obtenerInstruccionGet(nodo* nodo) {
-    // Solo se permite get para IDs
+//Obtiene la instrucción get del archivo "numbers.asm", es cuando se recibe por teclado algún valor, y convierte al array recibido en integer, float o string, dependiendo del tipo de dato del ID del nodo.
+char* getInstructionGet(nodo* nodo) {
     if (nodo->tipo == TIPO_INTEGER)
         return "GetInteger";
     if (nodo->tipo == TIPO_FLOAT)
         return "GetFloat";
     if (nodo->tipo == TIPO_STRING)
-        return "getString";
+        return "getString"; //No está en el archivo number
 }

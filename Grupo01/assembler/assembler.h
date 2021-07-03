@@ -21,8 +21,8 @@ char* getArithmeticInstruction(const char *);
 int isComparation(const char *);
 
 int pedirAux();
-char* obtenerSalto();
-char* obtenerInstruccionComparacion(const char *);
-char* obtenerInstruccionDisplay(nodo*);
-char* obtenerInstruccionGet(nodo*);
+char* getJump();
+char* getComparationInstruction(const char *);
+char* getDisplayInstruction(nodo*);
+char* getInstructionGet(nodo*);
 #endif

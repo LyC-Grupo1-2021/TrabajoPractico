@@ -2,6 +2,7 @@
 
 int pos = 0;
 
+//Guarda el token en la tabla de símbolo que se encuentra en memoria.
 void grabarToken(int token, char* tipo, char *nombre, char *valor, int longitud) {
     int i;
 
@@ -25,7 +26,7 @@ void grabarToken(int token, char* tipo, char *nombre, char *valor, int longitud)
     pos++;
 }
 
-
+//Crea el archivo de la tabla de símbolos.
 int crearArchivo() {
     int i;
     FILE *txt;
@@ -58,7 +59,7 @@ int crearArchivo() {
     return ARCHIVO_OK;
 }
 
-
+//A partir de la constante interna del tipo de token, obtengo el string del tipo de token.
 char * mapNombreTipoToken(const int tipo) {
 	switch(tipo) {
 		case TOKEN_CTE_FLOAT:
@@ -74,6 +75,7 @@ char * mapNombreTipoToken(const int tipo) {
 	}
 }
 
+//A partir del tipo de token, obtiene el tipo de dato
 char * mapNombreTipoDato(const int tipo) {
 	switch(tipo) {
 		case TOKEN_CTE_FLOAT:
@@ -89,16 +91,14 @@ char * mapNombreTipoDato(const int tipo) {
 	}
 }
 
+//Vuelve a la constante que escribió el programador en el programa, a una variable, así assembler lo puede admitir.
 char * castConst(const char * value){
     char name[32] = "_";
     strcat(name, value);
     return strdup(name);
 }
 
-
-/**
- * Actualiza el tipo de dato del ID en TS
- */
+//Actualiza el tipo de dato del ID en TS
 void actualizarTipoDatoAID(char * id, char * tipo) {
 	int i;
 	for (i = 0; i < pos; i++) {
@@ -108,6 +108,7 @@ void actualizarTipoDatoAID(char * id, char * tipo) {
 	}		
 }
 
+//Obtiene el tipo de token desde la tabla de símbolo que se encuentra en memoria.
 int getTipo(char * id) {
 	int i;
 	for (i = 0; i < pos; i++) {
@@ -118,13 +119,11 @@ int getTipo(char * id) {
 	return -1;
 }
 
-
-
 int getPosicionTS(){
     return pos;
 }
 
-
+//Determina si hay compatibilidad en los tipos de datos pasados por parámetros.
 int resolveType(int type1, int type2) {
 	type1 = typeDecorator(type1);
 	type2 = typeDecorator(type2);
@@ -136,7 +135,7 @@ int resolveType(int type1, int type2) {
     return retType;
 }
 
-
+//Determina el tipo de token, y si es del tipo CTE, también determina su tipo de dato.
 int typeDecorator(const int tipo_token) {
 	switch(tipo_token) {
 		case TOKEN_CTE_INTEGER:
