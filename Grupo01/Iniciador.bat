@@ -13,4 +13,5 @@ del y.tab.c
 del y.output
 del y.tab.h
 del gragh.dot
+del Segunda.exe
 pause

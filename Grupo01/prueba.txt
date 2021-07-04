@@ -4,4 +4,5 @@ ENDDEC
 
 
 var : 2 + 3;
-read actual;
+
+write "MARZU";

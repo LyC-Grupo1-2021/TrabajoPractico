@@ -3,6 +3,8 @@
 var                             	dd	?
 _2                              	dd	2
 _3                              	dd	3
-actual                          	dd	?
+_MARZU                          	db	"MARZU",'$', 5 dup (?)
+@OUTDISPLAY                     	dd	?
+@aux1                           	dd	?
 
 .CODE

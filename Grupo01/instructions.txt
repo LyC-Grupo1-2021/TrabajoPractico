@@ -12,3 +12,5 @@ fadd
 fstp @aux1
 fld @aux1
 fstp var
+displayString _MARZU
+newLine 1

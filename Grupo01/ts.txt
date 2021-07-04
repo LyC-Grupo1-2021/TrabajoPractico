@@ -2,5 +2,6 @@ Nombre                                  TipoDato                 Valor          
 var                                     INTEGER                                           3                        IDENTIFICADOR            
 _2                                      INTEGER                  2                                                 CTE_INTEGER              
 _3                                      INTEGER                  3                                                 CTE_INTEGER              
-actual                                                                                    6                        IDENTIFICADOR            
+_MARZU                                  STRING                   MARZU                    5                        CTE_STRING               
+@OUTDISPLAY                             INTEGER                                                                    VARIABLE_AUXILIAR        
 @aux1                                   FLOAT                                             5                        IDENTIFICADOR            

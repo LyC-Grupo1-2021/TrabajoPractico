@@ -337,11 +337,11 @@
   impresion:
     WRITE CONST_STRING PYC {
       printf("\t{WRITE CONST_STRING PYC} es impresion\n");
-      impresionPtr = crearNodo("WRITE", crearHoja($2, TOKEN_CTE_STRING), NULL);
+      impresionPtr = crearNodo("WRITE", crearHoja("@OUTDISPLAY", TOKEN_CTE_STRING), crearHoja($2, TOKEN_CTE_STRING));
     }|
     WRITE expresion PYC {
       printf("\t{WRITE expresion PYC} es impresion\n");
-      impresionPtr = crearNodo("WRITE", desapilar(), NULL);
+      impresionPtr = crearNodo("WRITE",  crearHoja("@OUTDISPLAY", TOKEN_CTE_STRING), desapilar());
     }
   ;
   expresion:

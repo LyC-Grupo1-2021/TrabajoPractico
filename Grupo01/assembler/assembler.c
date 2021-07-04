@@ -22,13 +22,16 @@ int toAssembler(nodo * root){
         return -1;
     }
 
-    if(printData() == -1){
-        printf("Error al generar la tabla de datos en assembler");
-        return -1;
-    }
-
     if(printInstructions(root) == -1){
         printf("Error al generar las instrucciones de assembler");
+        return -1;
+    }
+    /* 
+        El data se tiene que generar después de las instrucciones porque 
+        las instrucciones pueden insertar auxiliares en la TS  
+    */
+    if(printData() == -1){
+        printf("Error al generar la tabla de datos en assembler");
         return -1;
     }
 
@@ -36,11 +39,49 @@ int toAssembler(nodo * root){
         printf("Error al generar el footer");
         return -1;
     }
+
+    if (makeASM() == -1) {
+		printf("Error al generar el archivo final de assembler");
+		return -1;
+    }
+}
+
+int makeASM() {
+    FILE * fp = fopen("./Final.asm", "w+");
+	
+    if (fp == NULL) {
+		printf("Error intentando escribir el final.asm");
+		return -1;
+	}
+
+    setFile(fp, "./header.txt");
+    setFile(fp, "./data.txt");
+    setFile(fp, "./instructions.txt");
+    setFile(fp, "./footer.txt");
+
+    fclose(fp);
+    return 1;
+}
+
+int setFile(FILE* fpFinal, char * fileName){
+    FILE * file = fopen( fileName, "r");
+    char ch;
+
+	if (file == NULL) {
+		printf("Error al intentar abrir el archivo: %s\n", fileName);
+		return -1;
+	}
+
+    while((ch = fgetc(file)) != EOF)
+        fputc(ch, fpFinal);
+
+    fclose(file);
+    return 1;
 }
 
 
 int printHeader(){
-    FILE * fp = fopen("assembler/header.txt", "w");
+    FILE * fp = fopen("./header.txt", "w");
 	if (fp == NULL) {
 		printf("Error abriendo el archivo del header\n");
 		return -1;
@@ -56,7 +97,7 @@ int printHeader(){
 }
 
 int printData(){
-    FILE * fp = fopen("assembler/data.txt", "wt+");
+    FILE * fp = fopen("./data.txt", "wt+");
 	if (fp == NULL) {
 		printf("Error escribiendo el archivo data");
 		return 1;
@@ -72,7 +113,7 @@ int printData(){
     int posTablaSimb = getPosicionTS();
     for (i = 0; i < posTablaSimb; i++) {
         if (tablaSimb[i].tipo_token == TOKEN_CTE_STRING)
-            fprintf(fp, "%-32s\tdb\t%s,'$', %s dup (?)\n", tablaSimb[i].nombre, tablaSimb[i].valor,
+            fprintf(fp, "%-32s\tdb\t\"%s\",'$', %s dup (?)\n", tablaSimb[i].nombre, tablaSimb[i].valor,
                     tablaSimb[i].longitud);
         else
             fprintf(fp, "%-32s\tdd\t%s\n", tablaSimb[i].nombre, checkEmptyValue(tablaSimb[i].valor));
@@ -80,7 +121,7 @@ int printData(){
 
     fprintf(fp, "\n.CODE\n");
     if (addCodeToProcesString == 1) {
-        // Agrego los procesimientos para asignar string
+        // Agrego los procesos para asignar string
         fprintf(fp, "strlen proc\n");
         fprintf(fp, "\tmov bx, 0\n");
         fprintf(fp, "\tstrLoop:\n");
@@ -114,7 +155,7 @@ int printData(){
 
 
 int printInstructions(nodo * root){
-    FILE * fp = fopen("./assembler/instructions.txt", "wt+");
+    FILE * fp = fopen("./instructions.txt", "wt+");
 	if (fp == NULL) {
 		printf("Error al escribir el archivo de instrucciones");
 		return -1;
@@ -127,7 +168,7 @@ int printInstructions(nodo * root){
 }
 
 int printFooter(){
-    FILE * fp = fopen("./assembler/footer.txt", "w");
+    FILE * fp = fopen("./footer.txt", "w");
 	if (fp == NULL) {
 		printf("Error intentando escribir el footer\n");
 		return -1;
@@ -156,6 +197,7 @@ char * checkEmptyValue(char *value) {
 // Función que recorre el arbol y llena el archivo instruction.txt con las instrucciones de assembler que correspondan
 void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
     if (root != NULL) {
+        printf("\t\tNODO: %s\n", root->dato);
         int currentIfNode = 0;
         int currentWhileNode = 0;
 
@@ -266,6 +308,7 @@ int popLabel(const int labelType) {
 
 //Determina la operación entre el nodo, y sus 2 hijos, y escribe las instrucciones assembler en el archivo.
 void setOperation(FILE * fp, nodo * root){
+    printf("\t\t\t SET OPERATION FOR: %s\n", root->dato);
       if(isArithmetic(root->dato)) {
         if(strcmp(root->dato, ":") == 0) {
             if (root->tipo == TOKEN_CTE_STRING) {
@@ -283,7 +326,7 @@ void setOperation(FILE * fp, nodo * root){
             fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der st1 = izq
             fprintf(fp, "%s\n", getArithmeticInstruction(root->dato));
             
-            fprintf(fp, "f%sstp @aux%d\n", determinarDescargaPila(root), pedirAux(root->tipo));
+            fprintf(fp, "f%sstp @aux%d\n", determinarDescargaPila(root), getAux(root->tipo));
 
             // Guardo en el arbol el dato del resultado, si uso un aux
             sprintf(root->dato, "@aux%d", cantAux);
@@ -394,9 +437,8 @@ int isComparation(const char *comp) {
     strcmp(comp, "!=") == 0;
 }
 
-/*******POSIBLE ERROR**********/
 //Guarda un auxiliar en la tabla de símbolo, por defecto lo genera del tipo float
-int pedirAux() {
+int getAux() {
     cantAux++;
     char aux[10];
     sprintf(aux, "@aux%d", cantAux);
@@ -426,15 +468,14 @@ char* getJump() {
 char* getDisplayInstruction(nodo* nodo) {
     int tipo = nodo->tipo;
 
-    if (tipo == TIPO_INTEGER) {
+    if (tipo == TOKEN_CTE_INTEGER) {
         sprintf(instruccionDisplay, "DisplayInteger %s", nodo);
-    } else if (tipo == TIPO_FLOAT) {
+    } else if (tipo == TOKEN_CTE_FLOAT) {
         sprintf(instruccionDisplay, "DisplayFloat %s,2", nodo);
-    } else if (tipo == TIPO_STRING) {
-        sprintf(instruccionDisplay, "displayString %s", nodo);
     } else if (tipo == TOKEN_CTE_STRING) {
         sprintf(instruccionDisplay, "displayString %s", castConst(nodo->dato));
     }
+    
     return instruccionDisplay;
 }
 

@@ -20,9 +20,11 @@ char *determinarDescargaPila(const nodo *);
 char* getArithmeticInstruction(const char *);
 int isComparation(const char *);
 
-int pedirAux();
+int getAux();
 char* getJump();
 char* getComparationInstruction(const char *);
 char* getDisplayInstruction(nodo*);
 char* getInstructionGet(nodo*);
+int makeASM();
+int setFile(FILE*, char *);
 #endif
