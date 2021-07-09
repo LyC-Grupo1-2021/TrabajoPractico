@@ -6,11 +6,31 @@ MOV es,ax
 FINIT
 FFREE
 
+fild _5
 fild _2
-fild _3
 fadd
 fstp @aux1
+fild _3
+fild _4
+fmul
+fstp @aux2
 fld @aux1
-fstp var
-displayString _MARZU
+fld @aux2
+fadd
+fstp @aux3
+fld @aux3
+fst a3
+fst a2
+fst a1
+fild _3
+fild _2
+fmul
+fstp @aux4
+fld @aux4
+fst a6
+DisplayFloat a1,2
+newLine 1
+DisplayFloat a2,2
+newLine 1
+DisplayFloat a2,2
 newLine 1

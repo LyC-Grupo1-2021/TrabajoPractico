@@ -46,13 +46,15 @@
     nodo* terminoPtr = NULL;
     nodo* factorPtr = NULL;
     nodo* ptrIdList = NULL;
+    nodo* ptrAsigAux = NULL;
 
     char idEnLista[100];
 
     t_pila pila = NULL;
 
     char * idsAsignacionTipo[100]; //Array usado para asociar los tipos a los id (sirve para tabla simbolos)
-    int indexAsignacionTipo = 0; //Index array 
+    int indexAsignacionTipo = 0; //Index array
+    int cantID = 0; 
 %}
 
 %union {
@@ -115,7 +117,7 @@
       printf("\n----------------\nCompilacion OK\n----------------\n");
       escribirGragh(programaPtr);
       toAssembler(programaPtr);
-      crearArchivo(); //tabla de simbolos
+      crearArchivo();
     }
   ;
   main:
@@ -281,7 +283,7 @@
   ;
   en_lista:
     INLIST PAR_A ID {
-        ptrIdList = crearHoja($3, getTipo($3)); strcpy(idEnLista, $3);
+        ptrIdList = crearHoja($3, getTipoToken($3)); strcpy(idEnLista, $3);
       } PYC COR_A lista_expresiones COR_C PAR_C {
         printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");
         en_listaPtr = lista_expresionesPtr;
@@ -299,7 +301,7 @@
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
       lista_expresionesAntPtr = lista_expresionesPtr; // Para no perderlo
       lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_CTE_INTEGER), desapilar());
-      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(idEnLista, getTipo(idEnLista)));
+      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(idEnLista, getTipoToken(idEnLista)));
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, crearHoja("ret true", TOKEN_NULL)); 
       lista_expresionesPtr = crearNodo(";", lista_expresionesAntPtr, lista_expresionesPtr);
     }
@@ -307,41 +309,55 @@
   lista_asignacion:
     asignacion OP_ASIG expresion PYC {
       printf("\t{asignacion OP_ASIG expresion PYC} es lista_asignacion\n");
-      lista_asignacionPtr = crearNodo(":", asignacionPtr, desapilar());
+      nodo* auxDerPtr = desapilar(); // EXPRESION
+      nodo* auxIzqPtr = desapilar(); // DESAPILA IDS
+      lista_asignacionPtr = crearNodo(":", auxDerPtr, auxIzqPtr);
+      int idx = 0;
+      //unifica las asignaciones en un arbol
+      for(idx = 1; idx < cantID; idx++){
+        lista_asignacionPtr = crearNodo(":", lista_asignacionPtr, desapilar());
+      }
+      //ptrAsigAux = crearNodo(":", desapilar(), crearHoja("@asig", TOKEN_NULL));
+      //lista_asignacionPtr = crearNodo(":", ptrAsigAux, asignacionPtr);
     }|
     asignacion OP_ASIG CONST_STRING PYC {
       printf("\t{asignacion OP_ASIG CONST_STRING PYC} es lista_asignacion\n");
-      lista_asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3, TOKEN_CTE_STRING));
+      lista_asignacionPtr = crearNodo(":", asignacionPtr, crearHoja(castConst(strdup($3)), TOKEN_CTE_STRING));
     }
   ;
   asignacion:
     asignacion OP_ASIG ID {
       printf("\t {asignacion OP_ASIG ID} es asignacion\n");
-      asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3, getTipo($3)));
+      //asignacionPtr = crearNodo(":", asignacionPtr, crearHoja($3, getTipoToken($3)));
+      apilar(crearHoja($3, getTipoToken($3)));
+      cantID++;
     }|
     ID {
       printf("\t{ID} es asignacion\n");
-      asignacionPtr = crearHoja($1, getTipo($1));
+      //asignacionPtr = crearHoja($1, getTipoToken($1));
+      apilar(crearHoja($1, getTipoToken($1)));
+      cantID=1;
     }
   ;
   lectura:
     READ CONST_STRING PYC {
       printf("\t{READ CONST_STRING PYC} es lectura\n");
-      lecturaPtr = crearNodo("READ", crearHoja($2, TOKEN_CTE_STRING), NULL);
+      lecturaPtr = crearNodo("READ", crearHoja("@STDIN", TOKEN_CTE_STRING), crearHoja(castConst(strdup($2)), TOKEN_CTE_STRING));
     }|
-    READ expresion PYC {
-      printf("\t{READ expresion PYC} es lectura\n");
-      lecturaPtr = crearNodo("READ", desapilar(), NULL);
-    }
+    READ ID PYC {
+      printf("\t{READ ID PYC} es lectura\n");
+      int tipo = getTipoToken($2);
+      lecturaPtr = crearNodo("READ", crearHoja("@STDIN", tipo), crearHoja($2, tipo));
+    }    
   ;
   impresion:
     WRITE CONST_STRING PYC {
       printf("\t{WRITE CONST_STRING PYC} es impresion\n");
-      impresionPtr = crearNodo("WRITE", crearHoja("@OUTDISPLAY", TOKEN_CTE_STRING), crearHoja($2, TOKEN_CTE_STRING));
+      impresionPtr = crearNodo("WRITE", crearHoja("@OUTDISPLAY", TOKEN_CTE_STRING), crearHoja(castConst(strdup($2)), TOKEN_CTE_STRING));
     }|
     WRITE expresion PYC {
       printf("\t{WRITE expresion PYC} es impresion\n");
-      impresionPtr = crearNodo("WRITE",  crearHoja("@OUTDISPLAY", TOKEN_CTE_STRING), desapilar());
+      impresionPtr = crearNodo("WRITE",  crearHoja("@OUTDISPLAY", TOKEN_CTE_INTEGER), desapilar());
     }
   ;
   expresion:
@@ -384,7 +400,7 @@
     }|
     ID {
       printf("\t{ID} es factor\n");
-      factorPtr = crearHoja($1, getTipo($1));
+      factorPtr = crearHoja($1, getTipoToken($1));
     }|
     CONST_INTEGER {
       printf("\t{CONST_INTEGER} es factor\n");

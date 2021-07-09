@@ -133,13 +133,22 @@ COR_C           "]"
 void procesarFloat() {
     float num  = atof(yytext);
     yylval.str_val = strdup(yytext);
+    char nombre[50];
+    strcpy(nombre, strdup(yytext));
+
+    char* ptrPunto = strchr(nombre, '.');
+    if (ptrPunto != NULL) {
+        *ptrPunto = '_';
+    }
+
     if(num > +3.4E+30 || num < -3.4E+38){
         printf("El numero real supera los limites.\n");
         exit(-1);
     }
 
     printf("%s -> CONST_FLOAT\n", yytext);
-    grabarToken(TOKEN_CTE_FLOAT, "FLOAT", castConst(strdup(yytext)), yytext, 0);
+    grabarToken(TOKEN_CTE_FLOAT, "FLOAT", castConst(nombre), yytext, 0);
+
 }
 
 void procesarInt() {
@@ -155,25 +164,31 @@ void procesarInt() {
 }
 
 void procesarString(){
-   	int longitud = strlen(yytext)-2;
-	char* subBuff = (char *) malloc(longitud + 1);
-	strncpy(subBuff, yytext + 1, longitud);
-	subBuff[longitud] = '\0';
-    yylval.str_val = strdup(subBuff);
+   int longitud = strlen(yytext)-2;
+    char* auxCad = (char *) malloc(longitud + 1);
+    strncpy(auxCad, yytext+1, longitud);
+    auxCad[longitud] = '\0';
 
-    char auxCad[100];
-
-    //quito comillas
+    // Reemplaza cada caracter invalido por un guion bajo
+    int idx = 0;
+    char caracteresRaros[] = {';', ' ', ':', '=', ',', '(', ')', '[', ']', '.'};
+    char *ptrCaracter;
+    for(idx = 0; idx < strlen(caracteresRaros); idx++) {
+        ptrCaracter = strchr(auxCad, caracteresRaros[idx]);
+        while (ptrCaracter != NULL) {
+            *ptrCaracter = '_';
+            ptrCaracter = strchr(auxCad, caracteresRaros[idx]);
+        }
+    }
+    yylval.str_val = strdup(auxCad);
     yytext[strlen(yytext)-1] = '\0';
 	strcpy(auxCad, yytext + 1); 
-    
-    if(strlen(auxCad) > MAXLENSTR) {
-        printf("El largo maximo de la cadena es: %d caracteres\n", MAXLENSTR);
+    if (strlen(auxCad) > MAXLENSTR) {
+        printf("El largo maximo de la cadena es: %d caracteres\n", yytext);
         exit(-1);
     }
-	printf("%s -> CONST_STRING\n", yytext);
-
-	grabarToken(TOKEN_CTE_STRING, "STRING", castConst(strdup(auxCad)), auxCad, strlen(auxCad));
+    printf("%s -> CONST_STRING\n", yytext);
+    grabarToken(TOKEN_CTE_STRING, "STRING", castConst(yylval.str_val), strdup(auxCad), strlen(auxCad));
 }
 
 void procesarId() {

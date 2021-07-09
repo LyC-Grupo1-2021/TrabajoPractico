@@ -3,17 +3,23 @@ DECVAR
     contador: Integer;
     promedio: Float;
     actual, suma: Float; 
-    a,b, a1, a2, a3, a4: Integer;
+    a1, a2, a3, a4: Integer;
 ENDDEC
 
--/ donde base es una variable /-
+-/ Esto es un comentario/-
 
     actual:333.3333;
+    write "ACTUAL:";
+    write actual;
     a1:a2:a3:a4: ((3 + 8) * 9) + 5;
-    write "Hola mundo!";
-    read actual;
-
-    INLIST (a; [2 / b + 7; 12]);
+    write "A1";
+    write a1;
+    write "A2";
+    write a2;
+    write "A3";
+    write a3;
+    write "A4";
+    write a4;
 
     while(contador <= 92) {
         while(not(contador <= 92)) {

@@ -22,9 +22,12 @@ char * mapNombreTipoToken(int);
 char * castConst(const char *);
 void actualizarTipoDatoAID(char *, char *);
 int getPosicionTS();
-int getTipo(char * );
+int getTipoToken(char * );
 int typeDecorator(const int tipo_token);
 int resolveType(int tipo1, int tipo2);
 char * mapNombreTipoDato(const int);
 int yyerror();
+
+char* getTipoDato(char*);
+int mapNombreTipoDatoToConst(const char* tipo);
 #endif

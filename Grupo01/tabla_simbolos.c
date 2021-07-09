@@ -91,12 +91,28 @@ char * mapNombreTipoDato(const int tipo) {
 	}
 }
 
+int mapNombreTipoDatoToConst(const char* tipo) {
+    if(strcmp(tipo, "FLOAT" ) == 0)
+        return TOKEN_CTE_FLOAT;
+	if(strcmp(tipo, "INTEGER" ) == 0)
+        return TOKEN_CTE_INTEGER;
+	if(strcmp(tipo, "STRING") == 0)
+        return TOKEN_CTE_STRING;
+}
+
+
 //Vuelve a la constante que escribió el programador en el programa, a una variable, así assembler lo puede admitir.
 char * castConst(const char * value){
-    char name[32] = "_";
+    char name[200] = "_";
     strcat(name, value);
+    char* ptrPunto = strchr(name, '.');
+    if (ptrPunto != NULL) {
+        *ptrPunto = '_';
+    }
     return strdup(name);
 }
+
+
 
 //Actualiza el tipo de dato del ID en TS
 void actualizarTipoDatoAID(char * id, char * tipo) {
@@ -109,7 +125,7 @@ void actualizarTipoDatoAID(char * id, char * tipo) {
 }
 
 //Obtiene el tipo de token desde la tabla de símbolo que se encuentra en memoria.
-int getTipo(char * id) {
+int getTipoToken(char * id) {
 	int i;
 	for (i = 0; i < pos; i++) {
 		if (strcmp(tablaSimb[i].nombre, id) == 0) {
@@ -117,6 +133,15 @@ int getTipo(char * id) {
 		}
 	}
 	return -1;
+}
+
+char* getTipoDato(char* id){
+    int i;
+    for(i = 0; i< pos; i++){
+        if(strcmp(tablaSimb[i].nombre, id) == 0){
+            return tablaSimb[i].tipo;
+        }
+    }
 }
 
 int getPosicionTS(){

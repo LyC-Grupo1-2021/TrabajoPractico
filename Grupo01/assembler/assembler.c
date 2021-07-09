@@ -160,7 +160,6 @@ int printInstructions(nodo * root){
 		printf("Error al escribir el archivo de instrucciones");
 		return -1;
 	}
-
     fprintf(fp, "\nSTART:\nMOV AX,@DATA\nMOV DS,AX\nMOV es,ax\nFINIT\nFFREE\n\n");
 	recorrerArbolParaAssembler(fp, root);
 	fclose(fp);
@@ -197,7 +196,7 @@ char * checkEmptyValue(char *value) {
 // Función que recorre el arbol y llena el archivo instruction.txt con las instrucciones de assembler que correspondan
 void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
     if (root != NULL) {
-        printf("\t\tNODO: %s\n", root->dato);
+        printf("\t\tNODO: %s\tTIPO: %d\n", root->dato, root->tipo);
         int currentIfNode = 0;
         int currentWhileNode = 0;
 
@@ -261,7 +260,6 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         if (esHoja(root->hijoIzq) && esHoja(root->hijoDer)) {
             // soy nodo mas a la izquierda con dos hijos hojas
             setOperation(fp, root);
-            
             // reduzco arbol
             root->hijoIzq = NULL;
             root->hijoDer = NULL;
@@ -309,19 +307,22 @@ int popLabel(const int labelType) {
 //Determina la operación entre el nodo, y sus 2 hijos, y escribe las instrucciones assembler en el archivo.
 void setOperation(FILE * fp, nodo * root){
     printf("\t\t\t SET OPERATION FOR: %s\n", root->dato);
-      if(isArithmetic(root->dato)) {
+    if(isArithmetic(root->dato)) {
         if(strcmp(root->dato, ":") == 0) {
-            if (root->tipo == TOKEN_CTE_STRING) {
+            if(strcmp(root->hijoIzq->dato, ":") == 0){
+                 fprintf(fp, "f%sst %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato);
+            }else if (root->tipo == TOKEN_CTE_STRING) {
                 addCodeToProcesString = 1; 
-                fprintf(fp, "MOV si, OFFSET   %s\n", root->hijoDer);
-                fprintf(fp, "MOV di, OFFSET  %s\n", root->hijoIzq);
+                fprintf(fp, "MOV si, OFFSET   %s\n", root->hijoIzq);
+                fprintf(fp, "MOV di, OFFSET  %s\n", root->hijoDer);
                 fprintf(fp, "CALL assignString\n");
             } else {
                 //ASIGNACION DE ALGO QUE NO ES UN STRING (FLOAT O INT)
-                fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato);
-                fprintf(fp, "f%sstp %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato);
+                fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato);
+                fprintf(fp, "f%sst %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato);
             }
         } else {
+            //OPERACION ARTIMETICA
             fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq
             fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der st1 = izq
             fprintf(fp, "%s\n", getArithmeticInstruction(root->dato));
@@ -347,7 +348,7 @@ void setOperation(FILE * fp, nodo * root){
     }
 
     if(strcmp(root->dato, "READ") == 0) {
-        fprintf(fp, "%s %s\n", getInstructionGet(root->hijoIzq), root->hijoIzq->dato);
+        fprintf(fp, "%s %s\n", getInstructionGet(root->hijoDer), root->hijoDer->dato);
     }
 
     if(strcmp(root->dato, "WRITE") == 0) {
@@ -442,7 +443,6 @@ int getAux() {
     cantAux++;
     char aux[10];
     sprintf(aux, "@aux%d", cantAux);
-
     grabarToken(TOKEN_ID, "FLOAT" , aux, "", strlen(aux));
     return cantAux;
 }
@@ -466,14 +466,11 @@ char* getJump() {
 
 //Obtiene la instrucción display del archivo "numbers.asm", y dependiendo del tipo de dato del nodo, lo convierte a array para poder mostrarlo por pantalla.
 char* getDisplayInstruction(nodo* nodo) {
-    int tipo = nodo->tipo;
-
-    if (tipo == TOKEN_CTE_INTEGER) {
-        sprintf(instruccionDisplay, "DisplayInteger %s", nodo);
-    } else if (tipo == TOKEN_CTE_FLOAT) {
-        sprintf(instruccionDisplay, "DisplayFloat %s,2", nodo);
+    int tipo = mapNombreTipoDatoToConst(getTipoDato(nodo->dato));
+    if (tipo == TOKEN_CTE_FLOAT || tipo == TOKEN_CTE_INTEGER) {
+        sprintf(instruccionDisplay, "DisplayFloat %s,2", nodo->dato);
     } else if (tipo == TOKEN_CTE_STRING) {
-        sprintf(instruccionDisplay, "displayString %s", castConst(nodo->dato));
+        sprintf(instruccionDisplay, "displayString %s", nodo->dato);
     }
     
     return instruccionDisplay;
@@ -481,10 +478,9 @@ char* getDisplayInstruction(nodo* nodo) {
 
 //Obtiene la instrucción get del archivo "numbers.asm", es cuando se recibe por teclado algún valor, y convierte al array recibido en integer, float o string, dependiendo del tipo de dato del ID del nodo.
 char* getInstructionGet(nodo* nodo) {
-    if (nodo->tipo == TIPO_INTEGER)
-        return "GetInteger";
-    if (nodo->tipo == TIPO_FLOAT)
+    int tipoDato = mapNombreTipoDatoToConst(getTipoDato(nodo->dato));
+    if (tipoDato == TOKEN_CTE_FLOAT || tipoDato == TOKEN_CTE_INTEGER )
         return "GetFloat";
-    if (nodo->tipo == TIPO_STRING)
+    if (tipoDato == TOKEN_CTE_STRING)
         return "getString"; //No está en el archivo number
 }

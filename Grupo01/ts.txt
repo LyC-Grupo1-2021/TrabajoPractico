@@ -1,7 +1,16 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
-var                                     INTEGER                                           3                        IDENTIFICADOR            
+actual                                  FLOAT                                             6                        IDENTIFICADOR            
+a1                                      INTEGER                                           2                        IDENTIFICADOR            
+a2                                      INTEGER                                           2                        IDENTIFICADOR            
+a3                                      INTEGER                                           2                        IDENTIFICADOR            
+a4                                      INTEGER                                           2                        IDENTIFICADOR            
+_5                                      INTEGER                  5                                                 CTE_INTEGER              
 _2                                      INTEGER                  2                                                 CTE_INTEGER              
 _3                                      INTEGER                  3                                                 CTE_INTEGER              
-_MARZU                                  STRING                   MARZU                    5                        CTE_STRING               
+_4                                      INTEGER                  4                                                 CTE_INTEGER              
+a6                                                                                        2                        IDENTIFICADOR            
 @OUTDISPLAY                             INTEGER                                                                    VARIABLE_AUXILIAR        
 @aux1                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux2                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux3                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux4                                   FLOAT                                             5                        IDENTIFICADOR            

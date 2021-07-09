@@ -5,12 +5,21 @@ INCLUDE number.asm
 .STACK 200h
     .DATA
     MAXTEXTSIZE equ 200
-var                                 dd  ?
+actual                              dd  ?
+a1                                  dd  ?
+a2                                  dd  ?
+a3                                  dd  ?
+a4                                  dd  ?
+_5                                  dd  5
 _2                                  dd  2
 _3                                  dd  3
-_MARZU                              db  "MARZU",'$', 5 dup (?)
+_4                                  dd  4
+a6                                  dd  ?
 @OUTDISPLAY                         dd  ?
 @aux1                               dd  ?
+@aux2                               dd  ?
+@aux3                               dd  ?
+@aux4                               dd  ?
 
 .CODE
 
@@ -21,13 +30,33 @@ MOV es,ax
 FINIT
 FFREE
 
+fild _5
 fild _2
-fild _3
 fadd
 fstp @aux1
+fild _3
+fild _4
+fmul
+fstp @aux2
 fld @aux1
-fstp var
-displayString _MARZU
+fld @aux2
+fadd
+fstp @aux3
+fld @aux3
+fst a3
+fst a2
+fst a1
+fild _3
+fild _2
+fmul
+fstp @aux4
+fld @aux4
+fst a6
+DisplayFloat a1,2
+newLine 1
+DisplayFloat a2,2
+newLine 1
+DisplayFloat a6,2
 newLine 1
 
 liberar:

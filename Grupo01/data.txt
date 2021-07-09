@@ -1,10 +1,19 @@
 	.DATA
 	MAXTEXTSIZE equ 200
-var                             	dd	?
+actual                          	dd	?
+a1                              	dd	?
+a2                              	dd	?
+a3                              	dd	?
+a4                              	dd	?
+_5                              	dd	5
 _2                              	dd	2
 _3                              	dd	3
-_MARZU                          	db	"MARZU",'$', 5 dup (?)
+_4                              	dd	4
+a6                              	dd	?
 @OUTDISPLAY                     	dd	?
 @aux1                           	dd	?
+@aux2                           	dd	?
+@aux3                           	dd	?
+@aux4                           	dd	?
 
 .CODE

@@ -1,8 +1,12 @@
 DECVAR
-    var: Integer;
+    actual: Float; 
+    a1, a2, a3, a4: Integer;
 ENDDEC
 
+-/ Esto es un comentario/-
 
-var : 2 + 3;
-
-write "MARZU";
+    a1:a2:a3: 5 + 2 +(3*4);
+    a6: (3*2);
+    write a1;
+    write a2;
+    write a6;
