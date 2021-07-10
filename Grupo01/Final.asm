@@ -48,7 +48,7 @@ sahf
 JNE endif2
 startIf2:
 fld @resultInlist
-fst 1
+fst TRUE
 endif2:
 fild @aux
 fist _1
@@ -61,7 +61,7 @@ sahf
 JNE endif3
 startIf3:
 fld @resultInlist
-fst 1
+fst TRUE
 endif3:
 fild @aux
 fst otra
@@ -74,7 +74,7 @@ sahf
 JNE endif4
 startIf4:
 fld @resultInlist
-fst 1
+fst TRUE
 endif4:
 fild @aux
 fist _3
@@ -87,16 +87,16 @@ sahf
 JNE endif5
 startIf5:
 fld @resultInlist
-fst 1
+fst TRUE
 endif5:
-fld 1
+fld TRUE
 fld @resultInlist
 fxch
 fcom
 fstsw ax
 sahf
 JNE endif1
-fild (null)
+fild @resultInlist
 fild TRUE
 fcom
 fstsw ax

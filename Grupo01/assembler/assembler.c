@@ -338,10 +338,7 @@ void setOperation(FILE * fp, nodo * root){
         // esto funciona para comparaciones simples
         printf("COMPARANDO: %s \n\n\n", root->dato);
         if(strcmp(root->dato, "INLIST") == 0){
-            printf(" ENTRANDO EN INLIST %s\n\n", root->dato);
-            printf(" ENTRANDO EN INLIST %s\n\n", root->hijoDer->dato);
-            printf(" ENTRANDO EN INLIST %s\n\n", root->hijoDer->hijoIzq->dato);
-            fprintf(fp, "fild %s\n", root->hijoDer->hijoIzq->dato);
+            fprintf(fp, "fild %s\n", "@resultInlist");
             fprintf(fp, "fild %s\n", "TRUE"); 
             fprintf(fp, "fcom\n");
             fprintf(fp, "fstsw ax\n");

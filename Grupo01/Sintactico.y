@@ -243,7 +243,7 @@
     en_lista {
       printf("\t{en_lista} es condicion\n");
       printf("QUIERO VER ESTO: %s", en_listaPtr);
-      ptrCondEnList = crearNodo("==", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("1",TOKEN_NULL)),
+      ptrCondEnList = crearNodo("==", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("TRUE",TOKEN_NULL)),
       condicionPtr = crearNodo("INLIST", en_listaPtr, ptrCondEnList);
       apilar(condicionPtr);
     }
@@ -299,7 +299,7 @@
       lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_CTE_INTEGER), desapilar());
       lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, ptrIdList);
       lista_expresionesPtr =  crearNodo("IF", lista_expresionesPtr, 
-                                crearNodo(":", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("1", TOKEN_NULL)));  
+                                crearNodo(":", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("TRUE", TOKEN_NULL)));  
     }|
     lista_expresiones PYC expresion {
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
@@ -307,7 +307,7 @@
       lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_CTE_INTEGER), desapilar());
       lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(idEnLista, getTipoToken(idEnLista)));
       lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, 
-                              crearNodo(":", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("1", TOKEN_NULL))); 
+                              crearNodo(":", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("TRUE", TOKEN_NULL))); 
       lista_expresionesPtr = crearNodo(";", lista_expresionesAntPtr, lista_expresionesPtr);
     }
   ; 
