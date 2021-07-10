@@ -1,69 +1,66 @@
 DECVAR
-    texto: String;
-    contador: Integer;
-    promedio: Float;
-    actual, suma: Float; 
-    a1, a2, a3, a4: Integer;
+    actual: Float; 
+    a1, a2, a3, a4, a5, a6: Integer;
+    b1: Integer;
+    c1: Integer;
 ENDDEC
 
 -/ Esto es un comentario/-
 
-    actual:333.3333;
-    write "ACTUAL:";
-    write actual;
-    a1:a2:a3:a4: ((3 + 8) * 9) + 5;
-    write "A1";
-    write a1;
-    write "A2";
-    write a2;
-    write "A3";
-    write a3;
-    write "A4";
-    write a4;
+write "Ingrese un numero";
+read a1;
+write "Ingrese un numero";
+read a2;
 
-    while(contador <= 92) {
-        while(not(contador <= 92)) {
-            contador: contador + 1;
-            suma: suma + actual;
-            while(not(contador <= 92)) {
-                contador: contador + 1;
-                suma: suma + actual;
-            }
-        }
-        contador: contador + 1;
-        suma: suma + actual;
+a3: a1 + a2;
+write "a1 sum a2";
+write a3;
+
+a3: a1 - a2;
+write "a1 res a2";
+write a3;
+
+a3: a1 / a2;
+write "a1 div a2";
+write a3;
+
+a3: a1 * a2;
+write "a1 mult a2";
+write a3;
+
+a4:a5:a6 : (3+2) * a1 + a2;
+
+write "Asignacion multiple";
+write "a4";
+write a4;
+write "a5";
+write a5;
+write "a6";
+write a6;
+
+b1 : 0;
+c1 : 0;
+write "WHILE";
+while(b1 <= 5) {
+    write "b1";
+    write b1;
+    while(c1 < 2){
+        write "c1";
+        write c1;
+        c1 : c1 + 1;
     }
+    c1 : 0;
+    b1 : b1 + 1;    
+}
 
-    while(not(contador <= 92)) {
-        contador: contador + 1;
-        suma: suma + actual;
-    }
+write "IF";
+write "a1";
+write a1;
+write "a2";
+write a2;
 
-     while(92 >= contador and a == b ) {
-        contador: contador + 1;
-        suma: suma + actual;
-    }
-
-    if(not(contador <= 92)) {
-        actual: (contador/0.342) + (contador*contador);
-    }
-
-    if ( 92 >= contador and a == b ) {
-        contador: contador + 1;
-        suma: suma + actual;
-        if(not(contador <= 92)) {
-            actual: (contador/0.342) + (contador*contador);
-        }
-    }else {
-        contador: contador + 1;
-        suma: suma + actual;
-        if(not(contador <= 92)) {
-        actual: (contador/0.342) + (contador*contador);
-        }else {
-            contador: contador + 1;
-            suma: suma + actual;
-            }
-    }
-
-write "Hola mundo!"; -/ "comentarios" /-
--/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
+if(a1 > a2){
+    write "a1 es mayor a a2";
+}else{
+    write "a1 es menor a a2";
+}

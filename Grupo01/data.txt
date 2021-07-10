@@ -5,15 +5,17 @@ a1                              	dd	?
 a2                              	dd	?
 a3                              	dd	?
 a4                              	dd	?
-_5                              	dd	5
-_2                              	dd	2
-_3                              	dd	3
-_4                              	dd	4
+a5                              	dd	?
 a6                              	dd	?
+b1                              	dd	?
+c1                              	dd	?
+_Ingrese_un_numero              	db	"Ingrese un numero",'$', 17 dup (?)
 @OUTDISPLAY                     	dd	?
-@aux1                           	dd	?
-@aux2                           	dd	?
-@aux3                           	dd	?
-@aux4                           	dd	?
+@STDIN                          	dd	?
+_a1                             	db	"a1",'$', 2 dup (?)
+_a2                             	db	"a2",'$', 2 dup (?)
+_IF                             	db	"IF",'$', 2 dup (?)
+_a1_es_mayor_a_a2               	db	"a1 es mayor a a2",'$', 16 dup (?)
+_a1_es_menor_a_a2               	db	"a1 es menor a a2",'$', 16 dup (?)
 
 .CODE

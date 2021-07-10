@@ -1,12 +1,25 @@
 DECVAR
     actual: Float; 
-    a1, a2, a3, a4: Integer;
+    a1, a2, a3, a4, a5, a6: Integer;
+    b1: Integer;
+    c1: Integer;
 ENDDEC
 
 -/ Esto es un comentario/-
 
-    a1:a2:a3: 5 + 2 +(3*4);
-    a6: (3*2);
-    write a1;
-    write a2;
-    write a6;
+write "Ingrese un numero";
+read a1;
+write "Ingrese un numero";
+read a2;
+write "a1";
+write a1;
+write "a2";
+write a2;
+
+write "IF";
+
+if(a1 > a2){
+    write "a1 es mayor a a2";
+}else{
+    write "a1 es menor a a2";
+}

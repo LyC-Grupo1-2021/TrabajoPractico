@@ -338,6 +338,7 @@ void setOperation(FILE * fp, nodo * root){
         // esto funciona para comparaciones simples
         fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der
         fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq  st1 = der
+        fprintf(fp, "fxch\n"); // compara ST0 con ST1"
         fprintf(fp, "fcom\n"); // compara ST0 con ST1"
         fprintf(fp, "fstsw ax\n");
         fprintf(fp, "sahf\n");
