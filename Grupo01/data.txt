@@ -1,21 +1,18 @@
 	.DATA
+	TRUE equ 1
 	MAXTEXTSIZE equ 200
 actual                          	dd	?
-a1                              	dd	?
-a2                              	dd	?
-a3                              	dd	?
-a4                              	dd	?
-a5                              	dd	?
-a6                              	dd	?
-b1                              	dd	?
-c1                              	dd	?
-_Ingrese_un_numero              	db	"Ingrese un numero",'$', 17 dup (?)
+otra                            	dd	?
+_2_5                            	dd	2.5
+_5                              	dd	5
+_2                              	dd	2
+@aux                            	dd	?
+@resultInlist                   	dd	?
+_1                              	dd	1
+_3                              	dd	3
+_Encontre_actual                	db	"Encontre actual",'$', 15 dup (?)
 @OUTDISPLAY                     	dd	?
-@STDIN                          	dd	?
-_a1                             	db	"a1",'$', 2 dup (?)
-_a2                             	db	"a2",'$', 2 dup (?)
-_IF                             	db	"IF",'$', 2 dup (?)
-_a1_es_mayor_a_a2               	db	"a1 es mayor a a2",'$', 16 dup (?)
-_a1_es_menor_a_a2               	db	"a1 es menor a a2",'$', 16 dup (?)
+_NO_encontre_actual             	db	"NO encontre actual",'$', 18 dup (?)
+@aux1                           	dd	?
 
 .CODE

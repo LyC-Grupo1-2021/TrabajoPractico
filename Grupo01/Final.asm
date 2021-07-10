@@ -4,24 +4,21 @@ INCLUDE number.asm
 .386
 .STACK 200h
 	.DATA
+	TRUE equ 1
 	MAXTEXTSIZE equ 200
 actual                          	dd	?
-a1                              	dd	?
-a2                              	dd	?
-a3                              	dd	?
-a4                              	dd	?
-a5                              	dd	?
-a6                              	dd	?
-b1                              	dd	?
-c1                              	dd	?
-_Ingrese_un_numero              	db	"Ingrese un numero",'$', 17 dup (?)
+otra                            	dd	?
+_2_5                            	dd	2.5
+_5                              	dd	5
+_2                              	dd	2
+@aux                            	dd	?
+@resultInlist                   	dd	?
+_1                              	dd	1
+_3                              	dd	3
+_Encontre_actual                	db	"Encontre actual",'$', 15 dup (?)
 @OUTDISPLAY                     	dd	?
-@STDIN                          	dd	?
-_a1                             	db	"a1",'$', 2 dup (?)
-_a2                             	db	"a2",'$', 2 dup (?)
-_IF                             	db	"IF",'$', 2 dup (?)
-_a1_es_mayor_a_a2               	db	"a1 es mayor a a2",'$', 16 dup (?)
-_a1_es_menor_a_a2               	db	"a1 es menor a a2",'$', 16 dup (?)
+_NO_encontre_actual             	db	"NO encontre actual",'$', 18 dup (?)
+@aux1                           	dd	?
 
 .CODE
 
@@ -32,35 +29,84 @@ MOV es,ax
 FINIT
 FFREE
 
-displayString _Ingrese_un_numero
-newLine 1
-GetFloat a1
-displayString _Ingrese_un_numero
-newLine 1
-GetFloat a2
-displayString _a1
-newLine 1
-DisplayFloat a1,2
-newLine 1
-displayString _a2
-newLine 1
-DisplayFloat a2,2
-newLine 1
-displayString _IF
-newLine 1
-fld a2
-fld a1
+fld _2_5
+fst actual
+fild _5
+fild _2
+fdiv
+fstp @aux1
+fld @aux1
+fst otra
+fild @aux
+fist _2
+fld actual
+fld :
 fxch
 fcom
 fstsw ax
 sahf
-JNA else1
+JNE endif2
+startIf2:
+fld @resultInlist
+fst 1
+endif2:
+fild @aux
+fist _1
+fld actual
+fld :
+fxch
+fcom
+fstsw ax
+sahf
+JNE endif3
+startIf3:
+fld @resultInlist
+fst 1
+endif3:
+fild @aux
+fst otra
+fld actual
+fld :
+fxch
+fcom
+fstsw ax
+sahf
+JNE endif4
+startIf4:
+fld @resultInlist
+fst 1
+endif4:
+fild @aux
+fist _3
+fld actual
+fld :
+fxch
+fcom
+fstsw ax
+sahf
+JNE endif5
+startIf5:
+fld @resultInlist
+fst 1
+endif5:
+fld 1
+fld @resultInlist
+fxch
+fcom
+fstsw ax
+sahf
+JNE endif1
+fild (null)
+fild TRUE
+fcom
+fstsw ax
+sahf
 startIf1:
-displayString _a1_es_menor_a_a2
+displayString _NO_encontre_actual
 newLine 1
 JMP endif1
 else1:
-displayString _a1_es_mayor_a_a2
+displayString _Encontre_actual
 newLine 1
 endif1:
 

@@ -1,25 +1,15 @@
 DECVAR
-    actual: Float; 
-    a1, a2, a3, a4, a5, a6: Integer;
-    b1: Integer;
-    c1: Integer;
+    actual: Float;
+    otra: Float;
 ENDDEC
 
--/ Esto es un comentario/-
 
-write "Ingrese un numero";
-read a1;
-write "Ingrese un numero";
-read a2;
-write "a1";
-write a1;
-write "a2";
-write a2;
+actual : 2.5;
 
-write "IF";
+otra : 5/2;
 
-if(a1 > a2){
-    write "a1 es mayor a a2";
+if(INLIST(actual; [2; 1; otra; 3])){
+    write "Encontre actual";
 }else{
-    write "a1 es menor a a2";
+    write "NO encontre actual";
 }

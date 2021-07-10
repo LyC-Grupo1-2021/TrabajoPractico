@@ -1,18 +1,14 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
 actual                                  FLOAT                                             6                        IDENTIFICADOR            
-a1                                      INTEGER                                           2                        IDENTIFICADOR            
-a2                                      INTEGER                                           2                        IDENTIFICADOR            
-a3                                      INTEGER                                           2                        IDENTIFICADOR            
-a4                                      INTEGER                                           2                        IDENTIFICADOR            
-a5                                      INTEGER                                           2                        IDENTIFICADOR            
-a6                                      INTEGER                                           2                        IDENTIFICADOR            
-b1                                      INTEGER                                           2                        IDENTIFICADOR            
-c1                                      INTEGER                                           2                        IDENTIFICADOR            
-_Ingrese_un_numero                      STRING                   Ingrese un numero        17                       CTE_STRING               
+otra                                    FLOAT                                             4                        IDENTIFICADOR            
+_2_5                                    FLOAT                    2.5                                               CTE_FLOAT                
+_5                                      INTEGER                  5                                                 CTE_INTEGER              
+_2                                      INTEGER                  2                                                 CTE_INTEGER              
+@aux                                    INTEGER                                                                    VARIABLE_AUXILIAR        
+@resultInlist                           INTEGER                                                                    VARIABLE_AUXILIAR        
+_1                                      INTEGER                  1                                                 CTE_INTEGER              
+_3                                      INTEGER                  3                                                 CTE_INTEGER              
+_Encontre_actual                        STRING                   Encontre actual          15                       CTE_STRING               
 @OUTDISPLAY                             INTEGER                                                                    VARIABLE_AUXILIAR        
-@STDIN                                  INTEGER                                                                    VARIABLE_AUXILIAR        
-_a1                                     STRING                   a1                       2                        CTE_STRING               
-_a2                                     STRING                   a2                       2                        CTE_STRING               
-_IF                                     STRING                   IF                       2                        CTE_STRING               
-_a1_es_mayor_a_a2                       STRING                   a1 es mayor a a2         16                       CTE_STRING               
-_a1_es_menor_a_a2                       STRING                   a1 es menor a a2         16                       CTE_STRING               
+_NO_encontre_actual                     STRING                   NO encontre actual       18                       CTE_STRING               
+@aux1                                   FLOAT                                             5                        IDENTIFICADOR            

@@ -104,7 +104,7 @@ int printData(){
 	}
 
 	fprintf(fp, "\t.DATA\n");    
-    // fprintf(fp, "\tTRUE equ 1\n");
+    fprintf(fp, "\tTRUE equ 1\n");
     // fprintf(fp, "\tFALSE equ 0\n");
     fprintf(fp, "\tMAXTEXTSIZE equ %d\n", 200);
 
@@ -336,16 +336,28 @@ void setOperation(FILE * fp, nodo * root){
 
     if(isComparation(root->dato)) {
         // esto funciona para comparaciones simples
-        fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der
-        fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq  st1 = der
-        fprintf(fp, "fxch\n"); // compara ST0 con ST1"
-        fprintf(fp, "fcom\n"); // compara ST0 con ST1"
-        fprintf(fp, "fstsw ax\n");
-        fprintf(fp, "sahf\n");
-        if (isWhile)
-            fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_WHILE));
-        else
-            fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_IF));
+        printf("COMPARANDO: %s \n\n\n", root->dato);
+        if(strcmp(root->dato, "INLIST") == 0){
+            printf(" ENTRANDO EN INLIST %s\n\n", root->dato);
+            printf(" ENTRANDO EN INLIST %s\n\n", root->hijoDer->dato);
+            printf(" ENTRANDO EN INLIST %s\n\n", root->hijoDer->hijoIzq->dato);
+            fprintf(fp, "fild %s\n", root->hijoDer->hijoIzq->dato);
+            fprintf(fp, "fild %s\n", "TRUE"); 
+            fprintf(fp, "fcom\n");
+            fprintf(fp, "fstsw ax\n");
+            fprintf(fp, "sahf\n");
+        }else{
+            fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der
+            fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq  st1 = der
+            fprintf(fp, "fxch\n"); // compara ST0 con ST1"
+            fprintf(fp, "fcom\n"); // compara ST0 con ST1"
+            fprintf(fp, "fstsw ax\n");
+            fprintf(fp, "sahf\n");
+            if (isWhile)
+                fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_WHILE));
+            else
+                fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_IF));
+        }
     }
 
     if(strcmp(root->dato, "READ") == 0) {
@@ -436,7 +448,8 @@ int isComparation(const char *comp) {
     strcmp(comp, "<") == 0 ||
     strcmp(comp, "<=") == 0 ||
     strcmp(comp, "==") == 0 ||
-    strcmp(comp, "!=") == 0;
+    strcmp(comp, "!=") == 0 ||
+    strcmp(comp, "INLIST") == 0;
 }
 
 //Guarda un auxiliar en la tabla de símbolo, por defecto lo genera del tipo float
