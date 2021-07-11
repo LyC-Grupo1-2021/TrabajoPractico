@@ -1,13 +1,20 @@
 DECVAR
-    actual: Float;
-    otra: Float;
+    actual: Float; 
+    a1, a2, a3, a4, a5, a6: Integer;
+    b1: Integer;
+    c1: Integer;
 ENDDEC
 
+a1:1+2+3*2;
+a2:(a1+1);
+if(2 < 2 or a1 >= a2 or a1 < 9 or a1 >= 5 + 4 - 2 + 1 + 1 + 1 or 8 == 7 or 4 == 5){
+    write "Entra por el THEN";
+} else {
+    write "Entra por el ELSE";
+}
 
-actual : 2.5;
-
-otra : 5/2;
-
+actual:3.01;
+otra:1.5;
 if(INLIST(actual; [2; 1; otra; 3])){
     write "Encontre actual";
 }else{

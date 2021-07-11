@@ -47,7 +47,6 @@
     nodo* factorPtr = NULL;
     nodo* ptrIdList = NULL;
     nodo* ptrAsigAux = NULL;
-    nodo* ptrCondEnList = NULL;
 
     char idEnLista[100];
 
@@ -199,53 +198,45 @@
     IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
       printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");
       nodo* auxDerPtr=desapilar();
-      nodo* auxIzqPtr=desapilar();
-      ifPtr = crearNodo("IF", auxIzqPtr, auxDerPtr);
+      ifPtr = crearNodo("IF", condicionPtr, auxDerPtr);
     }|
     IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {
       printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");
       nodo* auxIzqPtr=desapilar();
       nodo* auxDerPtr=desapilar();
       ifBodyPtr = crearNodo("BODY", auxIzqPtr, auxDerPtr);
-      ifPtr = crearNodo("IF", desapilar(), ifBodyPtr);
+      ifPtr = crearNodo("IF", condicionPtr, ifBodyPtr);
     }
   ;
   while:
     WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
       printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");
       nodo* auxDerPtr=desapilar();
-      nodo* auxIzqPtr=desapilar();
-      whilePtr = crearNodo("WHILE", auxIzqPtr, auxDerPtr);
+      whilePtr = crearNodo("WHILE", condicionPtr, auxDerPtr);
   }
   ;
   condicion_simple:
     expresion operador_comp expresion {
-      printf("\t {factor operador_comp factor} es condicion\n");
+      printf("\t {expresion operador_comp expresion} es condicion_simple\n");
       condicion_simplePtr = crearNodo(operador_compPtr->dato, desapilar(), desapilar());
     }
   ;
   condicion:
+    condicion operador_log condicion_simple{
+      printf("\t {condicion operador_log condicion_simple} es condicion\n");
+      condicionPtr = crearNodo(operador_logPtr->dato, condicionPtr, condicion_simplePtr);
+    }|
     condicion_simple {
       printf("\t {condicion_simple} es condicion\n");
       condicionPtr = condicion_simplePtr;
-      apilar(condicionPtr);
     }|
     NOT PAR_A condicion_simple PAR_C { //TODO: Preguntar si el NOT genera un nodo o si cambia el orden del body en el if
       printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");
       condicionPtr = crearNodo("NOT", condicion_simplePtr, NULL);
-      apilar(condicionPtr);
-    }|
-    condicion_simple {condicion_simple2Ptr = condicion_simplePtr;} operador_log condicion_simple {
-      printf("\t {condicion operador_log condicion} es condicion\n");
-      condicionPtr = crearNodo(operador_logPtr->dato, condicion_simple2Ptr, condicion_simplePtr);
-      apilar(condicionPtr);
     }|
     en_lista {
       printf("\t{en_lista} es condicion\n");
-      printf("QUIERO VER ESTO: %s", en_listaPtr);
-      ptrCondEnList = crearNodo("==", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("TRUE",TOKEN_NULL)),
-      condicionPtr = crearNodo("INLIST", en_listaPtr, ptrCondEnList);
-      apilar(condicionPtr);
+      condicionPtr = en_listaPtr;
     }
   ;
   operador_log:
@@ -285,9 +276,7 @@
     }
   ;
   en_lista:
-    INLIST PAR_A ID {
-        ptrIdList = crearHoja($3, getTipoToken($3)); strcpy(idEnLista, $3);
-      } PYC COR_A lista_expresiones COR_C PAR_C {
+    INLIST PAR_A ID {strcpy(idEnLista, $3);} PYC COR_A lista_expresiones COR_C PAR_C {
         printf("\t{INLIST PAR_A ID PYC COR_A lista_expresiones COR_C PAR_C PYC} es en_lista\n");
         en_listaPtr = lista_expresionesPtr;
       }
@@ -295,20 +284,11 @@
   lista_expresiones:
     expresion {
       printf("\t{expresion} es lista_expresiones\n");
-      
-      lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_CTE_INTEGER), desapilar());
-      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, ptrIdList);
-      lista_expresionesPtr =  crearNodo("IF", lista_expresionesPtr, 
-                                crearNodo(":", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("TRUE", TOKEN_NULL)));  
+      lista_expresionesPtr = crearNodo("==", crearHoja(idEnLista, getTipoToken(idEnLista)), desapilar()); 
     }|
     lista_expresiones PYC expresion {
       printf("\t{lista_expresiones PYC expresion} es lista_expresiones\n");
-      lista_expresionesAntPtr = lista_expresionesPtr; // Para no perderlo
-      lista_expresionesPtr = crearNodo(":", crearHoja("@aux", TOKEN_CTE_INTEGER), desapilar());
-      lista_expresionesPtr = crearNodo("==", lista_expresionesPtr, crearHoja(idEnLista, getTipoToken(idEnLista)));
-      lista_expresionesPtr = crearNodo("IF", lista_expresionesPtr, 
-                              crearNodo(":", crearHoja("@resultInlist", TOKEN_NULL), crearHoja("TRUE", TOKEN_NULL))); 
-      lista_expresionesPtr = crearNodo(";", lista_expresionesAntPtr, lista_expresionesPtr);
+      lista_expresionesPtr = crearNodo("OR", lista_expresionesPtr, crearNodo("==", crearHoja(idEnLista, getTipoToken(idEnLista)), desapilar()));
     }
   ; 
   lista_asignacion:

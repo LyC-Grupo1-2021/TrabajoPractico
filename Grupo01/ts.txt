@@ -1,14 +1,35 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
 actual                                  FLOAT                                             6                        IDENTIFICADOR            
-otra                                    FLOAT                                             4                        IDENTIFICADOR            
-_2_5                                    FLOAT                    2.5                                               CTE_FLOAT                
-_5                                      INTEGER                  5                                                 CTE_INTEGER              
-_2                                      INTEGER                  2                                                 CTE_INTEGER              
-@aux                                    INTEGER                                                                    VARIABLE_AUXILIAR        
-@resultInlist                           INTEGER                                                                    VARIABLE_AUXILIAR        
+a1                                      INTEGER                                           2                        IDENTIFICADOR            
+a2                                      INTEGER                                           2                        IDENTIFICADOR            
+a3                                      INTEGER                                           2                        IDENTIFICADOR            
+a4                                      INTEGER                                           2                        IDENTIFICADOR            
+a5                                      INTEGER                                           2                        IDENTIFICADOR            
+a6                                      INTEGER                                           2                        IDENTIFICADOR            
+b1                                      INTEGER                                           2                        IDENTIFICADOR            
+c1                                      INTEGER                                           2                        IDENTIFICADOR            
 _1                                      INTEGER                  1                                                 CTE_INTEGER              
+_2                                      INTEGER                  2                                                 CTE_INTEGER              
 _3                                      INTEGER                  3                                                 CTE_INTEGER              
-_Encontre_actual                        STRING                   Encontre actual          15                       CTE_STRING               
+_9                                      INTEGER                  9                                                 CTE_INTEGER              
+_5                                      INTEGER                  5                                                 CTE_INTEGER              
+_4                                      INTEGER                  4                                                 CTE_INTEGER              
+_8                                      INTEGER                  8                                                 CTE_INTEGER              
+_7                                      INTEGER                  7                                                 CTE_INTEGER              
+_Entra_por_el_THEN                      STRING                   Entra por el THEN        17                       CTE_STRING               
 @OUTDISPLAY                             INTEGER                                                                    VARIABLE_AUXILIAR        
+_Entra_por_el_ELSE                      STRING                   Entra por el ELSE        17                       CTE_STRING               
+_3_01                                   FLOAT                    3.01                                              CTE_FLOAT                
+otra                                                                                      4                        IDENTIFICADOR            
+_1_5                                    FLOAT                    1.5                                               CTE_FLOAT                
+_Encontre_actual                        STRING                   Encontre actual          15                       CTE_STRING               
 _NO_encontre_actual                     STRING                   NO encontre actual       18                       CTE_STRING               
 @aux1                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux2                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux3                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux4                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux5                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux6                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux7                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux8                                   FLOAT                                             5                        IDENTIFICADOR            
+@aux9                                   FLOAT                                             5                        IDENTIFICADOR            

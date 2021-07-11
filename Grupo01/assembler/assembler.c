@@ -2,6 +2,7 @@
 int cantAux = 0;
 int hasElse = 0;
 int ORcondition = 0;
+int NOTcondition = 0;
 int isWhile = 0;
 
 int numLabelWhile = 0;
@@ -104,7 +105,7 @@ int printData(){
 	}
 
 	fprintf(fp, "\t.DATA\n");    
-    fprintf(fp, "\tTRUE equ 1\n");
+    // fprintf(fp, "\tTRUE equ 1\n");
     // fprintf(fp, "\tFALSE equ 0\n");
     fprintf(fp, "\tMAXTEXTSIZE equ %d\n", 200);
 
@@ -203,6 +204,7 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         //Nodo IF
         if(strcmp(root->dato, "IF") == 0) {
             hasElse = 0;
+            ORcondition = 0;
             currentIfNode = 1;
             pushLabel(LABEL_IF);
             
@@ -218,6 +220,7 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         if(strcmp(root->dato, "WHILE") == 0) {
             currentWhileNode = 1;
             isWhile = 1;
+            ORcondition = 0;
             pushLabel(LABEL_WHILE);
             fprintf(fp, "condicionWhile%d:\n", getTopLabelStack(LABEL_WHILE));
             if (strcmp(root->hijoIzq->dato, "OR") == 0) {
@@ -230,12 +233,17 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         // Fin de recorrido a la izquierda
 
         if(currentIfNode) {
-            fprintf(fp, "startIf%d:\n", getTopLabelStack(LABEL_IF));
+            if(ORcondition)
+                fprintf(fp, "JMP else%d\n", getTopLabelStack(LABEL_IF));
+            if(hasElse)
+                fprintf(fp, "else%d:\n", getTopLabelStack(LABEL_IF));
+            else
+                fprintf(fp, "startIf%d:\n", getTopLabelStack(LABEL_IF));
         }
 
         if(strcmp(root->dato, "BODY") == 0) {
             fprintf(fp, "JMP endif%d\n", getTopLabelStack(LABEL_IF));
-            fprintf(fp, "else%d:\n", getTopLabelStack(LABEL_IF));
+            fprintf(fp, "startIf%d:\n", getTopLabelStack(LABEL_IF));
         }
 
         if(currentWhileNode) {
@@ -336,25 +344,16 @@ void setOperation(FILE * fp, nodo * root){
 
     if(isComparation(root->dato)) {
         // esto funciona para comparaciones simples
-        printf("COMPARANDO: %s \n\n\n", root->dato);
-        if(strcmp(root->dato, "INLIST") == 0){
-            fprintf(fp, "fild %s\n", "@resultInlist");
-            fprintf(fp, "fild %s\n", "TRUE"); 
-            fprintf(fp, "fcom\n");
-            fprintf(fp, "fstsw ax\n");
-            fprintf(fp, "sahf\n");
-        }else{
-            fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der
-            fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq  st1 = der
-            fprintf(fp, "fxch\n"); // compara ST0 con ST1"
-            fprintf(fp, "fcom\n"); // compara ST0 con ST1"
-            fprintf(fp, "fstsw ax\n");
-            fprintf(fp, "sahf\n");
-            if (isWhile)
-                fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_WHILE));
-            else
-                fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_IF));
-        }
+        fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoDer), root->hijoDer->dato); //st0 = der
+        fprintf(fp, "f%sld %s\n", determinarCargaPila(root, root->hijoIzq), root->hijoIzq->dato); //st0 = izq  st1 = der
+        fprintf(fp, "fxch\n"); // compara ST0 con ST1"
+        fprintf(fp, "fcom\n"); // compara ST0 con ST1"
+        fprintf(fp, "fstsw ax\n");
+        fprintf(fp, "sahf\n");
+        if (isWhile)
+            fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_WHILE));
+        else
+            fprintf(fp, "%s %s%d\n", getComparationInstruction(root->dato), getJump(), getTopLabelStack(LABEL_IF));
     }
 
     if(strcmp(root->dato, "READ") == 0) {
@@ -408,33 +407,32 @@ char* getArithmeticInstruction(const char *operator) {
 char* getComparationInstruction(const char *comparador) {
     // Esto nos va a servir para cuando venga un OR, ya que hay que invertir la primer comparacion
     // para que pueda evaluar las dos, sin hacer tantos if
-    if(ORcondition) {
-        ORcondition = 0;
+    if(ORcondition) { //Pongo operadores opuestos porque los carga al reves en la pila para compararlos
         if (strcmp(comparador, ">") == 0)
-            return "JNBE";
+            return "JB";
         if (strcmp(comparador, ">=") == 0)
-            return "JNB";
+            return "JBE";
         if (strcmp(comparador, "<") == 0)
-            return "JNAE";
+            return "JA";
         if (strcmp(comparador, "<=") == 0)
-            return "JNA";
+            return "JAE";
         if (strcmp(comparador, "==") == 0)
             return "JE";
         if (strcmp(comparador, "!=") == 0)
             return "JNE";
-    } else {
+    } else { //Pongo operadores opuestos porque los carga al reves en la pila para compararlos y ademas los niego porque si no se cumple, salgo
         if (strcmp(comparador, ">") == 0)
-            return "JNA";
-        if (strcmp(comparador, ">=") == 0)
-            return "JNAE";
-        if (strcmp(comparador, "<") == 0)
             return "JNB";
-        if (strcmp(comparador, "<=") == 0)
+        if (strcmp(comparador, ">=") == 0)
             return "JNBE";
+        if (strcmp(comparador, "<") == 0)
+            return "JNA";
+        if (strcmp(comparador, "<=") == 0)
+            return "JNAE";
         if (strcmp(comparador, "==") == 0)
             return "JNE";
         if (strcmp(comparador, "!=") == 0)
-            return "JE";
+            return "JE";            
     }
 }
 
@@ -445,8 +443,7 @@ int isComparation(const char *comp) {
     strcmp(comp, "<") == 0 ||
     strcmp(comp, "<=") == 0 ||
     strcmp(comp, "==") == 0 ||
-    strcmp(comp, "!=") == 0 ||
-    strcmp(comp, "INLIST") == 0;
+    strcmp(comp, "!=") == 0;
 }
 
 //Guarda un auxiliar en la tabla de símbolo, por defecto lo genera del tipo float
