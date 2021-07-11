@@ -1,6 +1,7 @@
 	.DATA
 	MAXTEXTSIZE equ 200
 actual                          	dd	?
+actual2                         	dd	?
 a1                              	dd	?
 a2                              	dd	?
 a3                              	dd	?
@@ -9,16 +10,28 @@ a5                              	dd	?
 a6                              	dd	?
 b1                              	dd	?
 c1                              	dd	?
+d1                              	dd	?
+d2                              	dd	?
+d3                              	dd	?
+d4                              	dd	?
+otra                            	dd	?
 _1                              	dd	1
 _2                              	dd	2
 _3                              	dd	3
-otra                            	dd	?
 _1_5                            	dd	1.5
-_9                              	dd	9
-_5                              	dd	5
-_4                              	dd	4
-_IF_con_OR_true                 	db	"IF con OR true",'$', 14 dup (?)
+_Ingrese_D4                     	db	"Ingrese D4",'$', 10 dup (?)
 @OUTDISPLAY                     	dd	?
+@STDIN                          	dd	?
+_5                              	dd	5
+_Asig_multiple                  	db	"Asig multiple",'$', 13 dup (?)
+_D1                             	db	"D1",'$', 2 dup (?)
+_D2                             	db	"D2",'$', 2 dup (?)
+_IF_simple                      	db	"IF simple",'$', 9 dup (?)
+_OK_INLIST                      	db	"OK INLIST",'$', 9 dup (?)
+_NO_esta_actual                 	db	"NO esta actual",'$', 14 dup (?)
+_4                              	dd	4
+_9                              	dd	9
+_IF_con_OR_true                 	db	"IF con OR true",'$', 14 dup (?)
 _Encontre_actual                	db	"Encontre actual",'$', 15 dup (?)
 _NO_encontre_actual             	db	"NO encontre actual",'$', 18 dup (?)
 _IF_con_OR_false                	db	"IF con OR false",'$', 15 dup (?)
@@ -29,8 +42,6 @@ _88                             	dd	88
 _99                             	dd	99
 _Entra_al_seg_if                	db	"Entra al seg if",'$', 15 dup (?)
 _IF_con_NOT_false               	db	"IF con NOT false",'$', 16 dup (?)
-_7                              	dd	7
-actual2                         	dd	?
 _8                              	dd	8
 _Iterando_actual                	db	"Iterando actual",'$', 15 dup (?)
 _Iterando_actual2               	db	"Iterando actual2",'$', 16 dup (?)
@@ -45,5 +56,8 @@ _Iterando_actual2               	db	"Iterando actual2",'$', 16 dup (?)
 @aux9                           	dd	?
 @aux10                          	dd	?
 @aux11                          	dd	?
+@aux12                          	dd	?
+@aux13                          	dd	?
+@aux14                          	dd	?
 
 .CODE

@@ -1,5 +1,6 @@
 Nombre                                  TipoDato                 Valor                    Longitud                 Token                    
 actual                                  FLOAT                                             6                        IDENTIFICADOR            
+actual2                                 FLOAT                                             7                        IDENTIFICADOR            
 a1                                      INTEGER                                           2                        IDENTIFICADOR            
 a2                                      INTEGER                                           2                        IDENTIFICADOR            
 a3                                      INTEGER                                           2                        IDENTIFICADOR            
@@ -8,16 +9,28 @@ a5                                      INTEGER                                 
 a6                                      INTEGER                                           2                        IDENTIFICADOR            
 b1                                      INTEGER                                           2                        IDENTIFICADOR            
 c1                                      INTEGER                                           2                        IDENTIFICADOR            
+d1                                      INTEGER                                           2                        IDENTIFICADOR            
+d2                                      INTEGER                                           2                        IDENTIFICADOR            
+d3                                      INTEGER                                           2                        IDENTIFICADOR            
+d4                                      INTEGER                                           2                        IDENTIFICADOR            
+otra                                    FLOAT                                             4                        IDENTIFICADOR            
 _1                                      INTEGER                  1                                                 CTE_INTEGER              
 _2                                      INTEGER                  2                                                 CTE_INTEGER              
 _3                                      INTEGER                  3                                                 CTE_INTEGER              
-otra                                                                                      4                        IDENTIFICADOR            
 _1_5                                    FLOAT                    1.5                                               CTE_FLOAT                
-_9                                      INTEGER                  9                                                 CTE_INTEGER              
-_5                                      INTEGER                  5                                                 CTE_INTEGER              
-_4                                      INTEGER                  4                                                 CTE_INTEGER              
-_IF_con_OR_true                         STRING                   IF con OR true           14                       CTE_STRING               
+_Ingrese_D4                             STRING                   Ingrese D4               10                       CTE_STRING               
 @OUTDISPLAY                             INTEGER                                                                    VARIABLE_AUXILIAR        
+@STDIN                                  INTEGER                                                                    VARIABLE_AUXILIAR        
+_5                                      INTEGER                  5                                                 CTE_INTEGER              
+_Asig_multiple                          STRING                   Asig multiple            13                       CTE_STRING               
+_D1                                     STRING                   D1                       2                        CTE_STRING               
+_D2                                     STRING                   D2                       2                        CTE_STRING               
+_IF_simple                              STRING                   IF simple                9                        CTE_STRING               
+_OK_INLIST                              STRING                   OK INLIST                9                        CTE_STRING               
+_NO_esta_actual                         STRING                   NO esta actual           14                       CTE_STRING               
+_4                                      INTEGER                  4                                                 CTE_INTEGER              
+_9                                      INTEGER                  9                                                 CTE_INTEGER              
+_IF_con_OR_true                         STRING                   IF con OR true           14                       CTE_STRING               
 _Encontre_actual                        STRING                   Encontre actual          15                       CTE_STRING               
 _NO_encontre_actual                     STRING                   NO encontre actual       18                       CTE_STRING               
 _IF_con_OR_false                        STRING                   IF con OR false          15                       CTE_STRING               
@@ -28,8 +41,6 @@ _88                                     INTEGER                  88             
 _99                                     INTEGER                  99                                                CTE_INTEGER              
 _Entra_al_seg_if                        STRING                   Entra al seg if          15                       CTE_STRING               
 _IF_con_NOT_false                       STRING                   IF con NOT false         16                       CTE_STRING               
-_7                                      INTEGER                  7                                                 CTE_INTEGER              
-actual2                                                                                   7                        IDENTIFICADOR            
 _8                                      INTEGER                  8                                                 CTE_INTEGER              
 _Iterando_actual                        STRING                   Iterando actual          15                       CTE_STRING               
 _Iterando_actual2                       STRING                   Iterando actual2         16                       CTE_STRING               
@@ -44,3 +55,6 @@ _Iterando_actual2                       STRING                   Iterando actual
 @aux9                                   FLOAT                                             5                        IDENTIFICADOR            
 @aux10                                  FLOAT                                             6                        IDENTIFICADOR            
 @aux11                                  FLOAT                                             6                        IDENTIFICADOR            
+@aux12                                  FLOAT                                             6                        IDENTIFICADOR            
+@aux13                                  FLOAT                                             6                        IDENTIFICADOR            
+@aux14                                  FLOAT                                             6                        IDENTIFICADOR            

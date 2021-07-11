@@ -1,14 +1,42 @@
 DECVAR
-    actual: Float; 
+    actual, actual2: Float; 
     a1, a2, a3, a4, a5, a6: Integer;
     b1: Integer;
     c1: Integer;
+    d1, d2, d3, d4: Integer;
+    otra: Float;
 ENDDEC
 
 a1:1+2+3*2;
 a2:(a1+1);
 actual:3;
 otra:1.5;
+
+write "Ingrese D4";
+read d4;
+d3: (3+5)*3 + d4;
+d1:d2: d3;
+write "Asig multiple";
+write "D1";
+write d1;
+write "D2";
+write d2;
+
+if(1 == 1){
+    write "IF simple";
+}
+
+if(INLIST(actual; [2; 1; otra; 3])){
+    write "OK INLIST";
+}else{
+    write "NO esta actual";
+}
+
+if(INLIST(actual; [2; 1; otra; 4])){
+    write "OK INLIST";
+}else{
+    write "NO esta actual";
+}
 
 if(2 < 2 or a1 >= a2 or a1 < 9 or a1 >= 5 + 4 - 2 + 1 + 1 + 1){
     write "IF con OR true";
@@ -36,7 +64,7 @@ if(not(4 >= 4)){
     write "IF con NOT false";
 }
 
-actual: 7;
+actual: 4;
 actual2: 3;
 while(actual < 8 and actual > 1){
     actual: actual - 1;
