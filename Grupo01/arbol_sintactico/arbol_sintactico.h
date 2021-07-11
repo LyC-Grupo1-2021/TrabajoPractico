@@ -9,7 +9,7 @@
 
 // Estructura para el arbol sintactico
 typedef struct nodo{
-    char dato[20];
+    char dato[150];
     struct nodo* hijoDer;
     struct nodo* hijoIzq;
     int tipo;

@@ -24,32 +24,33 @@ _1                              	dd	1
 _2                              	dd	2
 _3                              	dd	3
 _1_5                            	dd	1.5
-_Ingrese_D4                     	db	"Ingrese D4",'$', 10 dup (?)
+_Ingrese_un_valor_a_D4_que_se   	db	"Ingrese un valor a D4 que se",'$', 28 dup (?)
 @OUTDISPLAY                     	dd	?
+_usara_en_AsigMult              	db	"usara en AsigMult",'$', 17 dup (?)
 @STDIN                          	dd	?
 _5                              	dd	5
-_Asig_multiple                  	db	"Asig multiple",'$', 13 dup (?)
-_D1                             	db	"D1",'$', 2 dup (?)
-_D2                             	db	"D2",'$', 2 dup (?)
+_AsigMult_d1_d2_d3_d4           	db	"AsigMult d1:d2:d3+d4",'$', 20 dup (?)
+_Valor_de_D1_luego_de_AsigMult  	db	"Valor de D1 luego de AsigMult",'$', 29 dup (?)
+_Valor_de_D2_luego_de_AsigMult  	db	"Valor de D2 luego de AsigMult",'$', 29 dup (?)
 _IF_simple                      	db	"IF simple",'$', 9 dup (?)
-_OK_INLIST                      	db	"OK INLIST",'$', 9 dup (?)
-_NO_esta_actual                 	db	"NO esta actual",'$', 14 dup (?)
+_Se_encontro_actual_en_INLIST   	db	"Se encontro actual en INLIST",'$', 28 dup (?)
 _4                              	dd	4
+_NO_encontro_actual_en_INLIST   	db	"NO encontro actual en INLIST",'$', 28 dup (?)
 _9                              	dd	9
-_IF_con_OR_true                 	db	"IF con OR true",'$', 14 dup (?)
-_Encontre_actual                	db	"Encontre actual",'$', 15 dup (?)
-_NO_encontre_actual             	db	"NO encontre actual",'$', 18 dup (?)
-_IF_con_OR_false                	db	"IF con OR false",'$', 15 dup (?)
-_IF_con_AND_true                	db	"IF con AND true",'$', 15 dup (?)
-_IF_con_AND_false               	db	"IF con AND false",'$', 16 dup (?)
-_IF_con_NOT_true                	db	"IF con NOT true",'$', 15 dup (?)
+_IF_con_OR_que_da_true          	db	"IF con OR que da true",'$', 21 dup (?)
+_NO_enc_ntr__actual_en_INLIST   	db	"NO encontro actual en INLIST",'$', 28 dup (?)
+_IF_con_OR_que_da_false         	db	"IF con OR que da false",'$', 22 dup (?)
+_IF_con_A_D_que_da_true         	db	"IF con AND que da true",'$', 22 dup (?)
+_IF_con_A_D_que_da_false        	db	"IF con AND que da false",'$', 23 dup (?)
+_IF_con_NOT_que_da_true         	db	"IF con NOT que da true",'$', 22 dup (?)
 _88                             	dd	88
 _99                             	dd	99
 _Entra_al_seg_if                	db	"Entra al seg if",'$', 15 dup (?)
-_IF_con_NOT_false               	db	"IF con NOT false",'$', 16 dup (?)
+_IF_con__OT_que_da_false        	db	"IF con NOT que da false",'$', 23 dup (?)
+_Iteracion_dentro_de_un_if      	db	"Iteracion dentro de un if",'$', 25 dup (?)
 _8                              	dd	8
-_Iterando_actual                	db	"Iterando actual",'$', 15 dup (?)
-_Iterando_actual2               	db	"Iterando actual2",'$', 16 dup (?)
+_Itera_actual_en_primer_while   	db	"Itera actual en primer while",'$', 28 dup (?)
+_I_era_ac_ual2_en_segundo_while 	db	"Itera actual2 en segundo while",'$', 30 dup (?)
 @aux1                           	dd	?
 @aux2                           	dd	?
 @aux3                           	dd	?
@@ -64,6 +65,13 @@ _Iterando_actual2               	db	"Iterando actual2",'$', 16 dup (?)
 @aux12                          	dd	?
 @aux13                          	dd	?
 @aux14                          	dd	?
+@aux15                          	dd	?
+@aux16                          	dd	?
+@aux17                          	dd	?
+@aux18                          	dd	?
+@aux19                          	dd	?
+@aux20                          	dd	?
+@aux21                          	dd	?
 
 .CODE
 
@@ -98,7 +106,9 @@ fild _3
 fst actual
 fld _1_5
 fst otra
-displayString _Ingrese_D4
+displayString _Ingrese_un_valor_a_D4_que_se
+newLine 1
+displayString _usara_en_AsigMult
 newLine 1
 GetFloat d4
 fild _3
@@ -110,21 +120,21 @@ fild _3
 fmul
 fstp @aux6
 fld @aux6
+fst d3
+fld d3
 fld d4
 fadd
 fstp @aux7
 fld @aux7
-fst d3
-fld d3
 fst d2
 fst d1
-displayString _Asig_multiple
+displayString _AsigMult_d1_d2_d3_d4
 newLine 1
-displayString _D1
+displayString _Valor_de_D1_luego_de_AsigMult
 newLine 1
 DisplayFloat d1,2
 newLine 1
-displayString _D2
+displayString _Valor_de_D2_luego_de_AsigMult
 newLine 1
 DisplayFloat d2,2
 newLine 1
@@ -167,16 +177,21 @@ fcom
 fstsw ax
 sahf
 JE startIf2
-JMP else2
-JMP startIf2
-else2:
-displayString _NO_esta_actual
-newLine 1
 JMP endif2
 startIf2:
-displayString _OK_INLIST
+displayString _Se_encontro_actual_en_INLIST
 newLine 1
 endif2:
+fild _4
+fild _5
+fmul
+fstp @aux8
+fild _3
+fld @aux8
+fadd
+fstp @aux9
+fld @aux9
+fst c1
 fild _2
 fld actual
 fxch
@@ -208,13 +223,23 @@ JE startIf3
 JMP else3
 JMP startIf3
 else3:
-displayString _NO_esta_actual
+displayString _NO_encontro_actual_en_INLIST
 newLine 1
 JMP endif3
 startIf3:
-displayString _OK_INLIST
+displayString _Se_encontro_actual_en_INLIST
 newLine 1
 endif3:
+fild _4
+fild _5
+fmul
+fstp @aux10
+fild _3
+fld @aux10
+fadd
+fstp @aux11
+fld @aux11
+fst c1
 fild _2
 fild _2
 fxch
@@ -239,22 +264,6 @@ JA startIf4
 fild _5
 fild _4
 fadd
-fstp @aux8
-fld @aux8
-fild _2
-fsub
-fstp @aux9
-fld @aux9
-fild _1
-fadd
-fstp @aux10
-fld @aux10
-fild _1
-fadd
-fstp @aux11
-fld @aux11
-fild _1
-fadd
 fstp @aux12
 fld @aux12
 fld a1
@@ -266,11 +275,11 @@ JBE startIf4
 JMP else4
 JMP startIf4
 else4:
-displayString _IF_con_OR_false
+displayString _IF_con_OR_que_da_false
 newLine 1
 JMP endif4
 startIf4:
-displayString _IF_con_OR_true
+displayString _IF_con_OR_que_da_true
 newLine 1
 fild _2
 fld actual
@@ -303,14 +312,24 @@ JE startIf5
 JMP else5
 JMP startIf5
 else5:
-displayString _NO_encontre_actual
+displayString _NO_enc_ntr__actual_en_INLIST
 newLine 1
 JMP endif5
 startIf5:
-displayString _Encontre_actual
+displayString _Se_encontro_actual_en_INLIST
 newLine 1
 endif5:
 endif4:
+fild _4
+fild _5
+fmul
+fstp @aux13
+fild _3
+fld @aux13
+fadd
+fstp @aux14
+fld @aux14
+fst c1
 fild _1
 fild _1
 fxch
@@ -334,13 +353,23 @@ sahf
 JNB else6
 JMP startIf6
 else6:
-displayString _IF_con_AND_false
+displayString _IF_con_A_D_que_da_false
 newLine 1
 JMP endif6
 startIf6:
-displayString _IF_con_AND_true
+displayString _IF_con_A_D_que_da_true
 newLine 1
 endif6:
+fild _4
+fild _5
+fmul
+fstp @aux15
+fild _3
+fld @aux15
+fadd
+fstp @aux16
+fld @aux16
+fst c1
 fild _4
 fild _4
 fxch
@@ -350,11 +379,11 @@ sahf
 JBE else7
 JMP startIf7
 else7:
-displayString _IF_con_NOT_false
+displayString _IF_con__OT_que_da_false
 newLine 1
 JMP endif7
 startIf7:
-displayString _IF_con_NOT_true
+displayString _IF_con_NOT_que_da_true
 newLine 1
 fild _99
 fild _88
@@ -368,62 +397,102 @@ displayString _Entra_al_seg_if
 newLine 1
 endif8:
 endif7:
-fild _4
-fst actual
-fild _3
-fst actual2
+fild _1
+fst b1
+fild _1
+fld b1
+fxch
+fcom
+fstsw ax
+sahf
+JNE endif9
+startIf9:
 condicionWhile1:
-fild _8
-fld actual
+fild _3
+fld b1
 fxch
 fcom
 fstsw ax
 sahf
 JNA endwhile1
-fild _1
-fld actual
-fxch
-fcom
-fstsw ax
-sahf
-JNB endwhile1
 startWhile1:
-fld actual
-fild _1
-fsub
-fstp @aux13
-fld @aux13
-fst actual
-displayString _Iterando_actual
+displayString _Iteracion_dentro_de_un_if
 newLine 1
+fld b1
+fild _1
+fadd
+fstp @aux17
+fld @aux17
+fst b1
+JMP condicionWhile1
+endwhile1:
+endif9:
+fild _4
+fst actual
+fild _3
+fst actual2
+fild _4
+fild _5
+fmul
+fstp @aux18
+fild _3
+fld @aux18
+fadd
+fstp @aux19
+fld @aux19
+fst c1
 condicionWhile2:
 fild _8
-fld actual2
+fld actual
 fxch
 fcom
 fstsw ax
 sahf
 JNA endwhile2
 fild _1
-fld actual2
+fld actual
 fxch
 fcom
 fstsw ax
 sahf
 JNB endwhile2
 startWhile2:
+fld actual
+fild _1
+fsub
+fstp @aux20
+fld @aux20
+fst actual
+displayString _Itera_actual_en_primer_while
+newLine 1
+condicionWhile3:
+fild _8
+fld actual2
+fxch
+fcom
+fstsw ax
+sahf
+JNA endwhile3
+fild _1
+fld actual2
+fxch
+fcom
+fstsw ax
+sahf
+JNB endwhile3
+startWhile3:
 fld actual2
 fild _1
 fsub
-fstp @aux14
-fld @aux14
+fstp @aux21
+fld @aux21
 fst actual2
-displayString _Iterando_actual2
+displayString _I_era_ac_ual2_en_segundo_while
 newLine 1
+JMP condicionWhile3
+endwhile3:
 JMP condicionWhile2
 endwhile2:
-JMP condicionWhile1
-endwhile1:
 
 liberar:
 	ffree

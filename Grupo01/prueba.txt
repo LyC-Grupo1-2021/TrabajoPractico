@@ -7,19 +7,23 @@ DECVAR
     otra: Float;
 ENDDEC
 
+
+-/ Esto es un comentario/-
+
 a1:1+2+3*2;
 a2:(a1+1);
 actual:3;
 otra:1.5;
 
-write "Ingrese D4";
+write "Ingrese un valor a D4 que se"; 
+write "usara en AsigMult";
 read d4;
-d3: (3+5)*3 + d4;
-d1:d2: d3;
-write "Asig multiple";
-write "D1";
+d3: (3+5)*3;
+d1:d2: d3 + d4;
+write "AsigMult d1:d2:d3+d4";
+write "Valor de D1 luego de AsigMult";
 write d1;
-write "D2";
+write "Valor de D2 luego de AsigMult";
 write d2;
 
 if(1 == 1){
@@ -27,50 +31,65 @@ if(1 == 1){
 }
 
 if(INLIST(actual; [2; 1; otra; 3])){
-    write "OK INLIST";
-}else{
-    write "NO esta actual";
+    write "Se encontro actual en INLIST";
 }
+
+c1: 3 + 4 *5;
 
 if(INLIST(actual; [2; 1; otra; 4])){
-    write "OK INLIST";
+    write "Se encontro actual en INLIST";
 }else{
-    write "NO esta actual";
+    write "NO encontro actual en INLIST";
 }
 
-if(2 < 2 or a1 >= a2 or a1 < 9 or a1 >= 5 + 4 - 2 + 1 + 1 + 1){
-    write "IF con OR true";
+c1: 3 + 4 *5;
+
+if(2 < 2 or a1 >= a2 or a1 < 9 or a1 >= 5 + 4){
+    write "IF con OR que da true";
     if(INLIST(actual; [2; 1; otra; 3])){
-        write "Encontre actual";
+        write "Se encontro actual en INLIST";
     }else{
-        write "NO encontre actual";
+        write "NO encontro actual en INLIST";
     }
 } else {
-    write "IF con OR false";
+    write "IF con OR que da false";
 }
+
+c1: 3 + 4 *5;
 
 if(1 == 1 and 2 == 2 and 3 > 3){
-    write "IF con AND true";
+    write "IF con AND que da true";
 } else {
-    write "IF con AND false";
+    write "IF con AND que da false";
 }
 
+c1: 3 + 4 *5;
+
 if(not(4 >= 4)){
-    write "IF con NOT true";
+    write "IF con NOT que da true";
     if(88 <= 99){
         write "Entra al seg if";
     }
 } else {
-    write "IF con NOT false";
+    write "IF con NOT que da false";
+}
+
+b1: 1;
+if(b1==1){
+    while(b1 < 3){
+        write "Iteracion dentro de un if";
+        b1:b1 + 1;
+    }
 }
 
 actual: 4;
 actual2: 3;
+c1: 3 + 4 *5;
 while(actual < 8 and actual > 1){
     actual: actual - 1;
-    write "Iterando actual";
+    write "Itera actual en primer while";
     while(actual2 < 8 and actual2 > 1){
         actual2: actual2 - 1;
-        write "Iterando actual2";
+        write "Itera actual2 en segundo while";
     }
 }

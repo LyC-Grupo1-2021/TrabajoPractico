@@ -2,9 +2,9 @@ flex Lexico.l
 
 bison -dyv ./Sintactico.y
 
-gcc lex.yy.c y.tab.c arbol_sintactico/arbol_sintactico.c assembler/assembler.c tabla_simbolos.c -o Segunda.exe
+gcc lex.yy.c y.tab.c arbol_sintactico/arbol_sintactico.c assembler/assembler.c tabla_simbolos.c -o Grupo01.exe
 
-Segunda.exe prueba.txt
+Grupo01.exe prueba.txt
 
 dot -Tpng gragh.dot -o intermedia.png
 
@@ -13,5 +13,4 @@ del y.tab.c
 del y.output
 del y.tab.h
 del gragh.dot
-del Segunda.exe
 pause

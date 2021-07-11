@@ -19,32 +19,33 @@ _1                              	dd	1
 _2                              	dd	2
 _3                              	dd	3
 _1_5                            	dd	1.5
-_Ingrese_D4                     	db	"Ingrese D4",'$', 10 dup (?)
+_Ingrese_un_valor_a_D4_que_se   	db	"Ingrese un valor a D4 que se",'$', 28 dup (?)
 @OUTDISPLAY                     	dd	?
+_usara_en_AsigMult              	db	"usara en AsigMult",'$', 17 dup (?)
 @STDIN                          	dd	?
 _5                              	dd	5
-_Asig_multiple                  	db	"Asig multiple",'$', 13 dup (?)
-_D1                             	db	"D1",'$', 2 dup (?)
-_D2                             	db	"D2",'$', 2 dup (?)
+_AsigMult_d1_d2_d3_d4           	db	"AsigMult d1:d2:d3+d4",'$', 20 dup (?)
+_Valor_de_D1_luego_de_AsigMult  	db	"Valor de D1 luego de AsigMult",'$', 29 dup (?)
+_Valor_de_D2_luego_de_AsigMult  	db	"Valor de D2 luego de AsigMult",'$', 29 dup (?)
 _IF_simple                      	db	"IF simple",'$', 9 dup (?)
-_OK_INLIST                      	db	"OK INLIST",'$', 9 dup (?)
-_NO_esta_actual                 	db	"NO esta actual",'$', 14 dup (?)
+_Se_encontro_actual_en_INLIST   	db	"Se encontro actual en INLIST",'$', 28 dup (?)
 _4                              	dd	4
+_NO_encontro_actual_en_INLIST   	db	"NO encontro actual en INLIST",'$', 28 dup (?)
 _9                              	dd	9
-_IF_con_OR_true                 	db	"IF con OR true",'$', 14 dup (?)
-_Encontre_actual                	db	"Encontre actual",'$', 15 dup (?)
-_NO_encontre_actual             	db	"NO encontre actual",'$', 18 dup (?)
-_IF_con_OR_false                	db	"IF con OR false",'$', 15 dup (?)
-_IF_con_AND_true                	db	"IF con AND true",'$', 15 dup (?)
-_IF_con_AND_false               	db	"IF con AND false",'$', 16 dup (?)
-_IF_con_NOT_true                	db	"IF con NOT true",'$', 15 dup (?)
+_IF_con_OR_que_da_true          	db	"IF con OR que da true",'$', 21 dup (?)
+_NO_enc_ntr__actual_en_INLIST   	db	"NO encontro actual en INLIST",'$', 28 dup (?)
+_IF_con_OR_que_da_false         	db	"IF con OR que da false",'$', 22 dup (?)
+_IF_con_A_D_que_da_true         	db	"IF con AND que da true",'$', 22 dup (?)
+_IF_con_A_D_que_da_false        	db	"IF con AND que da false",'$', 23 dup (?)
+_IF_con_NOT_que_da_true         	db	"IF con NOT que da true",'$', 22 dup (?)
 _88                             	dd	88
 _99                             	dd	99
 _Entra_al_seg_if                	db	"Entra al seg if",'$', 15 dup (?)
-_IF_con_NOT_false               	db	"IF con NOT false",'$', 16 dup (?)
+_IF_con__OT_que_da_false        	db	"IF con NOT que da false",'$', 23 dup (?)
+_Iteracion_dentro_de_un_if      	db	"Iteracion dentro de un if",'$', 25 dup (?)
 _8                              	dd	8
-_Iterando_actual                	db	"Iterando actual",'$', 15 dup (?)
-_Iterando_actual2               	db	"Iterando actual2",'$', 16 dup (?)
+_Itera_actual_en_primer_while   	db	"Itera actual en primer while",'$', 28 dup (?)
+_I_era_ac_ual2_en_segundo_while 	db	"Itera actual2 en segundo while",'$', 30 dup (?)
 @aux1                           	dd	?
 @aux2                           	dd	?
 @aux3                           	dd	?
@@ -59,5 +60,12 @@ _Iterando_actual2               	db	"Iterando actual2",'$', 16 dup (?)
 @aux12                          	dd	?
 @aux13                          	dd	?
 @aux14                          	dd	?
+@aux15                          	dd	?
+@aux16                          	dd	?
+@aux17                          	dd	?
+@aux18                          	dd	?
+@aux19                          	dd	?
+@aux20                          	dd	?
+@aux21                          	dd	?
 
 .CODE

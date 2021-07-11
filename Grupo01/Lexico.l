@@ -171,7 +171,7 @@ void procesarString(){
 
     // Reemplaza cada caracter invalido por un guion bajo
     int idx = 0;
-    char caracteresRaros[] = {';', ' ', ':', '=', ',', '(', ')', '[', ']', '.'};
+    char caracteresRaros[] = {';', ' ', ':', '=', ',', '(', ')', '[', ']', '.', '+'};
     char *ptrCaracter;
     for(idx = 0; idx < strlen(caracteresRaros); idx++) {
         ptrCaracter = strchr(auxCad, caracteresRaros[idx]);

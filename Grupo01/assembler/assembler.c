@@ -197,7 +197,7 @@ char * checkEmptyValue(char *value) {
 // Función que recorre el arbol y llena el archivo instruction.txt con las instrucciones de assembler que correspondan
 void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
     if (root != NULL) {
-        printf("\t\tNODO: %s\tTIPO: %d\n", root->dato, root->tipo);
+        
         int currentIfNode = 0;
         int currentWhileNode = 0;
 
@@ -237,8 +237,13 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         // Fin de recorrido a la izquierda
 
         if(currentIfNode) {
-            if(ORcondition)
-                fprintf(fp, "JMP else%d\n", getTopLabelStack(LABEL_IF));
+            if(ORcondition){
+                if(hasElse){
+                    fprintf(fp, "JMP else%d\n", getTopLabelStack(LABEL_IF));
+                }else{
+                    fprintf(fp, "JMP endif%d\n", getTopLabelStack(LABEL_IF));
+                }
+            }
             if(hasElse){
                 fprintf(fp, "JMP startIf%d\n", getTopLabelStack(LABEL_IF));
                 fprintf(fp, "else%d:\n", getTopLabelStack(LABEL_IF));
@@ -320,7 +325,6 @@ int popLabel(const int labelType) {
 
 //Determina la operación entre el nodo, y sus 2 hijos, y escribe las instrucciones assembler en el archivo.
 void setOperation(FILE * fp, nodo * root){
-    printf("\t\t\t SET OPERATION FOR: %s\n", root->dato);
     if(isArithmetic(root->dato)) {
         if(strcmp(root->dato, ":") == 0) {
             if(strcmp(root->hijoIzq->dato, ":") == 0){
