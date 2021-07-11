@@ -12,19 +12,28 @@ c1                              	dd	?
 _1                              	dd	1
 _2                              	dd	2
 _3                              	dd	3
+otra                            	dd	?
+_1_5                            	dd	1.5
 _9                              	dd	9
 _5                              	dd	5
 _4                              	dd	4
-_8                              	dd	8
-_7                              	dd	7
-_Entra_por_el_THEN              	db	"Entra por el THEN",'$', 17 dup (?)
+_IF_con_OR_true                 	db	"IF con OR true",'$', 14 dup (?)
 @OUTDISPLAY                     	dd	?
-_Entra_por_el_ELSE              	db	"Entra por el ELSE",'$', 17 dup (?)
-_3_01                           	dd	3.01
-otra                            	dd	?
-_1_5                            	dd	1.5
 _Encontre_actual                	db	"Encontre actual",'$', 15 dup (?)
 _NO_encontre_actual             	db	"NO encontre actual",'$', 18 dup (?)
+_IF_con_OR_false                	db	"IF con OR false",'$', 15 dup (?)
+_IF_con_AND_true                	db	"IF con AND true",'$', 15 dup (?)
+_IF_con_AND_false               	db	"IF con AND false",'$', 16 dup (?)
+_IF_con_NOT_true                	db	"IF con NOT true",'$', 15 dup (?)
+_88                             	dd	88
+_99                             	dd	99
+_Entra_al_seg_if                	db	"Entra al seg if",'$', 15 dup (?)
+_IF_con_NOT_false               	db	"IF con NOT false",'$', 16 dup (?)
+_7                              	dd	7
+actual2                         	dd	?
+_8                              	dd	8
+_Iterando_actual                	db	"Iterando actual",'$', 15 dup (?)
+_Iterando_actual2               	db	"Iterando actual2",'$', 16 dup (?)
 @aux1                           	dd	?
 @aux2                           	dd	?
 @aux3                           	dd	?
@@ -34,5 +43,7 @@ _NO_encontre_actual             	db	"NO encontre actual",'$', 18 dup (?)
 @aux7                           	dd	?
 @aux8                           	dd	?
 @aux9                           	dd	?
+@aux10                          	dd	?
+@aux11                          	dd	?
 
 .CODE

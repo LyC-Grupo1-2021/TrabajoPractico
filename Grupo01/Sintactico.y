@@ -196,47 +196,54 @@
   ;
   if:
     IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
-      printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");
+      printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C} es if\n");
       nodo* auxDerPtr=desapilar();
-      ifPtr = crearNodo("IF", condicionPtr, auxDerPtr);
+      nodo* auxIzqPtr=desapilar();
+      ifPtr = crearNodo("IF", auxIzqPtr, auxDerPtr);
     }|
     IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C {
       printf("\t{IF PAR_A condicion PAR_C LLAVE_A programa LLAVE_C ELSE LLAVE_A programa LLAVE_C} es if\n");
       nodo* auxIzqPtr=desapilar();
       nodo* auxDerPtr=desapilar();
       ifBodyPtr = crearNodo("BODY", auxIzqPtr, auxDerPtr);
-      ifPtr = crearNodo("IF", condicionPtr, ifBodyPtr);
+      ifPtr = crearNodo("IF", desapilar(), ifBodyPtr);
     }
   ;
   while:
     WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C {
       printf("\t{ WHILE PAR_A condicion PAR_C LLAVE_A programa LLAVE_C}, es while\n");
       nodo* auxDerPtr=desapilar();
-      whilePtr = crearNodo("WHILE", condicionPtr, auxDerPtr);
+      nodo* auxIzqPtr=desapilar();
+      whilePtr = crearNodo("WHILE", auxIzqPtr, auxDerPtr);
   }
   ;
   condicion_simple:
     expresion operador_comp expresion {
       printf("\t {expresion operador_comp expresion} es condicion_simple\n");
       condicion_simplePtr = crearNodo(operador_compPtr->dato, desapilar(), desapilar());
+      //apilar(condicion_simplePtr);
     }
   ;
   condicion:
     condicion operador_log condicion_simple{
       printf("\t {condicion operador_log condicion_simple} es condicion\n");
-      condicionPtr = crearNodo(operador_logPtr->dato, condicionPtr, condicion_simplePtr);
+      condicionPtr = crearNodo(operador_logPtr->dato, desapilar(), condicion_simplePtr);
+      apilar(condicionPtr);
     }|
     condicion_simple {
       printf("\t {condicion_simple} es condicion\n");
       condicionPtr = condicion_simplePtr;
+      apilar(condicionPtr);
     }|
-    NOT PAR_A condicion_simple PAR_C { //TODO: Preguntar si el NOT genera un nodo o si cambia el orden del body en el if
+    NOT PAR_A condicion_simple PAR_C {
       printf("\t {NOT PAR_A condicion PAR_C} es condicion\n");
       condicionPtr = crearNodo("NOT", condicion_simplePtr, NULL);
+      apilar(condicionPtr);
     }|
     en_lista {
       printf("\t{en_lista} es condicion\n");
       condicionPtr = en_listaPtr;
+      apilar(condicionPtr);
     }
   ;
   operador_log:

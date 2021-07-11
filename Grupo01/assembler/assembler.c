@@ -205,6 +205,7 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         if(strcmp(root->dato, "IF") == 0) {
             hasElse = 0;
             ORcondition = 0;
+            NOTcondition = 0;
             currentIfNode = 1;
             pushLabel(LABEL_IF);
             
@@ -213,6 +214,9 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
             }
             if (strcmp(root->hijoIzq->dato, "OR") == 0) {
                 ORcondition = 1;
+            }
+            if (strcmp(root->hijoIzq->dato, "NOT") == 0) {
+                NOTcondition = 1;
             }
         }
 
@@ -235,8 +239,10 @@ void recorrerArbolParaAssembler(FILE * fp, nodo* root) {
         if(currentIfNode) {
             if(ORcondition)
                 fprintf(fp, "JMP else%d\n", getTopLabelStack(LABEL_IF));
-            if(hasElse)
+            if(hasElse){
+                fprintf(fp, "JMP startIf%d\n", getTopLabelStack(LABEL_IF));
                 fprintf(fp, "else%d:\n", getTopLabelStack(LABEL_IF));
+            }
             else
                 fprintf(fp, "startIf%d:\n", getTopLabelStack(LABEL_IF));
         }
@@ -420,7 +426,20 @@ char* getComparationInstruction(const char *comparador) {
             return "JE";
         if (strcmp(comparador, "!=") == 0)
             return "JNE";
-    } else { //Pongo operadores opuestos porque los carga al reves en la pila para compararlos y ademas los niego porque si no se cumple, salgo
+    } else if(NOTcondition) { 
+        if (strcmp(comparador, ">") == 0)
+            return "JB";
+        if (strcmp(comparador, ">=") == 0)
+            return "JBE";
+        if (strcmp(comparador, "<") == 0)
+            return "JA";
+        if (strcmp(comparador, "<=") == 0)
+            return "JAE";
+        if (strcmp(comparador, "==") == 0)
+            return "JNE";
+        if (strcmp(comparador, "!=") == 0)
+            return "JE";
+    } else{ //Pongo operadores opuestos porque los carga al reves en la pila para compararlos y ademas los niego porque si no se cumple, salgo
         if (strcmp(comparador, ">") == 0)
             return "JNB";
         if (strcmp(comparador, ">=") == 0)

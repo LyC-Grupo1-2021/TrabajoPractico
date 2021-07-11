@@ -7,16 +7,9 @@ ENDDEC
 
 a1:1+2+3*2;
 a2:(a1+1);
-actual:3;
-otra:1.5;
 
 if(2 < 2 or a1 >= a2 or a1 < 9 or a1 >= 5 + 4 - 2 + 1 + 1 + 1){
     write "IF con OR true";
-    if(INLIST(actual; [2; 1; otra; 3])){
-        write "Encontre actual";
-    }else{
-        write "NO encontre actual";
-    }
 } else {
     write "IF con OR false";
 }
@@ -27,6 +20,14 @@ if(1 == 1 and 2 == 2 and 3 > 3){
     write "IF con AND false";
 }
 
+actual:3;
+otra:1.5;
+if(INLIST(actual; [2; 1; otra; 3])){
+    write "Encontre actual";
+}else{
+    write "NO encontre actual";
+}
+
 if(not(4 >= 4)){
     write "IF con NOT true";
     if(88 <= 99){
@@ -35,14 +36,8 @@ if(not(4 >= 4)){
 } else {
     write "IF con NOT false";
 }
-
 actual: 7;
-actual2: 3;
-while(actual < 8 and actual > 1){
+while(actual < 8){
     actual: actual - 1;
     write "Iterando actual";
-    while(actual2 < 8 and actual2 > 1){
-        actual2: actual2 - 1;
-        write "Iterando actual2";
-    }
 }
